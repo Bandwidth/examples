@@ -6,4 +6,4 @@
 
 ## Updates To A Project
 - [ ] I've confirmed that these changes reflect previously communicated requests for changes
-- [ ] I've confirmed that the project still meets the guidelines for scope, format, and setup
+- [ ] I've confirmed that the project still meets the guidelines for scope, format, use case, and setup
