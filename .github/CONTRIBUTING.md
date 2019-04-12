@@ -6,11 +6,7 @@ TBD
 
 TBD
 
-## Scripts
-
-TBD
-
-## Web Servers
+### API Calls
 
 TBD
 
@@ -19,18 +15,6 @@ TBD
 TBD
 
 ### Callbacks
-
-TBD
-
-## README Guidelines
-
-TBD
-
-### Scripts
-
-TBD
-
-### Web Servers
 
 TBD
 
