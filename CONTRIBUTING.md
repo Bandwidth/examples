@@ -4,6 +4,8 @@ When contributing to this repository, please first discuss the change you wish t
 
 All changes must follow the guidelines in this document and be approved by members of Bandwidth's Developer Experience team.
 
+Feel free to contact us at DX@Bandwidth.com.
+
 ## Code
 
 All code samples must have a narrow scope and demonstrate a single use case using Bandwidth's APIs. For example, a single use case may be sending a text message based on some trigger. Sample code may include situations specific to Bandwidth's APIs such as rate limiting, queueing, and callbacks for sending messages.
