@@ -2,6 +2,9 @@
 
 _As a developer, how do I display a media attachment to my end user?_
 
+**This tutorial assumes you are familiar with:**
+* Receiving Messaging Callbacks (Coming Soon)
+
 When developing a Bandwidth enabled application that accepts MMS, you will often need to display received media to your end user. This process is not always as straightforward as it may appear.
 
 **Consider the following example callback that your application receives to its callback URL:**
