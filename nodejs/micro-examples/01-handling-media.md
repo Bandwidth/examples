@@ -125,6 +125,6 @@ const getCloudMediaUrl = (mediaUrl) => {
   }
 
   // return the promise of the S3 Upload.
-  return S3.upload(params).promise();
+  return s3.upload(params).promise();
 }
 ```
