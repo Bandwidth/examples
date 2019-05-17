@@ -21,7 +21,7 @@ When developing a Bandwidth enabled application that accepts MMS, you will often
     "text"          : "Hey, check this out!",
     "applicationId" : "93de2206-9669-4e07-948d-329f4b722ee2",
     "media"         : [
-      "https://messaging.bandwidth.com/api/v2/users/{userId}/media/14762070468292kw2fuqty55yp2b2/0/bw.png"
+      "https://messaging.bandwidth.com/api/v2/users/9955525/media/14762070468292kw2fuqty55yp2b2/0/bw.png"
     ],
     "owner"         : "+12345678902",
     "direction"     : "in",
@@ -35,7 +35,9 @@ Your first instinct may be to store this message in your data store as-is, and u
 
 **You'll quickly discover that the provided media fails to render.** This is because the URL that is provided is an API call, and you will need to use your API Token and Secret to retrieve this media at the URL provided. Additionally, this URL is only functional for 48 hours.
 
-So if we need to display this content to the user, or persist it for any amount of time greater than 48 hours, we'll need to move this content to our own URL.
+This is incompatible with any client application, because it would require the client to have your API Token and Secret to view their MMS media.
+
+As such, if we need to display this content to the user, or persist it for any amount of time greater than 48 hours, we'll need to move this content to our own storage and URL.
 
 **The flow for doing so looks like this**:
 
@@ -44,7 +46,7 @@ So if we need to display this content to the user, or persist it for any amount 
 3. The media is streamed (recommended) or downloaded and then uploaded to a cloud hosting provider (or anywhere you'd like to persist the media)
 4. Your application stores the self-hosted URL, instead of the Bandwidth API call.
 
-You now have full control over the access to this media, it's persistence and cleanup, and its display to your end users.
+You now have full control over the access to this media, its persistence and cleanup, and its display to your end users.
 
 ## Example Flow (Node, Express)
 
