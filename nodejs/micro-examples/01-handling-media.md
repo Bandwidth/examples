@@ -6,7 +6,7 @@ When developing a Bandwidth enabled application that accepts MMS, you will often
 
 **Consider the following example callback that your application receives to its callback URL:**
 
-```
+```json
 [
   {
     "type"        : "message-received",
@@ -52,7 +52,7 @@ This example shows the cloud-agnostic solution flow that demonstrates best pract
 
 In the below example, `getCloudMediaUrl` is the function defined in the next section.
 
-```
+```js
 // Express route for our Bandwidth Application Callback
 app.post('/callback', async (req, res) => {
   const requestBody = JSON.parse(req.body);
@@ -94,11 +94,11 @@ The below are some examples and resources for how you could stream files to vari
 
 ### Amazon Web Services (AWS)
 
-```
+```js
 const AWS = require('aws-sdk');
 const fetch = require('node-fetch');
 
-// used to generate authorization
+// used to generate authorization string
 const Base64 = require('js-base64').Base64;
 
 const getCloudMediaUrl = (mediaUrl) => {
