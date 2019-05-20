@@ -99,6 +99,8 @@ The below are some examples and resources for how you could stream files to vari
 
 ### Amazon Web Services (AWS)
 
+[More Reference Information](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html)
+
 ```js
 const AWS = require('aws-sdk');
 const fetch = require('node-fetch');
@@ -131,5 +133,123 @@ const getCloudMediaUrl = (mediaUrl) => {
 
   // return the promise of the S3 Upload.
   return s3.upload(params).promise();
+}
+```
+
+### Google Cloud
+
+[More Reference Information](https://cloud.google.com/nodejs/docs/reference/storage/2.5.x/File#createWriteStream)
+
+```js
+const {Storage} = require('@google-cloud/storage');
+const fetch = require('node-fetch');
+
+// used to generate authorization string
+const Base64 = require('js-base64').Base64;
+
+const getCloudMediaUrl = (mediaUrl) => {
+
+  // getting the filename
+  const fileNameArray = mediaUrl.split('/')
+
+  // adding a timestamp to avoid overwriting files with duplicate names.
+  const fileName = `${Date.now()}-${fileNameArray[fileNameArray.length - 1]}`
+
+  // initialize storage client, and set bucket target
+  const storage = new Storage();
+  const myBucket = storage.bucket('myBucket');
+
+  // set the file target
+  const file = myBucket.file(fileName);
+
+  // perform the fetch, and create a read stream from the body.
+  return fetch(mediaUrl, {
+    headers: {
+      // need to include our API Token and Secret in the request.
+      authorization: `Basic ${Base64.encode(`${BW_API_TOKEN}:${BW_API_SECRET}`)}`
+    }
+  })
+    .then((res) => {
+      // pipe the read stream coming in from the fetch body to a google cloud write stream:
+      res.body.pipe(file.createWriteStream())
+      .on('finish', function() {
+        return `https://storage.googleapis.com/${'myBucket'}/${fileName}`
+      });
+    })
+}
+```
+
+### Microsoft Azure
+
+[Example Used to Create This Snippit](https://github.com/Azure-Samples/azure-storage-js-v10-quickstart/blob/master/index.js)
+[More Reference Information](https://docs.microsoft.com/en-us/javascript/api/%40azure/storage-blob/?view=azure-node-preview)
+
+```js
+
+const {
+  Aborter,
+  StorageURL,
+  BlockBlobURL,
+  uploadStreamToBlockBlob
+} = require('@azure/storage-file');
+const {
+  STORAGE_ACCOUNT_NAME,
+  credentials
+} = require('./azureCredentials.js');
+const fetch = require('node-fetch');
+
+// used to generate authorization string
+const Base64 = require('js-base64').Base64;
+
+const getCloudMediaUrl = (mediaUrl) => {
+
+  // getting the filename
+  const fileNameArray = mediaUrl.split('/')
+
+  // adding a timestamp to avoid overwriting files with duplicate names.
+  const fileName = `${Date.now()}-${fileNameArray[fileNameArray.length - 1]}`
+
+  // azure uses this object to abort after a specififed timeout (here 1 min)
+  const aborter = Aborter.timeout(60 * 1000);
+
+  
+  // STORAGE_ACCOUNT_NAME is from your azure credentials
+  const conatinerName = "demo";
+  const pipeline = StorageURL.newPipeline(credentials);
+  const serviceURL = new ServiceURL(`https://${STORAGE_ACCOUNT_NAME}.blob.core.windows.net`, pipeline);
+  const containerURL = ContainerURL.fromServiceURL(serviceURL, containerName);
+
+  // will only create a conatiner if it doesn't already exist
+  // azure best practices recommends this
+  await containerURL.create(aborter);
+
+  
+
+
+
+  // perform the fetch, and create a read stream from the body.
+  return fetch(mediaUrl, {
+    headers: {
+      // need to include our API Token and Secret in the request.
+      authorization: `Basic ${Base64.encode(`${BW_API_TOKEN}:${BW_API_SECRET}`)}`
+    }
+  })
+    .then((res) => {
+
+      // create a URL for the resource
+      const blockBlobURL = BlockBlobURL.fromContainerURL(containerURL, fileName);
+
+      // upload the stream to the url
+      await uploadStreamToBlockBlob(
+        aborter, 
+        res.body, 
+        blockBlobURL, 
+        16384, // default highwatermark for stream 
+        2 // max buffers, adjust as necessary
+      );
+
+      // return the URL
+      return blockBlobURL
+    })
 }
 ```
