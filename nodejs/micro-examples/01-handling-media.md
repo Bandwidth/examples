@@ -13,22 +13,22 @@ When developing a Bandwidth enabled application that accepts MMS, you will often
 [
   {
     "type"        : "message-received",
-    "time"        : "2016-09-14T18:20:16Z",
+    "time"        : "2016-09-14T18:20:17Z",
     "description" : "Incoming message received",
     "to"          : "+12345678902",
     "message"     : {
-    "id"            : "14762070468292kw2fuqty55yp2b2",
-    "time"          : "2016-09-14T18:20:16Z",
-    "to"            : ["+12345678902"],
-    "from"          : "+12345678901",
-    "text"          : "Hey, check this out!",
-    "applicationId" : "93de2206-9669-4e07-948d-329f4b722ee2",
-    "media"         : [
-      "https://messaging.bandwidth.com/api/v2/users/9955525/media/14762070468292kw2fuqty55yp2b2/0/bw.png"
-    ],
-    "owner"         : "+12345678902",
-    "direction"     : "in",
-    "segmentCount"  : 1
+      "id"            : "14762070468292kw2fuqty55yp2b2",
+      "time"          : "2016-09-14T18:20:16Z",
+      "to"            : ["+12345678902"],
+      "from"          : "+12345678901",
+      "text"          : "Hey, check this out!",
+      "applicationId" : "93de2206-9669-4e07-948d-329f4b722ee2",
+      "media"         : [
+        "https://messaging.bandwidth.com/api/v2/users/9955525/media/14762070468292kw2fuqty55yp2b2/0/bw.png"
+      ],
+      "owner"         : "+12345678902",
+      "direction"     : "in",
+      "segmentCount"  : 1
     }
   }
 ]
