@@ -1,0 +1,62 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\jchavez\\Code\\Playground\\C#\\BandwidthExample\\BandwidthExample.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\jchavez\\Code\\Playground\\C#\\BandwidthExample\\BandwidthExample.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\jchavez\\Code\\Playground\\C#\\BandwidthExample\\BandwidthExample.csproj",
+        "projectName": "BandwidthExample",
+        "projectPath": "C:\\Users\\jchavez\\Code\\Playground\\C#\\BandwidthExample\\BandwidthExample.csproj",
+        "packagesPath": "C:\\Users\\jchavez\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\jchavez\\Code\\Playground\\C#\\BandwidthExample\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\jchavez\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.2"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.2": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.2": {
+          "dependencies": {
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )",
+              "autoReferenced": true
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[10.0.1, )"
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    }
+  }
+}

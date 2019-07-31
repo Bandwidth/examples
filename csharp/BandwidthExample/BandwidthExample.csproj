@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="BandwidthMsgSDK.Standard" >
+      <HintPath>.\libs\BandwidthMsgSDK.Standard.dll</HintPath>
+	</Reference>
+	<Reference Include="BandwidthVoiceSDK.Standard" >
+		<HintPath>.\libs\BandwidthVoiceSDK.Standard.dll</HintPath>
+	  </Reference>
+	<Reference Include="BandwidthBXML" >
+		<HintPath>.\libs\BandwidthBXML</HintPath>
+	  </Reference>
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.1"/>
+  </ItemGroup>
+
+</Project>
