@@ -17,6 +17,9 @@ using static Enviroment.Properties;
 
 namespace Controllers {
 
+	/**
+	* Controller to handle the Bandwidth voice interactions
+	*/
 	public class VoiceController{
 
 		private static readonly Configuration voiceConfig2 = null;
@@ -35,7 +38,9 @@ namespace Controllers {
 
 	private static readonly string host = getProperty("host");
 
-
+	/**
+     * Reply to an incoming call with a sentence and a gather
+     */
     public static void letsPlayAGame(){
 
         post("/incoming/call", (request, response ) => {
@@ -87,8 +92,12 @@ namespace Controllers {
 
         });
     }
-
-    public static void makeOutboudCall(string to){
+    
+	/**
+     * Initiates an outbound call from the Bandwidth network to the to caller.
+     * @param to
+     */
+	public static void makeOutboudCall(string to){
 
         ApiCreateCallRequest callRequest = new ApiCreateCallRequest();
 
@@ -108,6 +117,9 @@ namespace Controllers {
 
     }
 
+    /**
+     * Sends a Gather BXML to the http requester
+     */
     public static void callMeMessage(){
 
         post("/call/me/message", ((request, response) => {
@@ -128,6 +140,9 @@ namespace Controllers {
 
     }
 
+    /**
+     * Recieves the gathered digits and transfers the call to the number provided
+     */
     public static void gatherAndForward(){
 
         post("/forward/number", ((request, response) => {

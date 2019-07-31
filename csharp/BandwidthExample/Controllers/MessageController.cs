@@ -14,6 +14,9 @@ using static System.Console;
 using static Enviroment.Properties;
 
 namespace Controllers {
+	/**
+	 * Controller to handle the Bandwidth message API
+	  */
 	public class MessageController {
 
 		static readonly Configuration msgConfig = new Configuration.Builder()
@@ -27,6 +30,12 @@ namespace Controllers {
     	private  static string msgUserId = getProperty("message.account.id");
 		private static readonly string applicationId =  getProperty("message.application.id");
 
+		/**
+		* Uploads a media file from the disk to the Bandwidth network
+		* @param fileURL
+		* @param contentType
+		* @param mediaId
+     	*/
 		public static void uploadMedia(string fileURL, string contentType, string mediaId) {
 
        		if(!File.Exists(fileURL)) return;
@@ -42,11 +51,19 @@ namespace Controllers {
         	}
     	}
 
+		/**
+		* Downloads media from the Bandwidth network to local
+		*/
     	public static void downloadMedia(){
 
     	}
 
-		public static List<Media> listMedia() {
+
+		/**
+		* List the media in the user's account
+		* @return
+     	*/	
+	 	public static List<Media> listMedia() {
 
 			List<Media> list = null;
 			try {
@@ -61,6 +78,15 @@ namespace Controllers {
 
 		}
 
+		/**
+		* Starts a post http listner for an incoming message.
+		* <br/>
+		* If the incoming message text is "call me" it will initate a voice call with the text sender
+		* <br/>
+		* If the incoming message contains media it will send the media back to the sender
+		* <br/>
+		* If the incoming message is not "call me" and contains no media it will reply with a sentence to the sender.
+		*/
 		public static void listenReplyToMessage() {
 
 			post("/msg/incoming", (request, response) => {

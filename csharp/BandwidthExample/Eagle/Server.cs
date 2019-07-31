@@ -1,7 +1,6 @@
 
 using System.Collections.Generic;
 using System.Text;
-using System.Runtime.CompilerServices;
 using System;
 using System.Threading.Tasks;
 using System.Net;
@@ -9,7 +8,9 @@ using System.Net;
 
 namespace Eagle {
 
-
+	/**
+	This is a light weight demo server, @author JLC
+	 */
 	public class Server {
 
 		private static Server server = null;
