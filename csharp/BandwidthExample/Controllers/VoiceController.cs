@@ -33,7 +33,7 @@ namespace Controllers {
 
     private static readonly APIController voiceClient = new BandwidthVoiceSDKClient(voiceConfig).Client;
 
-	private static readonly string host = "http://37d317e1.ngrok.io";
+	private static readonly string host = getProperty("host");
 
 
     public static void letsPlayAGame(){
