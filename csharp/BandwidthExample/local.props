@@ -3,7 +3,7 @@ host=<address that is accessible from the public so Bandwidth can send callbacks
 message.application.id=<message application id goes here>
 message.account.id=
 message.api.token=
-message.api.seceret=
+message.api.secret=
 
 voice.username=
 voice.password=

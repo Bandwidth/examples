@@ -17,7 +17,7 @@ namespace Controllers {
 	public class MessageController {
 
 		static readonly Configuration msgConfig = new Configuration.Builder()
-            .WithBasicAuthPassword( getProperty("message.api.seceret") )
+            .WithBasicAuthPassword( getProperty("message.api.secret") )
             .WithBasicAuthUserName( getProperty("message.api.token") )
             .WithEnvironment(Configuration.Environments.PRODUCTION)
             .Build();
