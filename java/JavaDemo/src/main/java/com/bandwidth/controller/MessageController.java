@@ -19,6 +19,9 @@ import static spark.Spark.post;
 
 import static com.bandwidth.enviroment.Properties.getProperty;
 
+/**
+ * Controller to handle the Bandwidth message API
+ */
 public class MessageController {
 
 
@@ -35,7 +38,12 @@ public class MessageController {
     private static String applicationId = getProperty("message.application.id");
 
 
-
+    /**
+     * Uploads a media file from the disk to the Bandwidth network
+     * @param fileURL
+     * @param contentType
+     * @param mediaId
+     */
     public static void uploadMedia(String fileURL, String contentType, String mediaId) {
 
        File file = new File(fileURL);
@@ -49,10 +57,17 @@ public class MessageController {
         }
     }
 
+    /**
+     * Downloads media from the Bandwidth network to local
+     */
     public static void downloadMedia(){
 
     }
 
+    /**
+     * List the media in the user's account
+     * @return
+     */
     public static List<Media> listMedia() {
 
         List<Media> list = null;
@@ -68,6 +83,15 @@ public class MessageController {
 
     }
 
+    /**
+     * Starts a post http listner for an incoming message.
+     * <br/>
+     * If the incoming message text is "call me" it will initate a voice call with the text sender
+     * <br/>
+     * If the incoming message contains media it will send the media back to the sender
+     * <br/>
+     * If the incoming message is not "call me" and contains no media it will reply with a sentence to the sender.
+     */
     public static void listenReplyToMessage() {
 
         post("/msg/incoming", (request, response) -> {
@@ -106,7 +130,7 @@ public class MessageController {
             List<String> incomingMedia = callbackMessages[0].getMessage().getMedia();
 
             if("call me".equalsIgnoreCase(incomingText.trim())){
-                VoiceController.makeOutboudCall(from);
+                VoiceController.makeOutboundCall(from);
                 return "";
             } else if( incomingMedia == null || incomingMedia.isEmpty() ) {
                 msgRequest.setText("The quick brown fox jumps over a lazy dog.");

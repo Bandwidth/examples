@@ -9,6 +9,9 @@ import java.util.Map;
 
 import static java.lang.System.out;
 
+/**
+ * Enviromental properties are stored in this class.  they are read from a file set through the configuration method.
+ */
 public class Properties {
 
 
@@ -18,6 +21,14 @@ public class Properties {
 
     }
 
+    /**
+     * Takes a file path then if the file exists it reads and parses it.
+     * <br/>
+     * File format should be:
+     * <br/>
+     * property.name=property value
+     * @param filePath
+     */
     public static void configure(String filePath){
 
         File file = new File(filePath);
@@ -45,6 +56,11 @@ public class Properties {
         }
     }
 
+    /**
+     * Returns the poperty value for the key.  Null if it does not exist.
+     * @param key
+     * @return
+     */
     public static String getProperty(String key){
 
         if(PROPS.containsKey(key)){

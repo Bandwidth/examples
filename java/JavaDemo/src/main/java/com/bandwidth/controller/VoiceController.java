@@ -16,6 +16,9 @@ import static spark.Spark.post;
 
 import static com.bandwidth.enviroment.Properties.getProperty;
 
+/**
+ * Controller to handle the Bandwidth voice interactions
+ */
 public class VoiceController {
 
 
@@ -33,6 +36,9 @@ public class VoiceController {
 
     private static final String HOST = getProperty("host");
 
+    /**
+     * Reply to an incoming call with a sentence and a gather
+     */
     public static void letsPlayAGame(){
 
         post("/incoming/call", (request, response ) -> {
@@ -73,7 +79,11 @@ public class VoiceController {
         });
     }
 
-    public static void makeOutboudCall(String to){
+    /**
+     * Initiates an outbound call from the Bandwidth network to the to caller.
+     * @param to
+     */
+    public static void makeOutboundCall(String to){
 
         ApiCreateCallRequest callRequest = new ApiCreateCallRequest();
 
@@ -93,6 +103,9 @@ public class VoiceController {
 
     }
 
+    /**
+     * Sends a Gather BXML to the http requester
+     */
     public static void callMeMessage(){
 
         post("call/me/message", ((request, response) -> {
@@ -106,6 +119,9 @@ public class VoiceController {
 
     }
 
+    /**
+     * Recieves the gathered digits and transfers the call to the number provided
+     */
     public static void gatherAndForward(){
 
         post("/forward/number", ((request, response) -> {
