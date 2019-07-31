@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="bandwidth-v2-voice-lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/bandwidth-v2-voice-lib.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
