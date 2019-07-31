@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\jchavez\\Code\\Playground\\C#\\BandwidthExample\\BandwidthExample.csproj": {}
+    "C:\\Repos\\examples\\csharp\\BandwidthExample\\BandwidthExample.csproj": {}
   },
   "projects": {
-    "C:\\Users\\jchavez\\Code\\Playground\\C#\\BandwidthExample\\BandwidthExample.csproj": {
+    "C:\\Repos\\examples\\csharp\\BandwidthExample\\BandwidthExample.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\jchavez\\Code\\Playground\\C#\\BandwidthExample\\BandwidthExample.csproj",
+        "projectUniqueName": "C:\\Repos\\examples\\csharp\\BandwidthExample\\BandwidthExample.csproj",
         "projectName": "BandwidthExample",
-        "projectPath": "C:\\Users\\jchavez\\Code\\Playground\\C#\\BandwidthExample\\BandwidthExample.csproj",
+        "projectPath": "C:\\Repos\\examples\\csharp\\BandwidthExample\\BandwidthExample.csproj",
         "packagesPath": "C:\\Users\\jchavez\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\jchavez\\Code\\Playground\\C#\\BandwidthExample\\obj\\",
+        "outputPath": "C:\\Repos\\examples\\csharp\\BandwidthExample\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
