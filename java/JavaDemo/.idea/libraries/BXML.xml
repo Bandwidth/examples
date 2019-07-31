@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="BXML">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/libs/BXML.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
