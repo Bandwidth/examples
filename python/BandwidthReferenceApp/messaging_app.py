@@ -21,19 +21,19 @@ import string
 import os
 
 try:
-    ACCOUNT_ID = os.environ["ACCOUNT_ID"]
-    API_TOKEN = os.environ["API_TOKEN"]
-    API_SECRET = os.environ["API_SECRET"]
+    MESSAGING_ACCOUNT_ID = os.environ["MESSAGING_ACCOUNT_ID"]
+    MESSAGING_API_TOKEN = os.environ["MESSAGING_API_TOKEN"]
+    MESSAGING_API_SECRET = os.environ["MESSAGING_API_SECRET"]
     MESSAGING_APPLICATION_ID = os.environ["MESSAGING_APPLICATION_ID"]
 except:
-    print("Please set the environmental variables defined in the README")
+    print("Please set the MESSAGING environmental variables defined in the README")
     exit(-1)
 
-message_client = BandwidthmessagingClient(API_TOKEN, API_SECRET)
+message_client = BandwidthmessagingClient(MESSAGING_API_TOKEN, MESSAGING_API_SECRET)
 message_client_controller = message_client.client
 
 ##This is the only Bandwidth url needed
-BANDWIDTH_MEDIA_BASE_ENDPOINT = "https://messaging.bandwidth.com/api/v2/users/{accountId}/media/".format(accountId=ACCOUNT_ID)
+BANDWIDTH_MEDIA_BASE_ENDPOINT = "https://messaging.bandwidth.com/api/v2/users/{accountId}/media/".format(accountId=MESSAGING_ACCOUNT_ID)
 
 messaging_app = Blueprint('messaging_app',__name__)
 
@@ -85,7 +85,7 @@ def download_media_from_bandwidth(media_urls):
         filename = get_media_filename(media_url)
         with open(filename, "wb") as f:
             try:
-                downloaded_media = message_client_controller.get_media(ACCOUNT_ID, media_id)
+                downloaded_media = message_client_controller.get_media(MESSAGING_ACCOUNT_ID, media_id)
                 f.write(downloaded_media)
             except Exception as e:
                 print(e)
@@ -107,7 +107,7 @@ def upload_media_to_bandwidth(media_files):
             file_content = f.read()
             try:
                 ##Note: The filename is doubling as the media id##
-                response = message_client_controller.upload_media(ACCOUNT_ID, filename, str(len(file_content)), body=file_content)
+                response = message_client_controller.upload_media(MESSAGING_ACCOUNT_ID, filename, str(len(file_content)), body=file_content)
             except Exception as e:
                 print(e)
 
@@ -146,7 +146,7 @@ def handle_inbound_media_mms(to, from_, media):
     #the bandwidth media base url
     body.media = [BANDWIDTH_MEDIA_BASE_ENDPOINT + media_file for media_file in downloaded_media_files]
     try:
-        message_client_controller.create_message(ACCOUNT_ID, body)
+        message_client_controller.create_message(MESSAGING_ACCOUNT_ID, body)
     except Exception as e:
         print(e)
     return None
@@ -167,7 +167,7 @@ def handle_inbound_sms(to, from_):
     body.mfrom = to
     body.text = "The current date-time is: " + str(time.time() * 1000) + " milliseconds since the epoch"
     try:
-        message_client_controller.create_message(ACCOUNT_ID, body)
+        message_client_controller.create_message(MESSAGING_ACCOUNT_ID, body)
     except Exception as e:
         print(e)
     return None
