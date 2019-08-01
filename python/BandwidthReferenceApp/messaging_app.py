@@ -1,13 +1,13 @@
 """
-server.py
+messaging_app.py
 
-A simple Flask server to demonstrate how to use Bandwidth's Voice and Messaging APIs with callbacks
+A simple Flask app to demonstrate how to use Bandwidth's Messaging API with callbacks
 
 @author Jacob Mulford
 @copyright Bandwidth INC
 """
 
-from flask import Flask
+from flask import Blueprint
 from flask import request
 from bandwidthmessaging.bandwidthmessaging_client import BandwidthmessagingClient
 from bandwidthmessaging.models.message_request import MessageRequest
@@ -35,7 +35,7 @@ message_client_controller = message_client.client
 ##This is the only Bandwidth url needed
 BANDWIDTH_MEDIA_BASE_ENDPOINT = "https://messaging.bandwidth.com/api/v2/users/{accountId}/media/".format(accountId=ACCOUNT_ID)
 
-app = Flask(__name__)
+messaging_app = Blueprint('messaging_app',__name__)
 
 
 def get_media_id(media_url):
@@ -172,7 +172,7 @@ def handle_inbound_sms(to, from_):
         print(e)
     return None
 
-@app.route("/MessageCallback", methods = ["POST"])
+@messaging_app.route("/MessageCallback", methods = ["POST"])
 def handle_inbound_message():
     """
     A method for showing how to handle Bandwidth messaging callbacks.
@@ -191,6 +191,3 @@ def handle_inbound_message():
     else:
         print(data)
     return ""
-
-if __name__ == '__main__':
-    app.run()
