@@ -10,14 +10,13 @@ A simple Flask app to demonstrate how to use Bandwidth's Voice API with callback
 from flask import Blueprint
 from flask import request
 
-from bandwidth.bandwidth_client import BandwidthClient
 from bandwidth.voice.bxml.response import Response
-from bandwidth.voice.bxml.verbs import SpeakSentence 
+from bandwidth.voice.bxml.verbs import *
+
+from bandwidth.bandwidth_client import BandwidthClient
+
 from bandwidth.voice.voice_client import VoiceClient
 from bandwidth.voice.models.api_create_call_request import ApiCreateCallRequest
-from bandwidth.voice.models.answer_method_enum import AnswerMethodEnum
-from bandwidth.voice.models.disconnect_method_enum import DisconnectMethodEnum
-from bandwidth.exceptions.api_exception import APIException
 
 import time
 import random
@@ -47,16 +46,69 @@ def handle_inbound_message():
     """
     A method for showing how to handle inbound Bandwidth voice callbacks.
     """
-    data = json.loads(request.data)
-
-    print(data)
-
-    response = Response()
-    speak_sentence = SpeakSentence(
-        sentence="Hello world",
+    pause = Pause(3)
+    speak_sentence_1 = SpeakSentence(
+        sentence="Let's play a game!",
         voice="susan",
         locale="en_US",
         gender="female"
     )
+    speak_sentence_2 = SpeakSentence(
+        sentence="What is 6 plus 6?",
+        voice="susan",
+        locale="en_US",
+        gender="female"
+    )
+    redirect = Redirect(
+        redirect_url="/StartGather"
+    )
+    response = Response()
+    response.add_verb(pause)
+    response.add_verb(speak_sentence_1)
+    response.add_verb(pause)
+    response.add_verb(speak_sentence_2)
+    response.add_verb(redirect)
+
+    return response.to_xml()
+
+@voice_app.route("/StartGather", methods = ["POST"])
+def start_gather():
+    """
+    Callback endpoint that returns BXML for making a gather
+    """
+    gather = Gather(
+        gather_url="/EndGather",
+        max_digits=2
+    )
+    response = Response()
+    response.add_verb(gather)
+
+    return response.to_xml()
+
+CORRECT_URL = "https://www.kozco.com/tech/piano2.wav"
+INCORRECT_URL = "https://www32.online-convert.com/dl/web2/download-file/c4ec8291-ddd7-4982-b2fb-4dec2f37dcf4/Never%20Gonna%20Give%20You%20Up%20Original.wav"
+@voice_app.route("/EndGather", methods = ["POST"])
+def end_gather():
+    """
+    Callback endpoint that expects a gather callback
+    """
+    data = json.loads(request.data)
+
+    digits = int(data["digits"])
+
+    audio_url = None
+
+    if digits == 12:
+        audio_url = CORRECT_URL 
+    else:
+        audio_url = INCORRECT_URL
+
+    play_audio = PlayAudio(
+        url=audio_url
+    )
+    response = Response()
+    response.add_verb(play_audio)
+
+    print(response.to_xml())
 
     return response.to_xml()
