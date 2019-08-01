@@ -1,11 +1,11 @@
-host=<address that is accessible from the public so Bandwidth can send callbacks>
+host=http://cd0a141b.ngrok.io
 
-message.application.id=<message application id goes here>
-message.account.id=
-message.api.token=
-message.api.secret=
+message.application.id=1a8430cd-fe4b-4afa-8f4b-2b2cfe9e4085
+message.account.id=u-fsrwsw6mjvl3hos2stmmwka
+message.api.token=66f23c3f385732e6cdfe2af49e4ffb8f7281ad0e1201441d
+message.api.secret=c63f543672721ec71197a9bcb4f60618a40c5a20140daafc
 
-voice.username=
-voice.password=
-voice.account.id=
-voice.application.id=
+voice.username=jchavez_customer
+voice.password=B@ndw1dth
+voice.account.id=9900012
+voice.application.id=e2a89264-c199-4571-9783-b279e664cba0

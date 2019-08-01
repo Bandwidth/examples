@@ -17,6 +17,8 @@ namespace BandwidthExample
 
 			port("8080");
 
+			MessageController.listMedia();
+
 			MessageController.listenReplyToMessage();
 
         	VoiceController.letsPlayAGame();

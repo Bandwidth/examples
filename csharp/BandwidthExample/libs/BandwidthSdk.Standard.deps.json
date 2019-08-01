@@ -7,13 +7,13 @@
   "targets": {
     ".NETStandard,Version=v1.3": {},
     ".NETStandard,Version=v1.3/": {
-      "BandwidthVoiceSDK.Standard/1.0.0.0": {
+      "BandwidthSdk.Standard/1.0.0.0": {
         "dependencies": {
           "NETStandard.Library": "1.6.1",
           "Newtonsoft.Json": "10.0.3"
         },
         "runtime": {
-          "BandwidthVoiceSDK.Standard.dll": {}
+          "BandwidthSdk.Standard.dll": {}
         }
       },
       "Microsoft.CSharp/4.3.0": {
@@ -788,7 +788,7 @@
     }
   },
   "libraries": {
-    "BandwidthVoiceSDK.Standard/1.0.0.0": {
+    "BandwidthSdk.Standard/1.0.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

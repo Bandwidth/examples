@@ -6,12 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="BandwidthMsgSDK.Standard" >
-      <HintPath>.\libs\BandwidthMsgSDK.Standard.dll</HintPath>
+    <Reference Include="BandwidthSdk.Standard" >
+      <HintPath>.\libs\BandwidthSdk.Standard.dll</HintPath>
 	</Reference>
-	<Reference Include="BandwidthVoiceSDK.Standard" >
-		<HintPath>.\libs\BandwidthVoiceSDK.Standard.dll</HintPath>
-	  </Reference>
 	<Reference Include="BandwidthBXML" >
 		<HintPath>.\libs\BandwidthBXML</HintPath>
 	  </Reference>

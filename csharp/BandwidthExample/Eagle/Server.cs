@@ -1,4 +1,5 @@
 
+using System.Threading;
 using System.Collections.Generic;
 using System.Text;
 using System;
@@ -47,21 +48,29 @@ namespace Eagle {
 			 listner.Start();
 
 			Task.Run( () => {
+				
+				int count = 0;
 				while (!_stop)
 				{
-					Task<HttpListenerContext> task = listner.GetContextAsync();
-					HttpListenerContext ctx = task.Result;
-
+					HttpListenerContext task = listner.GetContext();
+					
+					
 					Task respondTask = Task.Run(() => {
-						string path = ctx.Request.RawUrl;
-						string body = null;
-						if("POST".Equals(ctx.Request.HttpMethod) && postMappings.ContainsKey(path)){
-							body = postMappings[path](ctx.Request, ctx.Response);
-						} 
-						else if("GET".Equals(ctx.Request.HttpMethod) && getMappings.ContainsKey(path)){
-							body = getMappings[path](ctx.Request, ctx.Response);
+						try{
+							HttpListenerContext ctx = task;
+							string path = ctx.Request.RawUrl;
+							string body = null;
+							if("POST".Equals(ctx.Request.HttpMethod) && postMappings.ContainsKey(path)){
+								body = postMappings[path](ctx.Request, ctx.Response);
+							} 
+							else if("GET".Equals(ctx.Request.HttpMethod) && getMappings.ContainsKey(path)){
+								body = getMappings[path](ctx.Request, ctx.Response);
+							}
+							reply(ctx.Response, body);
+						} finally{
+							count++;
+							Console.WriteLine("Finished listner task # " + count);
 						}
-						reply(ctx.Response, body);
 					} );
 				}
 

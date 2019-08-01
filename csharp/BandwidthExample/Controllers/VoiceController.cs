@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using System.IO;
 using Helpers;
-using BandwidthVoiceSDK.Standard;
-using BandwidthVoiceSDK.Standard.Controllers;
-using BandwidthVoiceSDK.Standard.Exceptions;
-using BandwidthVoiceSDK.Standard.Models;
-using BandwidthVoiceSDK.Standard.Utilities;
+using BandwidthSdk.Standard.BandwidthVoice;
+using BandwidthSdk.Standard.BandwidthVoice.Controllers;
+using BandwidthSdk.Standard.BandwidthVoice.Exceptions;
+using BandwidthSdk.Standard.BandwidthVoice.Models;
+using BandwidthSdk.Standard.Utilities;
+using BandwidthSdk.Standard;
 
 using BandwidthBXML;
 
@@ -25,8 +26,8 @@ namespace Controllers {
 		private static readonly Configuration voiceConfig2 = null;
 
 		private static readonly Configuration voiceConfig = new Configuration.Builder()
-			.WithBasicAuthPassword( getProperty("voice.password"))
-			.WithBasicAuthUserName( getProperty("voice.username"))
+			.WithBandwidthVoiceBasicAuthPassword( getProperty("voice.password"))
+			.WithBandwidthVoiceBasicAuthUserName( getProperty("voice.username"))
 			.WithEnvironment(Configuration.Environments.PRODUCTION)
 			.Build();
 
@@ -34,7 +35,7 @@ namespace Controllers {
 
     private static readonly string accountId =  getProperty("voice.account.id");
 
-    private static readonly APIController voiceClient = new BandwidthVoiceSDKClient(voiceConfig).Client;
+    private static readonly APIController voiceClient = new BandwidthVoiceClient(voiceConfig).Client;
 
 	private static readonly string host = getProperty("host");
 

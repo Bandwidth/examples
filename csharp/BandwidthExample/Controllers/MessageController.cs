@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using System.IO;
 using Helpers;
-using BandwidthMsgSDK.Standard;
-using BandwidthMsgSDK.Standard.Controllers;
-using BandwidthMsgSDK.Standard.Exceptions;
-using BandwidthMsgSDK.Standard.Models;
-using BandwidthMsgSDK.Standard.Utilities;
+using BandwidthSdk.Standard.BandwidthMessaging;
+using BandwidthSdk.Standard.BandwidthMessaging.Controllers;
+using BandwidthSdk.Standard.BandwidthMessaging.Exceptions;
+using BandwidthSdk.Standard.BandwidthMessaging.Models;
+using BandwidthSdk.Standard.Utilities;
+using BandwidthSdk.Standard;
 
 using static Eagle.Server;
 
@@ -20,12 +21,12 @@ namespace Controllers {
 	public class MessageController {
 
 		static readonly Configuration msgConfig = new Configuration.Builder()
-            .WithBasicAuthPassword( getProperty("message.api.secret") )
-            .WithBasicAuthUserName( getProperty("message.api.token") )
+			.WithBandwidthMessagingBasicAuthPassword( getProperty("message.api.secret") )
+            .WithBandwidthMessagingBasicAuthUserName( getProperty("message.api.token") )
             .WithEnvironment(Configuration.Environments.PRODUCTION)
             .Build();
 
-		private static APIController msgClient =  new BandwidthMsgSDKClient(msgConfig).Client;
+		private static APIController msgClient =  new BandwidthMessagingClient(msgConfig).Client;
 
     	private  static string msgUserId = getProperty("message.account.id");
 		private static readonly string applicationId =  getProperty("message.application.id");
@@ -45,9 +46,9 @@ namespace Controllers {
         	try {
             	msgClient.UploadMedia(msgUserId, mediaId, fileInfo.Length, File.ReadAllBytes(fileURL) ,contentType, "no-cache" );
         	} catch (APIException e) {
-            	WriteLine(e.StackTrace);
+            	WriteLine(e.Message);
         	} catch (IOException e) {
-            	WriteLine(e.StackTrace);
+            	WriteLine(e.Message);
         	}
     	}
 
@@ -67,11 +68,11 @@ namespace Controllers {
 
 			List<Media> list = null;
 			try {
-				list = msgClient.ListMedia(msgUserId,"");
+				list = msgClient.ListMedia(msgUserId,"").Data;
 			} catch (APIException e) {
-            	WriteLine(e.StackTrace);
+            	WriteLine(e.Message);
         	} catch (IOException e) {
-            	WriteLine(e.StackTrace);
+            	WriteLine(e.Message);
         	}
 
 			return list;

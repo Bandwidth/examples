@@ -10,8 +10,7 @@
         "dependencies": {
           "Newtonsoft.Json": "10.0.1",
           "BandwidthBXML": "1.0.0.0",
-          "BandwidthMsgSDK.Standard": "1.0.0.0",
-          "BandwidthVoiceSDK.Standard": "1.0.0.0"
+          "BandwidthSdk.Standard": "1.0.0.0"
         },
         "runtime": {
           "BandwidthExample.dll": {}
@@ -431,17 +430,9 @@
           }
         }
       },
-      "BandwidthMsgSDK.Standard/1.0.0.0": {
+      "BandwidthSdk.Standard/1.0.0.0": {
         "runtime": {
-          "BandwidthMsgSDK.Standard.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        }
-      },
-      "BandwidthVoiceSDK.Standard/1.0.0.0": {
-        "runtime": {
-          "BandwidthVoiceSDK.Standard.dll": {
+          "BandwidthSdk.Standard.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
@@ -761,12 +752,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "BandwidthMsgSDK.Standard/1.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "BandwidthVoiceSDK.Standard/1.0.0.0": {
+    "BandwidthSdk.Standard/1.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
