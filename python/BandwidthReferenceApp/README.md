@@ -4,7 +4,7 @@ A small sample app that covers basic use cases with Bandwidth's Voice and Messag
 
 ## Pre-Reqs
 
-You will need to set up a Bandwidth Messaging Application and have a phone number associated with this application, and point the callback URL on this application to the messaging endpoing on the server running this app. `ngrok` is highly recommended for local prototyping.
+You will need to set up Bandwidth Applications and have phone numbers associated with these application, and point the callback URL on these applications to the messaging and voice endpoints on the server running this app. `ngrok` is highly recommended for local prototyping.
 
 ## Installation
 
@@ -24,7 +24,7 @@ The following environmental variables need to be set
 After setting the environmental variables, start the server by running the following command
 
 ```
-python server.py
+python app.py
 ```
 
 You are now ready to text your Bandwidth phone number that is associated with the application
