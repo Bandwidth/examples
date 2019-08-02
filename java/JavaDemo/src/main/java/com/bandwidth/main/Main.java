@@ -15,11 +15,6 @@ public class Main {
 
         Properties.configure("resources/local.props");
 
-        //MessageController.uploadMedia("C:/Users/jchavez/Downloads/smartest.jpg", "image/jpeg", "smartest.jpg");
-
-        //MessageController.listMedia();
-
-
         MessageController.listenReplyToMessage();
 
         VoiceController.letsPlayAGame();
