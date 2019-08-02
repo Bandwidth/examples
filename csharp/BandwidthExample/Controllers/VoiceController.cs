@@ -64,6 +64,8 @@ namespace Controllers {
                 Gather gather = new Gather();
 				gather.TerminatingDigits = "#";
 				gather.SpeakSentence = speakSentence1;
+				//If the destination of the gather url is on the same server, a relative URL will work too
+                //gather.GatherUrl = "/incoming/call";
 				gather.GatherUrl = host + "/incoming/call";
 
 			
@@ -130,6 +132,8 @@ namespace Controllers {
 			
 			Gather gather = new Gather();
 			gather.SpeakSentence = speakSentence;
+			//If the destination of the gather url is on the same server, a relative URL will work too
+        	//gather.GatherUrl = "/transfer/number";
 			gather.GatherUrl = host + "/transfer/number";
 
             Response res =  new Response();
