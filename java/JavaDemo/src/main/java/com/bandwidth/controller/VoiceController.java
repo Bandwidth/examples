@@ -54,7 +54,13 @@ public class VoiceController {
                 SpeakSentence speakSentence = SpeakSentence.builder().text("lets play a game").build();
 
                 SpeakSentence speakSentence1 = SpeakSentence.builder().text("What is the sum of 2 plus 3.  Enter the sum followed by the pound symbol.").build();
-                Gather gather = Gather.builder().terminatingDigits("#").audioProducer(speakSentence1).gatherUrl(HOST + "/incoming/call").build();
+                Gather gather = Gather.builder()
+                        .terminatingDigits("#")
+                        .audioProducer(speakSentence1)
+                        //If the destination of the gather url is on the same server, a relative URL will work too
+                        //gatherUrl("/incoming/call")
+                        .gatherUrl(HOST + "/incoming/call")
+                        .build();
 
                 bxmlResponse.add(speakSentence).add(gather);
 
@@ -111,7 +117,10 @@ public class VoiceController {
         post("call/me/message", ((request, response) -> {
 
             SpeakSentence speakSentence = SpeakSentence.builder().text("Hey you asked to call, who should I call for you.  Enter their phone number followed by the pound symbol").build();
-            Gather gather = Gather.builder().audioProducer(speakSentence).gatherUrl(HOST + "/forward/number").build();
+            Gather gather = Gather.builder()
+                    .audioProducer(speakSentence)
+                    .gatherUrl("/transfer/number")
+                    .build();
 
             return Response.builder().build().add(gather).toXml();
 

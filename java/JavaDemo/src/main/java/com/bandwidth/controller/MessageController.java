@@ -105,9 +105,16 @@ public class MessageController {
                 return "";
             }
 
+            if(callbackMessages[0].getMessage() != null ){
+                System.out.println(callbackMessages[0].getType() +
+                        ", From:  " + callbackMessages[0].getMessage().getFrom() +
+                        ", To:  " +callbackMessages[0].getMessage().getTo() +
+                        ", Text:  " + callbackMessages[0].getMessage().getText());
+            }
+
+
             if("message-delivered".equalsIgnoreCase(callbackMessages[0].getType()) || "message-failed".equalsIgnoreCase(callbackMessages[0].getType())){
                 //Message delivery notice or message failed notice.  Return 200 to Bandwidth.
-                System.out.println(callbackMessages[0].getType());
                 return "";
             }
 
