@@ -23,7 +23,7 @@ namespace BandwidthExample
 
         	VoiceController.letsPlayAGame();
         	VoiceController.callMeMessage();
-        	VoiceController.gatherAndForward();
+        	VoiceController.gatherAndTransfer();
 		
             Console.Read();
 

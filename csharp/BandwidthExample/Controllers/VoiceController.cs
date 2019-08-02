@@ -98,14 +98,14 @@ namespace Controllers {
      * Initiates an outbound call from the Bandwidth network to the to caller.
      * @param to
      */
-	public static void makeOutboudCall(string to){
+	public static void makeOutboudCall(string to, string from){
 
         ApiCreateCallRequest callRequest = new ApiCreateCallRequest();
 
         callRequest.ApplicationId = applicationId;
         callRequest.To=to;
         callRequest.AnswerUrl= host + "/call/me/message";
-        callRequest.From="+19192227323";
+        callRequest.From=from;
 
         try {
             voiceClient.CreateCall(accountId, callRequest);
@@ -130,7 +130,7 @@ namespace Controllers {
 			
 			Gather gather = new Gather();
 			gather.SpeakSentence = speakSentence;
-			gather.GatherUrl = host + "/forward/number";
+			gather.GatherUrl = host + "/transfer/number";
 
             Response res =  new Response();
 			res.Add(gather);
@@ -144,9 +144,9 @@ namespace Controllers {
     /**
      * Recieves the gathered digits and transfers the call to the number provided
      */
-    public static void gatherAndForward(){
+    public static void gatherAndTransfer(){
 
-        post("/forward/number", ((request, response) => {
+        post("/transfer/number", ((request, response) => {
 
 			string json = ControllerHelpers.getBody(request);
             BandwidthCallbackMessageVoice callbackMessageVoice = APIHelper.JsonDeserialize<BandwidthCallbackMessageVoice>(json);
@@ -155,17 +155,17 @@ namespace Controllers {
 
             if("gather".Equals(callbackMessageVoice.EventType)){
 
-                string forwardTo = callbackMessageVoice.Digits;
+                string transferTo = callbackMessageVoice.Digits;
 
-                forwardTo = "+1" + forwardTo.Replace("#", "");
+                transferTo = "+1" + transferTo.Replace("#", "");
 
                 PhoneNumber phoneNumber =new PhoneNumber();
-				phoneNumber.Number = forwardTo;
+				phoneNumber.Number = transferTo;
 				PhoneNumber[] phoneNumbers = {phoneNumber};
 
                 Transfer transfer = new Transfer();
 				transfer.PhoneNumbers = phoneNumbers;
-				transfer.TransferCallerId = "+19192227323";
+				transfer.TransferCallerId = callbackMessageVoice.From;
 
                 res.Add(transfer);
             }

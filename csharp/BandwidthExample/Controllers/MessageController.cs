@@ -102,23 +102,29 @@ namespace Controllers {
 				}
 
 				if("message-delivered".Equals(callbackMessages[0].Type) || "message-failed".Equals(callbackMessages[0].Type)){
-					//Message delivery notice or message filed notice.  Return 200 to Bandwidth.
+					//Message delivery notice or message failed notice.  Return 200 to Bandwidth.
 					WriteLine(callbackMessages[0].Type);
 					return "";
 				}
 
 				// Incoming message to application # callbackMessages[0].getType() equals "message-received"
 
-				//number to reply too
+				//For inbound messages, the From number is the number that sent the text
 				string from = callbackMessages[0].Message.From;
 
-				//Set incoming number to be "To" number
+				//Set outbound message to the inbound number. i.e. the message sender to reply
 				List<string> sendToNums = new List<string>();
 				sendToNums.Add(from);
 
+				//For inbound messages the "To" number list is the target numbers 
+				//The sender wanted to message
+				string to = callbackMessages[0].Message.To[0];
+
+				//Create a MessageRequest that replies to the inbound message
+				//This can be done by flipint the "To" with the "From"
 				MessageRequest msgRequest = new MessageRequest();
 				msgRequest.ApplicationId = applicationId;
-				msgRequest.From = "19192347322";//number tied to application
+				msgRequest.From = to;//The first number the sender wanted to message
 				msgRequest.To = sendToNums;
 
 				string incomingText = callbackMessages[0].Message.Text;
@@ -126,7 +132,8 @@ namespace Controllers {
 				List<string> incomingMedia = callbackMessages[0].Message.Media;
 
 				if("call me".Equals(incomingText.Trim().ToLower())){
-					VoiceController.makeOutboudCall(from);
+					//Flip the inbound "From" and "To" to make a call to the inbound sender.
+					VoiceController.makeOutboudCall(from, to);
 					return "";
 				} else if( incomingMedia == null || incomingMedia.Count == 0 ) {
 					msgRequest.Text = "The quick brown fox jumps over a lazy dog.";
