@@ -106,23 +106,27 @@ public class MessageController {
             }
 
             if("message-delivered".equalsIgnoreCase(callbackMessages[0].getType()) || "message-failed".equalsIgnoreCase(callbackMessages[0].getType())){
-                //Message delivery notice or message filed notice.  Return 200 to Bandwidth.
+                //Message delivery notice or message failed notice.  Return 200 to Bandwidth.
                 System.out.println(callbackMessages[0].getType());
                 return "";
             }
 
             // Incoming message to application # callbackMessages[0].getType() equals "message-received"
 
-            //number to reply too
+            //For inbound messages, the From number is the number that sent the text
             String from = callbackMessages[0].getMessage().getFrom();
 
-            //Set incoming number to be "To" number
+            //The inbound message From number needs to be set as the "To" number
+            //in order to reply back to the message
             List<String> sendToNums = new ArrayList<>();
             sendToNums.add(from);
 
+            //The inbound message "To" list is the numbers the sender messaged
+            String to = callbackMessages[0].getMessage().getTo().get(0);
+
             MessageRequest msgRequest = new MessageRequest();
             msgRequest.setApplicationId(applicationId);
-            msgRequest.setFrom("19192347322");//number tied to application
+            msgRequest.setFrom(to);//the number the inbound message was sent to is now the from.
             msgRequest.setTo(sendToNums);
 
             String incomingText = callbackMessages[0].getMessage().getText();
@@ -130,7 +134,7 @@ public class MessageController {
             List<String> incomingMedia = callbackMessages[0].getMessage().getMedia();
 
             if("call me".equalsIgnoreCase(incomingText.trim())){
-                VoiceController.makeOutboundCall(from);
+                VoiceController.makeOutboundCall(from, to);
                 return "";
             } else if( incomingMedia == null || incomingMedia.isEmpty() ) {
                 msgRequest.setText("The quick brown fox jumps over a lazy dog.");

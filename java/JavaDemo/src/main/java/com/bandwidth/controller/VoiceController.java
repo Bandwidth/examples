@@ -83,14 +83,14 @@ public class VoiceController {
      * Initiates an outbound call from the Bandwidth network to the to caller.
      * @param to
      */
-    public static void makeOutboundCall(String to){
+    public static void makeOutboundCall(String to, String from){
 
         ApiCreateCallRequest callRequest = new ApiCreateCallRequest();
 
         callRequest.setApplicationId(applicationId);
         callRequest.setTo(to);
         callRequest.setAnswerUrl(HOST + "/call/me/message");
-        callRequest.setFrom("+19192227323");
+        callRequest.setFrom(from);
 
         try {
             voiceClient.createCall(accountId, callRequest);
@@ -122,9 +122,9 @@ public class VoiceController {
     /**
      * Recieves the gathered digits and transfers the call to the number provided
      */
-    public static void gatherAndForward(){
+    public static void gatherAndTransfer(){
 
-        post("/forward/number", ((request, response) -> {
+        post("/transfer/number", ((request, response) -> {
 
             BandwidthCallbackMessageVoice callbackMessageVoice = APIHelper.deserialize(request.body(), BandwidthCallbackMessageVoice.class);
 
@@ -132,11 +132,11 @@ public class VoiceController {
 
             if("gather".equalsIgnoreCase(callbackMessageVoice.getEventType())){
 
-                String forwardTo = callbackMessageVoice.getDigits();
+                String transferTo = callbackMessageVoice.getDigits();
 
-                forwardTo = "+1" + forwardTo.replaceAll("#", "");
+                transferTo = "+1" + transferTo.replaceAll("#", "");
 
-                PhoneNumber phoneNumber = PhoneNumber.builder().phoneNumber(forwardTo).build();
+                PhoneNumber phoneNumber = PhoneNumber.builder().phoneNumber(transferTo).build();
                 Transfer transfer = Transfer.builder().phoneNumbers(phoneNumber).transferCallerId("+19192227323").build();
 
                 res.add(transfer).toXml();

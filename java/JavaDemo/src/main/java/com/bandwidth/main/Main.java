@@ -24,7 +24,7 @@ public class Main {
 
         VoiceController.letsPlayAGame();
         VoiceController.callMeMessage();
-        VoiceController.gatherAndForward();
+        VoiceController.gatherAndTransfer();
 
 
 
