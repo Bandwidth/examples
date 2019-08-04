@@ -64,11 +64,12 @@ def download_media_from_bandwidth(media_urls)
         filename = get_media_filename(media_url)
         f = File.open(filename, "wb")
         begin
-            downloaded_media = message_client_controller.get_media(MESSAGING_ACCOUNT_ID, media_id)
+            downloaded_media = $messaging_controller.get_media(MESSAGING_ACCOUNT_ID, media_id)
             f.puts(downloaded_media)
         rescue Exception => e
             puts e
         end
+        f.close()
         downloaded_media_files.push(filename)
     end
     return downloaded_media_files
@@ -111,7 +112,7 @@ end
 # @param media [list<String>] The list of media sent in the message
 # @return [nil]
 def handle_inbound_media_mms(to, from, media)
-    #downloaded_media_files = download_media_from_bandwidth(media)
+    downloaded_media_files = download_media_from_bandwidth(media)
     #upload_media_to_bandwidth(downloaded_media_files)
     #remove_files(downloaded_media_files)
     body = MessageRequest.new
