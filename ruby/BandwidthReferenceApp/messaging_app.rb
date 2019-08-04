@@ -22,7 +22,7 @@ end
 
 messaging_client = BandwidthMessagingClient.new(basic_auth_user_name: MESSAGING_API_TOKEN, basic_auth_password: MESSAGING_API_SECRET)
 
-messaging_controller = messaging_client.client
+$messaging_controller = messaging_client.client
 
 # Takes information from a Bandwidth inbound message callback and initiates a call.
 #
@@ -41,8 +41,16 @@ end
 # @param from [String] The phone number that sent the text message
 # @return [nil]
 def handle_inbound_sms(to, from)
-    puts to
-    puts from
+    body = MessageRequest.new
+    body.application_id = MESSAGING_APPLICATION_ID
+    body.to = [from]
+    body.from = to
+    body.text = "The current date-time is: " + Time.now.to_f.to_s + " milliseconds since the epoch"
+    begin
+        $messaging_controller.create_message(MESSAGING_ACCOUNT_ID, body)
+    rescue Exception => e
+        puts e
+    end
 end
 
 # Takes information from a Bandwidth inbound message callback that includes media
