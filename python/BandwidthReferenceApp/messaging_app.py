@@ -172,11 +172,23 @@ def handle_inbound_sms(to, from_):
         print(e)
     return None
 
+def handle_inbound_sms_call_me(to, from_):
+    """
+    Takes information from a Bandwidth inbound message callback and initiates a call
+
+    :param list<str> to: The list of phone numbers that received the message
+    :param str from_: The phone number that sent the text message
+
+    :returns: None
+    """
+
 @messaging_app.route("/MessageCallback", methods = ["POST"])
 def handle_inbound_message():
     """
     A method for showing how to handle Bandwidth messaging callbacks.
-    For inbound SMS, the response is a SMS with the date and time.
+    For inbound SMS that contains the phrase "call me", a phone call is made and the user is asked to
+        forward the call to another number
+    For inbound SMS that doesn't contain the phrase "call me", the response is a SMS with the date and time.
     For inbound MMS with a media attachment, the response is the same
     media attachment sent through Bandwidth's media resource.
     For all other events, the callback is logged to console
@@ -184,7 +196,9 @@ def handle_inbound_message():
     data = json.loads(request.data)
 
     if data[0]["type"] == "message-received":
-        if "media" in data[0]["message"]:
+        if "call me" in data[0]["message"]["text"]:
+            handle_inbound_sms_call_me(data[0]["message"]["to"][0], data[0]["message"]["from"])
+        else if "media" in data[0]["message"]:
             handle_inbound_media_mms(data[0]["message"]["to"][0], data[0]["message"]["from"], data[0]["message"]["media"])
         else:
             handle_inbound_sms(data[0]["message"]["to"][0], data[0]["message"]["from"])

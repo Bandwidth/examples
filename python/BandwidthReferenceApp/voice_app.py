@@ -109,6 +109,4 @@ def end_gather():
     response = Response()
     response.add_verb(play_audio)
 
-    print(response.to_xml())
-
     return response.to_xml()
