@@ -20,9 +20,59 @@ if [MESSAGING_ACCOUNT_ID, MESSAGING_API_TOKEN, MESSAGING_API_SECRET, MESSAGING_A
     exit(-1)
 end
 
+##This is the only Bandwidth url needed
+BANDWIDTH_MEDIA_BASE_ENDPOINT = "https://messaging.bandwidth.com/api/v2/users/%s/media/" [MESSAGING_ACCOUNT_ID] 
+
 messaging_client = BandwidthMessagingClient.new(basic_auth_user_name: MESSAGING_API_TOKEN, basic_auth_password: MESSAGING_API_SECRET)
 
 $messaging_controller = messaging_client.client
+
+# Takes a full media url from Bandwidth and extracts the media id
+# The full media url looks like https://messaging.bandwidth.com/api/v2/users/123/media/<media_id>
+#     where <media_id> can be of format <str>/<int>/<str> or <str>
+# Example: https://messaging.bandwidth.com/api/v2/users/123/media/file.png
+#          https://messaging.bandwidth.com/api/v2/users/123/media/abc/0/file.png
+# @param media_url [String] The full media url
+# @returns [String] The media id
+def get_media_id(media_url)
+    split_url = media_url.split("/")
+    #Media urls of the format https://messaging.bandwidth.com/api/v2/users/123/media/file.png
+    if split_url[-2] == "media"
+        return split_url[-1]
+    #Media urls of the format https://messaging.bandwidth.com/api/v2/users/123/media/abc/0/file.png
+    else
+        #This is required for now due to the SDK parsing out the `/`s
+        split_url[-3..-1].join("%2F")
+    end
+end
+
+# Takes a full media url from Bandwidth and extracts the filename
+# @param media_url [String] The full media url
+# @returns [String] The media file name
+def get_media_filename(media_url)
+    return media_url.split("/")[-1]
+end
+
+# Takes a list of media urls and downloads the media into the temporary storage
+#
+# @param media_urls [list<String>] The media urls to downloaded
+# @returns [list<String>] The list containing the filenames of the downloaded media files
+def download_media_from_bandwidth(media_urls)
+    downloaded_media_files = []
+    media_urls.each do |media_url|
+        media_id = get_media_id(media_url)
+        filename = get_media_filename(media_url)
+        f = File.open(filename, "wb")
+        begin
+            downloaded_media = message_client_controller.get_media(MESSAGING_ACCOUNT_ID, media_id)
+            f.puts(downloaded_media)
+        rescue Exception => e
+            puts e
+        end
+        downloaded_media_files.push(filename)
+    end
+    return downloaded_media_files
+end
 
 # Takes information from a Bandwidth inbound message callback and initiates a call.
 #
@@ -61,9 +111,23 @@ end
 # @param media [list<String>] The list of media sent in the message
 # @return [nil]
 def handle_inbound_media_mms(to, from, media)
-    puts to
-    puts from
-    puts media
+    #downloaded_media_files = download_media_from_bandwidth(media)
+    #upload_media_to_bandwidth(downloaded_media_files)
+    #remove_files(downloaded_media_files)
+    body = MessageRequest.new
+    body.application_id = MESSAGING_APPLICATION_ID
+    body.to = [from]
+    body.from = to
+    body.text = "Rebound!"
+    #Build the media URL by taking the media ids (that doubled as the file names) and appending them to
+    #the bandwidth media base url
+    #body.media = [BANDWIDTH_MEDIA_BASE_ENDPOINT + media_file for media_file in downloaded_media_files]
+    body.media = media
+    begin
+        $messaging_controller.create_message(MESSAGING_ACCOUNT_ID, body)
+    rescue Exception => e
+        puts e
+    end
 end
 
 post '/MessageCallback' do
