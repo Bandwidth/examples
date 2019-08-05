@@ -21,7 +21,7 @@ if [MESSAGING_ACCOUNT_ID, MESSAGING_API_TOKEN, MESSAGING_API_SECRET, MESSAGING_A
 end
 
 ##This is the only Bandwidth url needed
-BANDWIDTH_MEDIA_BASE_ENDPOINT = "https://messaging.bandwidth.com/api/v2/users/%s/media/" [MESSAGING_ACCOUNT_ID] 
+BANDWIDTH_MEDIA_BASE_ENDPOINT = "https://messaging.bandwidth.com/api/v2/users/%s/media/" % [MESSAGING_ACCOUNT_ID] 
 
 messaging_client = BandwidthMessagingClient.new(basic_auth_user_name: MESSAGING_API_TOKEN, basic_auth_password: MESSAGING_API_SECRET)
 
@@ -75,6 +75,33 @@ def download_media_from_bandwidth(media_urls)
     return downloaded_media_files
 end
 
+# Takes a list of media files and uploads them to Bandwidth
+# The media file names are used as the media id
+# @param media_files [list<String>] The media files to upload
+# @returns void
+def upload_media_to_bandwidth(media_files)
+    media_files.each do |filename|
+        f = File.open(filename, "r")
+        file_content = f.read
+        begin
+            $messaging_controller.upload_media(MESSAGING_ACCOUNT_ID, filename, file_content.length.to_s, file_content, "text/plain", "no-cache")
+        rescue Exception => e
+            puts "upload error"
+            puts e
+        end
+        f.close()
+    end
+end
+
+# Removes all of the given files
+# @param files [list<String>] The list of files to remove
+# @returns void
+def remove_files(files)
+    files.each do |file|
+        File.delete(file)
+    end
+end
+
 # Takes information from a Bandwidth inbound message callback and initiates a call.
 #
 # @param to [list<String>] The list of phone numbers that received the message 
@@ -113,7 +140,7 @@ end
 # @return void
 def handle_inbound_media_mms(to, from, media)
     downloaded_media_files = download_media_from_bandwidth(media)
-    #upload_media_to_bandwidth(downloaded_media_files)
+    upload_media_to_bandwidth(downloaded_media_files)
     #remove_files(downloaded_media_files)
     body = MessageRequest.new
     body.application_id = MESSAGING_APPLICATION_ID
@@ -122,8 +149,11 @@ def handle_inbound_media_mms(to, from, media)
     body.text = "Rebound!"
     #Build the media URL by taking the media ids (that doubled as the file names) and appending them to
     #the bandwidth media base url
-    #body.media = [BANDWIDTH_MEDIA_BASE_ENDPOINT + media_file for media_file in downloaded_media_files]
-    body.media = media
+    body.media = []
+    downloaded_media_files.each do |media_file|
+        body.media.push(BANDWIDTH_MEDIA_BASE_ENDPOINT + media_file)
+    end
+
     begin
         $messaging_controller.create_message(MESSAGING_ACCOUNT_ID, body)
     rescue Exception => e

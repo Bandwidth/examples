@@ -7,9 +7,7 @@
 
 require 'sinatra'
 
+set :port, 5000
+
 require_relative 'messaging_app'
 require_relative 'voice_app'
-
-get '/' do
-  return "Test"
-end
