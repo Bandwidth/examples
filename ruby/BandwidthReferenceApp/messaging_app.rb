@@ -141,7 +141,7 @@ end
 def handle_inbound_media_mms(to, from, media)
     downloaded_media_files = download_media_from_bandwidth(media)
     upload_media_to_bandwidth(downloaded_media_files)
-    #remove_files(downloaded_media_files)
+    remove_files(downloaded_media_files)
     body = MessageRequest.new
     body.application_id = MESSAGING_APPLICATION_ID
     body.to = [from]
