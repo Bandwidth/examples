@@ -1,3 +1,4 @@
 source 'https://rubygems.org'
 gem 'sinatra'
-gem 'bandwidth_messaging' #to be replaced by `bandwidth-sdk` in future release
+gem 'bandwidth_messaging' #to be removed once `bandwidth-sdk` has messaging in a future release
+gem 'bandwidth-sdk', '0.1.0'
