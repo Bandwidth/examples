@@ -1,0 +1,11 @@
+host=<Host that is reachable from the public internet>
+
+message.application.id=
+message.account.id=
+message.api.token=
+message.api.secret=
+
+voice.username=
+voice.password=
+voice.account.id=
+voice.application.id=
