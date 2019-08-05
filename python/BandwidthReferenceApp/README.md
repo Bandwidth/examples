@@ -24,6 +24,7 @@ The following environmental variables need to be set
 | VOICE_API_USERNAME | Your Bandwidth Voice API username |
 | VOICE_API_PASSWORD | Your Bandwidth Voice API password |
 | VOICE_APPLICATION_ID | Your Bandwidth Voice application ID |
+| BASE_URL | The base url of the server running this application |
 
 After setting the environmental variables, start the server by running the following command
 

@@ -6,6 +6,7 @@ A simple Flask app to demonstrate how to use Bandwidth's Messaging API with call
 @author Jacob Mulford
 @copyright Bandwidth INC
 """
+from voice_app import handle_call_me
 
 from flask import Blueprint
 from flask import request
@@ -181,6 +182,7 @@ def handle_inbound_sms_call_me(to, from_):
 
     :returns: None
     """
+    handle_call_me(to[0], from_)
 
 @messaging_app.route("/MessageCallback", methods = ["POST"])
 def handle_inbound_message():
@@ -198,7 +200,7 @@ def handle_inbound_message():
     if data[0]["type"] == "message-received":
         if "call me" in data[0]["message"]["text"]:
             handle_inbound_sms_call_me(data[0]["message"]["to"][0], data[0]["message"]["from"])
-        else if "media" in data[0]["message"]:
+        elif "media" in data[0]["message"]:
             handle_inbound_media_mms(data[0]["message"]["to"][0], data[0]["message"]["from"], data[0]["message"]["media"])
         else:
             handle_inbound_sms(data[0]["message"]["to"][0], data[0]["message"]["from"])
