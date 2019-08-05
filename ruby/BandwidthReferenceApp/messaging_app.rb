@@ -79,7 +79,7 @@ end
 #
 # @param to [list<String>] The list of phone numbers that received the message 
 # @param from [String] The number that received the message
-# @return [nil] 
+# @return void 
 def handle_inbound_sms_call_me(to, from)
     puts to
     puts from
@@ -90,7 +90,7 @@ end
 #
 # @param to [list<String>] The list of phone numbers that received the message
 # @param from [String] The phone number that sent the text message
-# @return [nil]
+# @return void
 def handle_inbound_sms(to, from)
     body = MessageRequest.new
     body.application_id = MESSAGING_APPLICATION_ID
@@ -110,7 +110,7 @@ end
 # @param to [list<String>] The list of phone numbers that received the message
 # @param from [String] The phone number that sent the message
 # @param media [list<String>] The list of media sent in the message
-# @return [nil]
+# @return void
 def handle_inbound_media_mms(to, from, media)
     downloaded_media_files = download_media_from_bandwidth(media)
     #upload_media_to_bandwidth(downloaded_media_files)
