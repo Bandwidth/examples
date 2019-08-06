@@ -11,16 +11,17 @@ require 'bandwidth'
 include Bandwidth::Voice
 include Bandwidth
 
-VOICE_ACCOUNT_ID = (ENV.has_key?("VOICE_ACCOUNT_ID") ? ENV["VOICE_ACCOUNT_ID"]: nil)
-VOICE_API_USERNAME = (ENV.has_key?("VOICE_API_USERNAME") ? ENV["VOICE_API_USERNAME"]: nil)
-VOICE_API_PASSWORD = (ENV.has_key?("VOICE_API_PASSWORD") ? ENV["VOICE_API_PASSWORD"]: nil)
-VOICE_APPLICATION_ID = (ENV.has_key?("VOICE_APPLICATION_ID") ? ENV["VOICE_APPLICATION_ID"]: nil)
-BASE_URL = (ENV.has_key?("BASE_URL") ? ENV["BASE_URL"]: nil)
-
-if [VOICE_ACCOUNT_ID, VOICE_API_USERNAME, VOICE_API_PASSWORD, VOICE_APPLICATION_ID, BASE_URL].include?(nil)
+begin
+    VOICE_ACCOUNT_ID = ENV.fetch("VOICE_ACCOUNT_ID") 
+    VOICE_API_USERNAME = ENV.fetch("VOICE_API_USERNAME") 
+    VOICE_API_PASSWORD = ENV.fetch("VOICE_API_PASSWORD") 
+    VOICE_APPLICATION_ID = ENV.fetch("VOICE_APPLICATION_ID") 
+    BASE_URL = ENV.fetch("BASE_URL") 
+rescue
     puts "Please set the VOICE environmental variables defined in the README"
     exit(-1)
 end
+
 
 client = Bandwidth::Client.new(
     voice_basic_auth_user_name:VOICE_API_USERNAME,
