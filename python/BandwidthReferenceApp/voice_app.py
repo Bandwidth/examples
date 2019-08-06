@@ -87,7 +87,6 @@ def end_gather_transfer():
     A method that receives a Gather callback from Bandwidth and creates a Transfer response
     """
     data = json.loads(request.data)
-    print(data)
     phone_number_string = "+1" + data["digits"]
     
     phone_number = PhoneNumber(
@@ -101,7 +100,6 @@ def end_gather_transfer():
     
     response = Response()
     response.add_verb(transfer)
-    print(response.to_xml())
     return response.to_xml()
 
 @voice_app.route("/VoiceCallback", methods = ["POST"])
