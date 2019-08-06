@@ -29,6 +29,59 @@ client = Bandwidth::Client.new(
 
 $calls_controller = client.voice_client.calls
 
+# A method that creates an outbound call and asks for a gather to transfer the call
+# @param to [String] The phone number that received the initial message
+# @param from [String] The phone number that sent the initial message
+def handle_call_me(to, from)
+    body = ApiCreateCallRequest.new
+    body.to = from
+    body.from = to
+    body.answer_url = BASE_URL + "/StartGatherTransfer"
+    body.application_id = VOICE_APPLICATION_ID
+
+    begin
+        result = $calls_controller.create_call(VOICE_ACCOUNT_ID ,body:body)
+    rescue Exception => e
+        puts e
+    end 
+end
+
+# Returns BXML for creating a gather on an outbound call
+post "/StartGatherTransfer" do
+    speak_sentence = Bandwidth::Voice::SpeakSentence.new({
+        :sentence => "Who do you want to transfer this call to? Enter the 10 digit phone number",
+        :voice => "susan",
+        :locale => "en_US",
+        :gender => "female"
+    })
+    gather = Bandwidth::Voice::Gather.new({
+        :gather_url => "/EndGatherTransfer",
+        :max_digits => 10,
+        :speak_sentence => speak_sentence
+    })
+    response = Bandwidth::Voice::Response.new()
+    response.push(gather)
+    return response.to_xml()
+end
+
+# Receive a Gather callback from Bandwidth and creates a Transfer response
+post "/EndGatherTransfer" do
+    data = JSON.parse(request.body.read)
+    phone_number_string = "+1" + data["digits"]
+
+    phone_number = Bandwidth::Voice::PhoneNumber.new({
+        :number => phone_number_string
+    })
+    transfer = Bandwidth::Voice::Transfer.new({
+        :transfer_caller_id => data["from"],
+        :phone_numbers => [phone_number]
+    })
+    response = Bandwidth::Voice::Response.new()
+    response.push(transfer)
+
+    return response.to_xml()
+end
+
 #Shows how to handle inbound Bandwidth voice callbacks
 post "/VoiceCallback" do
     pause = Bandwidth::Voice::Pause.new({

@@ -8,6 +8,8 @@
 require 'sinatra'
 require 'bandwidth_messaging'
 
+require_relative 'voice_app'
+
 include BandwidthMessaging
 
 MESSAGING_ACCOUNT_ID = (ENV.has_key?("MESSAGING_ACCOUNT_ID") ? ENV["MESSAGING_ACCOUNT_ID"]: nil)
@@ -86,7 +88,6 @@ def upload_media_to_bandwidth(media_files)
         begin
             $messaging_controller.upload_media(MESSAGING_ACCOUNT_ID, filename, file_content.length.to_s, file_content, "text/plain", "no-cache")
         rescue Exception => e
-            puts "upload error"
             puts e
         end
         f.close()
@@ -108,8 +109,7 @@ end
 # @param from [String] The number that received the message
 # @return void 
 def handle_inbound_sms_call_me(to, from)
-    puts to
-    puts from
+    handle_call_me(to, from)
 end
 
 # Take information from a Bandwidth inbound message callback and responds with
