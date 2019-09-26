@@ -10,11 +10,10 @@ A simple Flask app to demonstrate how to use Bandwidth's Voice API with callback
 from flask import Blueprint
 from flask import request
 
-from bandwidth.voice.bxml.response import Response
-from bandwidth.voice.bxml.verbs import *
-from bandwidth.bandwidth_client import BandwidthClient
-from bandwidth.voice.voice_client import VoiceClient
-from bandwidth.voice.models.api_create_call_request import ApiCreateCallRequest
+from bandwidthsdk.voice.bxml.response import Response
+from bandwidthsdk.voice.bxml.verbs import *
+from bandwidthsdk.bandwidthsdk_client import BandwidthsdkClient
+from bandwidthsdk.voice.models.api_create_call_request import ApiCreateCallRequest
 
 import time
 import random
@@ -33,9 +32,9 @@ except:
     print("Please set the VOICE environmental variables defined in the README")
     exit(-1)
 
-client = BandwidthClient(voice_basic_auth_user_name=VOICE_API_USERNAME, voice_basic_auth_password=VOICE_API_PASSWORD)
+bandwidth_client = BandwidthsdkClient(voice_basic_auth_user_name=VOICE_API_USERNAME, voice_basic_auth_password=VOICE_API_PASSWORD)
 
-voice_calls_controller = client.voice_client.calls
+voice_client = bandwidth_client.voice_client.client
 
 voice_app = Blueprint('voice_app',__name__)
 
@@ -56,7 +55,7 @@ def handle_call_me(to, from_):
     body.application_id = VOICE_APPLICATION_ID
 
     try:
-        voice_calls_controller.create_call(VOICE_ACCOUNT_ID, body)
+        voice_client.create_call(VOICE_ACCOUNT_ID, body)
     except Exception as e:
         print(e)
     return None
