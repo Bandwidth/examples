@@ -10,10 +10,9 @@ from voice_app import handle_call_me
 
 from flask import Blueprint
 from flask import request
-from bandwidthmessaging.bandwidthmessaging_client import BandwidthmessagingClient
-from bandwidthmessaging.models.message_request import MessageRequest
-from bandwidthmessaging.exceptions.bandwidth_exception import BandwidthException
-from bandwidthmessaging.exceptions.api_exception import APIException
+
+from bandwidthsdk.bandwidthsdk_client import BandwidthsdkClient
+from bandwidthsdk.messaging.models.message_request import MessageRequest
 
 import time
 import random
@@ -30,8 +29,8 @@ except:
     print("Please set the MESSAGING environmental variables defined in the README")
     exit(-1)
 
-message_client = BandwidthmessagingClient(MESSAGING_API_TOKEN, MESSAGING_API_SECRET)
-message_client_controller = message_client.client
+bandwidth_client = BandwidthsdkClient(messaging_basic_auth_user_name=MESSAGING_API_TOKEN, messaging_basic_auth_password=MESSAGING_API_SECRET)
+messaging_client = bandwidth_client.messaging_client.client
 
 ##This is the only Bandwidth url needed
 BANDWIDTH_MEDIA_BASE_ENDPOINT = "https://messaging.bandwidth.com/api/v2/users/{accountId}/media/".format(accountId=MESSAGING_ACCOUNT_ID)
@@ -86,8 +85,8 @@ def download_media_from_bandwidth(media_urls):
         filename = get_media_filename(media_url)
         with open(filename, "wb") as f:
             try:
-                downloaded_media = message_client_controller.get_media(MESSAGING_ACCOUNT_ID, media_id)
-                f.write(downloaded_media)
+                downloaded_media = messaging_client.get_media(MESSAGING_ACCOUNT_ID, media_id)
+                f.write(downloaded_media.body)
             except Exception as e:
                 print(e)
         downloaded_media_files.append(filename)
@@ -108,7 +107,7 @@ def upload_media_to_bandwidth(media_files):
             file_content = f.read()
             try:
                 ##Note: The filename is doubling as the media id##
-                response = message_client_controller.upload_media(MESSAGING_ACCOUNT_ID, filename, str(len(file_content)), body=file_content)
+                response = messaging_client.upload_media(MESSAGING_ACCOUNT_ID, filename, str(len(file_content)), body=file_content)
             except Exception as e:
                 print(e)
 
@@ -147,7 +146,7 @@ def handle_inbound_media_mms(to, from_, media):
     #the bandwidth media base url
     body.media = [BANDWIDTH_MEDIA_BASE_ENDPOINT + media_file for media_file in downloaded_media_files]
     try:
-        message_client_controller.create_message(MESSAGING_ACCOUNT_ID, body)
+        messaging_client.create_message(MESSAGING_ACCOUNT_ID, body)
     except Exception as e:
         print(e)
     return None
@@ -168,7 +167,7 @@ def handle_inbound_sms(to, from_):
     body.mfrom = to
     body.text = "The current date-time is: " + str(time.time() * 1000) + " milliseconds since the epoch"
     try:
-        message_client_controller.create_message(MESSAGING_ACCOUNT_ID, body)
+        messaging_client.create_message(MESSAGING_ACCOUNT_ID, body)
     except Exception as e:
         print(e)
     return None
@@ -182,7 +181,7 @@ def handle_inbound_sms_call_me(to, from_):
 
     :returns: None
     """
-    handle_call_me(to[0], from_)
+    handle_call_me(to, from_)
 
 @messaging_app.route("/MessageCallback", methods = ["POST"])
 def handle_inbound_message():
