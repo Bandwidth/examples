@@ -11,8 +11,8 @@ from voice_app import handle_call_me
 from flask import Blueprint
 from flask import request
 
-from bandwidthsdk.bandwidthsdk_client import BandwidthsdkClient
-from bandwidthsdk.messaging.models.message_request import MessageRequest
+from bandwidth.bandwidth_client import BandwidthClient
+from bandwidth.messaging.models.message_request import MessageRequest
 
 import time
 import random
@@ -29,7 +29,7 @@ except:
     print("Please set the MESSAGING environmental variables defined in the README")
     exit(-1)
 
-bandwidth_client = BandwidthsdkClient(messaging_basic_auth_user_name=MESSAGING_API_TOKEN, messaging_basic_auth_password=MESSAGING_API_SECRET)
+bandwidth_client = BandwidthClient(messaging_basic_auth_user_name=MESSAGING_API_TOKEN, messaging_basic_auth_password=MESSAGING_API_SECRET)
 messaging_client = bandwidth_client.messaging_client.client
 
 ##This is the only Bandwidth url needed

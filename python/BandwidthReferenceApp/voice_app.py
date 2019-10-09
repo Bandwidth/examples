@@ -10,10 +10,10 @@ A simple Flask app to demonstrate how to use Bandwidth's Voice API with callback
 from flask import Blueprint
 from flask import request
 
-from bandwidthsdk.voice.bxml.response import Response
-from bandwidthsdk.voice.bxml.verbs import *
-from bandwidthsdk.bandwidthsdk_client import BandwidthsdkClient
-from bandwidthsdk.voice.models.api_create_call_request import ApiCreateCallRequest
+from bandwidth.voice.bxml.response import Response
+from bandwidth.voice.bxml.verbs import *
+from bandwidth.bandwidth_client import BandwidthClient
+from bandwidth.voice.models.api_create_call_request import ApiCreateCallRequest
 
 import time
 import random
@@ -32,7 +32,7 @@ except:
     print("Please set the VOICE environmental variables defined in the README")
     exit(-1)
 
-bandwidth_client = BandwidthsdkClient(voice_basic_auth_user_name=VOICE_API_USERNAME, voice_basic_auth_password=VOICE_API_PASSWORD)
+bandwidth_client = BandwidthClient(voice_basic_auth_user_name=VOICE_API_USERNAME, voice_basic_auth_password=VOICE_API_PASSWORD)
 
 voice_client = bandwidth_client.voice_client.client
 
@@ -78,7 +78,7 @@ def start_gather_transfer():
     )
     response = Response()
     response.add_verb(gather)  
-    return response.to_xml()
+    return response.to_bxml()
 
 @voice_app.route("/EndGatherTransfer", methods = ["POST"])
 def end_gather_transfer():
@@ -99,7 +99,7 @@ def end_gather_transfer():
     
     response = Response()
     response.add_verb(transfer)
-    return response.to_xml()
+    return response.to_bxml()
 
 @voice_app.route("/VoiceCallback", methods = ["POST"])
 def handle_inbound_call():
@@ -129,7 +129,7 @@ def handle_inbound_call():
     response.add_verb(speak_sentence_2)
     response.add_verb(redirect)
 
-    return response.to_xml()
+    return response.to_bxml()
 
 @voice_app.route("/StartGatherGame", methods = ["POST"])
 def start_gather_game():
@@ -143,7 +143,7 @@ def start_gather_game():
     response = Response()
     response.add_verb(gather)
 
-    return response.to_xml()
+    return response.to_bxml()
 
 CORRECT_URL = "https://www.kozco.com/tech/piano2.wav"
 INCORRECT_URL = "https://www32.online-convert.com/dl/web2/download-file/c4ec8291-ddd7-4982-b2fb-4dec2f37dcf4/Never%20Gonna%20Give%20You%20Up%20Original.wav"
@@ -169,4 +169,4 @@ def end_gather_game():
     response = Response()
     response.add_verb(play_audio)
 
-    return response.to_xml()
+    return response.to_bxml()
