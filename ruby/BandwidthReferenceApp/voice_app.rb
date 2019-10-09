@@ -8,8 +8,8 @@
 require 'sinatra'
 require 'bandwidth'
 
-include Bandwidth::Voice
 include Bandwidth
+include Bandwidth::Voice
 
 begin
     VOICE_ACCOUNT_ID = ENV.fetch("VOICE_ACCOUNT_ID") 
@@ -23,12 +23,12 @@ rescue
 end
 
 
-client = Bandwidth::Client.new(
-    voice_basic_auth_user_name:VOICE_API_USERNAME,
-    voice_basic_auth_password:VOICE_API_PASSWORD
+bandwidth_client = Bandwidth::Client.new(
+    voice_basic_auth_user_name: VOICE_API_USERNAME,
+    voice_basic_auth_password: VOICE_API_PASSWORD
 )
 
-$calls_controller = client.voice_client.calls
+$voice_client = bandwidth_client.voice_client.client
 
 # A method that creates an outbound call and asks for a gather to transfer the call
 # @param to [String] The phone number that received the initial message
@@ -41,7 +41,7 @@ def handle_call_me(to, from)
     body.application_id = VOICE_APPLICATION_ID
 
     begin
-        result = $calls_controller.create_call(VOICE_ACCOUNT_ID ,body:body)
+        result = $voice_client.create_call(VOICE_ACCOUNT_ID ,body: body)
     rescue Exception => e
         puts e
     end 
@@ -62,7 +62,7 @@ post "/StartGatherTransfer" do
     })
     response = Bandwidth::Voice::Response.new()
     response.push(gather)
-    return response.to_xml()
+    return response.to_bxml()
 end
 
 # Receive a Gather callback from Bandwidth and creates a Transfer response
@@ -80,7 +80,7 @@ post "/EndGatherTransfer" do
     response = Bandwidth::Voice::Response.new()
     response.push(transfer)
 
-    return response.to_xml()
+    return response.to_bxml()
 end
 
 #Shows how to handle inbound Bandwidth voice callbacks
@@ -110,7 +110,7 @@ post "/VoiceCallback" do
     response.push(speak_sentence_2)
     response.push(redirect)
 
-    return response.to_xml()
+    return response.to_bxml()
 end
 
 #Callback endpoint that returns BXML for making a gather
@@ -122,7 +122,7 @@ post "/StartGatherGame" do
     response = Bandwidth::Voice::Response.new()
     response.push(gather)
 
-    return response.to_xml()
+    return response.to_bxml()
 end
 
 CORRECT_URL = "https://www.kozco.com/tech/piano2.wav"
@@ -148,5 +148,5 @@ post "/EndGatherGame" do
     response = Bandwidth::Voice::Response.new()
     response.push(play_audio)
 
-    return response.to_xml()
+    return response.to_bxml()
 end

@@ -6,11 +6,12 @@
 # @copyright Bandwidth INC
 
 require 'sinatra'
-require 'bandwidth_messaging'
+require 'bandwidth'
 
 require_relative 'voice_app'
 
-include BandwidthMessaging
+include Bandwidth
+include Bandwidth::Messaging
 
 begin
     MESSAGING_ACCOUNT_ID = ENV.fetch("MESSAGING_ACCOUNT_ID") 
@@ -25,9 +26,12 @@ end
 ##This is the only Bandwidth url needed
 BANDWIDTH_MEDIA_BASE_ENDPOINT = "https://messaging.bandwidth.com/api/v2/users/%s/media/" % [MESSAGING_ACCOUNT_ID] 
 
-messaging_client = BandwidthMessagingClient.new(basic_auth_user_name: MESSAGING_API_TOKEN, basic_auth_password: MESSAGING_API_SECRET)
+bandwidth_client = Bandwidth::Client.new(
+    messaging_basic_auth_user_name: MESSAGING_API_TOKEN,
+    messaging_basic_auth_password: MESSAGING_API_SECRET
+)
 
-$messaging_controller = messaging_client.client
+$messaging_client = bandwidth_client.messaging_client.client
 
 # Takes a full media url from Bandwidth and extracts the media id
 # The full media url looks like https://messaging.bandwidth.com/api/v2/users/123/media/<media_id>
@@ -66,7 +70,7 @@ def download_media_from_bandwidth(media_urls)
         filename = get_media_filename(media_url)
         f = File.open(filename, "wb")
         begin
-            downloaded_media = $messaging_controller.get_media(MESSAGING_ACCOUNT_ID, media_id)
+            downloaded_media = $messaging_client.get_media(MESSAGING_ACCOUNT_ID, media_id)
             f.puts(downloaded_media)
         rescue Exception => e
             puts e
@@ -86,7 +90,7 @@ def upload_media_to_bandwidth(media_files)
         f = File.open(filename, "r")
         file_content = f.read
         begin
-            $messaging_controller.upload_media(MESSAGING_ACCOUNT_ID, filename, file_content.length.to_s, file_content, "text/plain", "no-cache")
+            $messaging_client.upload_media(MESSAGING_ACCOUNT_ID, filename, file_content.length.to_s, file_content, "text/plain", "no-cache")
         rescue Exception => e
             puts e
         end
@@ -125,7 +129,7 @@ def handle_inbound_sms(to, from)
     body.from = to
     body.text = "The current date-time is: " + Time.now.to_f.to_s + " milliseconds since the epoch"
     begin
-        $messaging_controller.create_message(MESSAGING_ACCOUNT_ID, body)
+        $messaging_client.create_message(MESSAGING_ACCOUNT_ID, body: body)
     rescue Exception => e
         puts e
     end
@@ -155,7 +159,7 @@ def handle_inbound_media_mms(to, from, media)
     end
 
     begin
-        $messaging_controller.create_message(MESSAGING_ACCOUNT_ID, body)
+        $messaging_client.create_message(MESSAGING_ACCOUNT_ID, body: body)
     rescue Exception => e
         puts e
     end
