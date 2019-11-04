@@ -1,0 +1,1413 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BandwidthSdk.Standard</name>
+    </assembly>
+    <members>
+        <member name="P:BandwidthSdk.Standard.APIException.ResponseCode">
+            <summary>
+            The HTTP response code from the API request
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.APIException.HttpContext">
+            <summary>
+            HttpContext stores the request and response
+            </summary>
+        </member>
+        <member name="M:BandwidthSdk.Standard.APIException.#ctor(System.String,BandwidthSdk.Standard.Http.Client.HttpContext)">
+            <summary>
+            Initialization constructor
+            </summary>
+            <param name="reason"> The reason for throwing exception </param>
+            <param name="context"> The HTTP context that encapsulates request and response objects </param>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.BandwidthMessagingClient.Config">
+            <summary>
+            Configuration instance
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.BandwidthMessagingClient.Client">
+            <summary>
+            Provides access to APIController controller
+            </summary>
+        </member>
+        <member name="M:BandwidthSdk.Standard.BandwidthMessaging.BandwidthMessagingClient.#ctor(BandwidthSdk.Standard.Configuration)">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:BandwidthSdk.Standard.BandwidthMessaging.Controllers.APIController.GetMessage">
+            <summary>
+            getMessage
+            </summary>
+            <return>Returns the void response from the API call</return>
+        </member>
+        <member name="M:BandwidthSdk.Standard.BandwidthMessaging.Controllers.APIController.GetMessageAsync">
+            <summary>
+            getMessage
+            </summary>
+            <return>Returns the void response from the API call</return>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:BandwidthSdk.Standard.BandwidthMessaging.Controllers.APIController.ListMedia(System.String,System.String)" -->
+        <!-- Badly formed XML comment ignored for member "M:BandwidthSdk.Standard.BandwidthMessaging.Controllers.APIController.ListMediaAsync(System.String,System.String)" -->
+        <!-- Badly formed XML comment ignored for member "M:BandwidthSdk.Standard.BandwidthMessaging.Controllers.APIController.GetMedia(System.String,System.String)" -->
+        <!-- Badly formed XML comment ignored for member "M:BandwidthSdk.Standard.BandwidthMessaging.Controllers.APIController.GetMediaAsync(System.String,System.String)" -->
+        <member name="M:BandwidthSdk.Standard.BandwidthMessaging.Controllers.APIController.UploadMedia(System.String,System.String,System.Int64,System.Object,System.String,System.String)">
+            <summary>
+            uploadMedia
+            </summary>
+            <param name="userId">Required parameter: Example: </param>
+            <param name="mediaId">Required parameter: Example: </param>
+            <param name="contentLength">Required parameter: Example: </param>
+            <param name="body">Required parameter: Example: </param>
+            <param name="contentType">Optional parameter: Example: </param>
+            <param name="cacheControl">Optional parameter: Example: </param>
+            <return>Returns the void response from the API call</return>
+        </member>
+        <member name="M:BandwidthSdk.Standard.BandwidthMessaging.Controllers.APIController.UploadMediaAsync(System.String,System.String,System.Int64,System.Object,System.String,System.String)">
+            <summary>
+            uploadMedia
+            </summary>
+            <param name="userId">Required parameter: Example: </param>
+            <param name="mediaId">Required parameter: Example: </param>
+            <param name="contentLength">Required parameter: Example: </param>
+            <param name="body">Required parameter: Example: </param>
+            <param name="contentType">Optional parameter: Example: </param>
+            <param name="cacheControl">Optional parameter: Example: </param>
+            <return>Returns the void response from the API call</return>
+        </member>
+        <member name="M:BandwidthSdk.Standard.BandwidthMessaging.Controllers.APIController.DeleteMedia(System.String,System.String)">
+            <summary>
+            deleteMedia
+            </summary>
+            <param name="userId">Required parameter: Example: </param>
+            <param name="mediaId">Required parameter: Example: </param>
+            <return>Returns the void response from the API call</return>
+        </member>
+        <member name="M:BandwidthSdk.Standard.BandwidthMessaging.Controllers.APIController.DeleteMediaAsync(System.String,System.String)">
+            <summary>
+            deleteMedia
+            </summary>
+            <param name="userId">Required parameter: Example: </param>
+            <param name="mediaId">Required parameter: Example: </param>
+            <return>Returns the void response from the API call</return>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:BandwidthSdk.Standard.BandwidthMessaging.Controllers.APIController.CreateMessage(System.String,BandwidthSdk.Standard.BandwidthMessaging.Models.MessageRequest)" -->
+        <!-- Badly formed XML comment ignored for member "M:BandwidthSdk.Standard.BandwidthMessaging.Controllers.APIController.CreateMessageAsync(System.String,BandwidthSdk.Standard.BandwidthMessaging.Models.MessageRequest)" -->
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Exceptions.BandwidthException.Type">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Exceptions.BandwidthException.Description">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Exceptions.BandwidthException.Id">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Exceptions.BandwidthException.FieldErrors">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="M:BandwidthSdk.Standard.BandwidthMessaging.Exceptions.BandwidthException.#ctor(System.String,BandwidthSdk.Standard.Http.Client.HttpContext)">
+            <summary>
+            Initialization constructor
+            </summary>
+            <param name="reason"> The reason for throwing exception </param>
+            <param name="context"> The HTTP context that encapsulates request and response objects </param>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Exceptions.BandwidthNotFoundException.Timestamp">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Exceptions.BandwidthNotFoundException.Status">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Exceptions.BandwidthNotFoundException.Error">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Exceptions.BandwidthNotFoundException.Message">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Exceptions.BandwidthNotFoundException.Path">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="M:BandwidthSdk.Standard.BandwidthMessaging.Exceptions.BandwidthNotFoundException.#ctor(System.String,BandwidthSdk.Standard.Http.Client.HttpContext)">
+            <summary>
+            Initialization constructor
+            </summary>
+            <param name="reason"> The reason for throwing exception </param>
+            <param name="context"> The HTTP context that encapsulates request and response objects </param>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Exceptions.BandwidthRateLimitErrorException.Type">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Exceptions.BandwidthRateLimitErrorException.Description">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Exceptions.BandwidthRateLimitErrorException.Id">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Exceptions.BandwidthRateLimitErrorException.Status">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Exceptions.BandwidthRateLimitErrorException.FieldErrors">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="M:BandwidthSdk.Standard.BandwidthMessaging.Exceptions.BandwidthRateLimitErrorException.#ctor(System.String,BandwidthSdk.Standard.Http.Client.HttpContext)">
+            <summary>
+            Initialization constructor
+            </summary>
+            <param name="reason"> The reason for throwing exception </param>
+            <param name="context"> The HTTP context that encapsulates request and response objects </param>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.BandwidthCallbackMessage.Time">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.BandwidthCallbackMessage.Type">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.BandwidthCallbackMessage.To">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.BandwidthCallbackMessage.ErrorCode">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.BandwidthCallbackMessage.Description">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.BandwidthCallbackMessage.Message">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.BandwidthMessage.Id">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.BandwidthMessage.Owner">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.BandwidthMessage.ApplicationId">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.BandwidthMessage.Time">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.BandwidthMessage.SegmentCount">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.BandwidthMessage.Direction">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.BandwidthMessage.To">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.BandwidthMessage.From">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.BandwidthMessage.Media">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.BandwidthMessage.Text">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.BandwidthMessage.Tag">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.DeferredResult.Result">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.DeferredResult.SetOrExpired">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.DeferredResultResponseEntityMessage.Result">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.DeferredResultResponseEntityMessage.SetOrExpired">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.FieldError.FieldName">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.FieldError.Description">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.Media.InputStream">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.Media.Content">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.Media.Url">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.Media.ContentLength">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.Media.ContentType">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.Media.Tags">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.Media.UserId">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.Media.MediaName">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.Media.MediaId">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.Media.CacheControl">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.MessageRequest.ApplicationId">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.MessageRequest.To">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.MessageRequest.From">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.MessageRequest.Text">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.MessageRequest.Media">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.MessageRequest.Tag">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.Tag.Key">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthMessaging.Models.Tag.Value">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthSdkClient.Config">
+            <summary>
+            Configuration instance
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthSdkClient.BandwidthVoice">
+            <summary>
+            Provides access to BandwidthVoiceClient
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthSdkClient.BandwidthMessaging">
+            <summary>
+            Provides access to BandwidthMessagingClient
+            </summary>
+        </member>
+        <member name="M:BandwidthSdk.Standard.BandwidthSdkClient.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:BandwidthSdk.Standard.BandwidthSdkClient.#ctor(BandwidthSdk.Standard.Configuration)">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.BandwidthVoiceClient.Config">
+            <summary>
+            Configuration instance
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.BandwidthVoiceClient.Client">
+            <summary>
+            Provides access to APIController controller
+            </summary>
+        </member>
+        <member name="M:BandwidthSdk.Standard.BandwidthVoice.BandwidthVoiceClient.#ctor(BandwidthSdk.Standard.Configuration)">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:BandwidthSdk.Standard.BandwidthVoice.Controllers.APIController.CreateCall(System.String,BandwidthSdk.Standard.BandwidthVoice.Models.ApiCreateCallRequest)" -->
+        <!-- Badly formed XML comment ignored for member "M:BandwidthSdk.Standard.BandwidthVoice.Controllers.APIController.CreateCallAsync(System.String,BandwidthSdk.Standard.BandwidthVoice.Models.ApiCreateCallRequest)" -->
+        <member name="M:BandwidthSdk.Standard.BandwidthVoice.Controllers.APIController.ModifyCall(System.String,System.String,BandwidthSdk.Standard.BandwidthVoice.Models.ApiModifyCallRequest)">
+            <summary>
+            Creates a call request
+            </summary>
+            <param name="accountId">Required parameter: Example: </param>
+            <param name="callId">Required parameter: Example: </param>
+            <param name="body">Optional parameter: Example: </param>
+            <return>Returns the void response from the API call</return>
+        </member>
+        <member name="M:BandwidthSdk.Standard.BandwidthVoice.Controllers.APIController.ModifyCallAsync(System.String,System.String,BandwidthSdk.Standard.BandwidthVoice.Models.ApiModifyCallRequest)">
+            <summary>
+            Creates a call request
+            </summary>
+            <param name="accountId">Required parameter: Example: </param>
+            <param name="callId">Required parameter: Example: </param>
+            <param name="body">Optional parameter: Example: </param>
+            <return>Returns the void response from the API call</return>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Exceptions.BandwidthException.Type">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Exceptions.BandwidthException.Description">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Exceptions.BandwidthException.Id">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Exceptions.BandwidthException.FieldErrors">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="M:BandwidthSdk.Standard.BandwidthVoice.Exceptions.BandwidthException.#ctor(System.String,BandwidthSdk.Standard.Http.Client.HttpContext)">
+            <summary>
+            Initialization constructor
+            </summary>
+            <param name="reason"> The reason for throwing exception </param>
+            <param name="context"> The HTTP context that encapsulates request and response objects </param>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Exceptions.BandwidthNotFoundException.Timestamp">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Exceptions.BandwidthNotFoundException.Status">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Exceptions.BandwidthNotFoundException.Error">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Exceptions.BandwidthNotFoundException.Message">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Exceptions.BandwidthNotFoundException.Path">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="M:BandwidthSdk.Standard.BandwidthVoice.Exceptions.BandwidthNotFoundException.#ctor(System.String,BandwidthSdk.Standard.Http.Client.HttpContext)">
+            <summary>
+            Initialization constructor
+            </summary>
+            <param name="reason"> The reason for throwing exception </param>
+            <param name="context"> The HTTP context that encapsulates request and response objects </param>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Exceptions.BandwidthRateLimitErrorException.Type">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Exceptions.BandwidthRateLimitErrorException.Description">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Exceptions.BandwidthRateLimitErrorException.Id">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Exceptions.BandwidthRateLimitErrorException.Status">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Exceptions.BandwidthRateLimitErrorException.FieldErrors">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="M:BandwidthSdk.Standard.BandwidthVoice.Exceptions.BandwidthRateLimitErrorException.#ctor(System.String,BandwidthSdk.Standard.Http.Client.HttpContext)">
+            <summary>
+            Initialization constructor
+            </summary>
+            <param name="reason"> The reason for throwing exception </param>
+            <param name="context"> The HTTP context that encapsulates request and response objects </param>
+        </member>
+        <member name="T:BandwidthSdk.Standard.BandwidthVoice.Models.AnswerMethodEnumHelper">
+            <summary>
+            Helper for the enum type AnswerMethodEnum
+            </summary>
+        </member>
+        <member name="M:BandwidthSdk.Standard.BandwidthVoice.Models.AnswerMethodEnumHelper.ToValue(BandwidthSdk.Standard.BandwidthVoice.Models.AnswerMethodEnum)">
+            <summary>
+            Converts a AnswerMethodEnum value to a corresponding string value
+            </summary>
+            <param name="enumValue">The AnswerMethodEnum value to convert</param>
+            <returns>The representative string value</returns>
+        </member>
+        <member name="M:BandwidthSdk.Standard.BandwidthVoice.Models.AnswerMethodEnumHelper.ToValue(System.Collections.Generic.List{BandwidthSdk.Standard.BandwidthVoice.Models.AnswerMethodEnum})">
+            <summary>
+            Convert a list of AnswerMethodEnum values to a list of strings
+            </summary>
+            <param name="enumValues">The list of AnswerMethodEnum values to convert</param>
+            <returns>The list of representative string values</returns>
+        </member>
+        <member name="M:BandwidthSdk.Standard.BandwidthVoice.Models.AnswerMethodEnumHelper.ParseString(System.String)">
+            <summary>
+            Converts a string value into AnswerMethodEnum value
+            </summary>
+            <param name="value">The string value to parse</param>
+            <returns>The parsed AnswerMethodEnum value</returns>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.ApiCallResponse.From">
+            <summary>
+            Format is E164
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.ApiCallResponse.To">
+            <summary>
+            Format is E164
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.ApiCallResponse.CallTimeout">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.ApiCallResponse.AnswerUrl">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.ApiCallResponse.CallId">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.ApiCallResponse.AnswerMethod">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.ApiCallResponse.DisconnectUrl">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.ApiCallResponse.DisconnectMethod">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.ApiCallResponse.Tag">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.ApiCallResponse.ApplicationId">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.ApiCreateCallRequest.From">
+            <summary>
+            Format is E164
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.ApiCreateCallRequest.To">
+            <summary>
+            Format is E164
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.ApiCreateCallRequest.CallTimeout">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.ApiCreateCallRequest.AnswerUrl">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.ApiCreateCallRequest.Username">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.ApiCreateCallRequest.Password">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.ApiCreateCallRequest.AnswerMethod">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.ApiCreateCallRequest.DisconnectUrl">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.ApiCreateCallRequest.DisconnectMethod">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.ApiCreateCallRequest.Tag">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.ApiCreateCallRequest.ApplicationId">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.ApiModifyCallRequest.State">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.ApiModifyCallRequest.RedirectUrl">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.ApiModifyCallRequest.RedirectMethod">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.ApiModifyCallRequest.Username">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.ApiModifyCallRequest.Password">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.ApiModifyCallRequest.Tag">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.BandwidthCallbackMessageVoice.CallId">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.BandwidthCallbackMessageVoice.StartTime">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.BandwidthCallbackMessageVoice.Direction">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.BandwidthCallbackMessageVoice.From">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.BandwidthCallbackMessageVoice.To">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.BandwidthCallbackMessageVoice.Digits">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.BandwidthCallbackMessageVoice.EventType">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.BandwidthCallbackMessageVoice.CallUrl">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="T:BandwidthSdk.Standard.BandwidthVoice.Models.DisconnectMethodEnumHelper">
+            <summary>
+            Helper for the enum type DisconnectMethodEnum
+            </summary>
+        </member>
+        <member name="M:BandwidthSdk.Standard.BandwidthVoice.Models.DisconnectMethodEnumHelper.ToValue(BandwidthSdk.Standard.BandwidthVoice.Models.DisconnectMethodEnum)">
+            <summary>
+            Converts a DisconnectMethodEnum value to a corresponding string value
+            </summary>
+            <param name="enumValue">The DisconnectMethodEnum value to convert</param>
+            <returns>The representative string value</returns>
+        </member>
+        <member name="M:BandwidthSdk.Standard.BandwidthVoice.Models.DisconnectMethodEnumHelper.ToValue(System.Collections.Generic.List{BandwidthSdk.Standard.BandwidthVoice.Models.DisconnectMethodEnum})">
+            <summary>
+            Convert a list of DisconnectMethodEnum values to a list of strings
+            </summary>
+            <param name="enumValues">The list of DisconnectMethodEnum values to convert</param>
+            <returns>The list of representative string values</returns>
+        </member>
+        <member name="M:BandwidthSdk.Standard.BandwidthVoice.Models.DisconnectMethodEnumHelper.ParseString(System.String)">
+            <summary>
+            Converts a string value into DisconnectMethodEnum value
+            </summary>
+            <param name="value">The string value to parse</param>
+            <returns>The parsed DisconnectMethodEnum value</returns>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.FieldError.FieldName">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BandwidthVoice.Models.FieldError.Description">
+            <summary>
+            TODO: Write general description for this method
+            </summary>
+        </member>
+        <member name="T:BandwidthSdk.Standard.BandwidthVoice.Models.RedirectMethodEnumHelper">
+            <summary>
+            Helper for the enum type RedirectMethodEnum
+            </summary>
+        </member>
+        <member name="M:BandwidthSdk.Standard.BandwidthVoice.Models.RedirectMethodEnumHelper.ToValue(BandwidthSdk.Standard.BandwidthVoice.Models.RedirectMethodEnum)">
+            <summary>
+            Converts a RedirectMethodEnum value to a corresponding string value
+            </summary>
+            <param name="enumValue">The RedirectMethodEnum value to convert</param>
+            <returns>The representative string value</returns>
+        </member>
+        <member name="M:BandwidthSdk.Standard.BandwidthVoice.Models.RedirectMethodEnumHelper.ToValue(System.Collections.Generic.List{BandwidthSdk.Standard.BandwidthVoice.Models.RedirectMethodEnum})">
+            <summary>
+            Convert a list of RedirectMethodEnum values to a list of strings
+            </summary>
+            <param name="enumValues">The list of RedirectMethodEnum values to convert</param>
+            <returns>The list of representative string values</returns>
+        </member>
+        <member name="M:BandwidthSdk.Standard.BandwidthVoice.Models.RedirectMethodEnumHelper.ParseString(System.String)">
+            <summary>
+            Converts a string value into RedirectMethodEnum value
+            </summary>
+            <param name="value">The string value to parse</param>
+            <returns>The parsed RedirectMethodEnum value</returns>
+        </member>
+        <member name="T:BandwidthSdk.Standard.BandwidthVoice.Models.StateEnumHelper">
+            <summary>
+            Helper for the enum type StateEnum
+            </summary>
+        </member>
+        <member name="M:BandwidthSdk.Standard.BandwidthVoice.Models.StateEnumHelper.ToValue(BandwidthSdk.Standard.BandwidthVoice.Models.StateEnum)">
+            <summary>
+            Converts a StateEnum value to a corresponding string value
+            </summary>
+            <param name="enumValue">The StateEnum value to convert</param>
+            <returns>The representative string value</returns>
+        </member>
+        <member name="M:BandwidthSdk.Standard.BandwidthVoice.Models.StateEnumHelper.ToValue(System.Collections.Generic.List{BandwidthSdk.Standard.BandwidthVoice.Models.StateEnum})">
+            <summary>
+            Convert a list of StateEnum values to a list of strings
+            </summary>
+            <param name="enumValues">The list of StateEnum values to convert</param>
+            <returns>The list of representative string values</returns>
+        </member>
+        <member name="M:BandwidthSdk.Standard.BandwidthVoice.Models.StateEnumHelper.ParseString(System.String)">
+            <summary>
+            Converts a string value into StateEnum value
+            </summary>
+            <param name="value">The string value to parse</param>
+            <returns>The parsed StateEnum value</returns>
+        </member>
+        <member name="F:BandwidthSdk.Standard.BaseController.config">
+            <summary>
+            Configuration instance
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.BaseController.HttpCallBack">
+            <summary>
+            HttpCallBack instance
+            </summary>
+        </member>
+        <member name="M:BandwidthSdk.Standard.BaseController.#ctor(BandwidthSdk.Standard.Configuration)">
+            <summary>
+            Contructor to initialize the controller with the specified configuration
+            </summary>
+            <param name="config">Configuration for the API</param>
+        </member>
+        <member name="M:BandwidthSdk.Standard.BaseController.#ctor(BandwidthSdk.Standard.Configuration,BandwidthSdk.Standard.Http.Client.HttpCallBack)">
+            <summary>
+            Contructor to initialize the controller with the specified configuration and HTTP callback
+            </summary>
+            <param name="config">Configuration for the API</param>
+            <param name="httpCallBack">HTTP callback to catch before/after HTTP request/response events</param>
+        </member>
+        <member name="M:BandwidthSdk.Standard.BaseController.GetClientInstance">
+            <summary>
+            Get default HTTP client instance
+            </summary>
+        </member>
+        <member name="M:BandwidthSdk.Standard.BaseController.ValidateResponse(BandwidthSdk.Standard.Http.Response.HttpResponse,BandwidthSdk.Standard.Http.Client.HttpContext)">
+            <summary>
+            Validates the response against HTTP errors defined at the API level
+            </summary>
+            <param name="_response">The response recieved</param>
+            <param name="_context">Context of the request and the recieved response</param>
+        </member>
+        <member name="T:BandwidthSdk.Standard.Configuration.Environments">
+            <summary>
+            Available environments
+            </summary>
+        </member>
+        <member name="T:BandwidthSdk.Standard.Configuration.Servers">
+            <summary>
+            Available servers
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.Configuration.Timeout">
+            <summary>
+            Http client timeout
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.Configuration.Environment">
+            <summary>
+            Current API environment
+            </summary>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Configuration.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Configuration.#ctor(BandwidthSdk.Standard.Http.Client.IHttpClient,System.TimeSpan,System.String,System.String,System.String,System.String,BandwidthSdk.Standard.Configuration.Environments)">
+            <summary>
+            Private constructor used to build an immutable Configuration object
+            </summary>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Configuration.GetBaseURIParameters">
+            <summary>
+            Makes a list of the BaseURL parameters 
+            </summary>
+            <return>Returns the parameters list</return>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Configuration.GetBaseURI(BandwidthSdk.Standard.Configuration.Servers)">
+            <summary>
+            Gets the URL for a particular alias in the current environment and appends it with template parameters
+            </summary>
+            <param name="alias">Default value:DEFAULT</param>
+            <return>Returns the baseurl</return>
+        </member>
+        <member name="T:BandwidthSdk.Standard.Http.Client.FileStreamInfo">
+            <summary>
+            An DTO class to capture information for file uploads
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.Http.Client.FileStreamInfo.FileStream">
+            <summary>
+            The stream object with read access to the file data
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.Http.Client.FileStreamInfo.FileName">
+            <summary>
+            Name of the file associated with the stream
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.Http.Client.FileStreamInfo.ContentType">
+            <summary>
+            Content type of the file associated with the stream
+            </summary>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Http.Client.FileStreamInfo.#ctor(System.IO.Stream,System.String,System.String)">
+            <summary>
+            Constructor to initialize the object with optional file name
+            </summary>
+            <param name="stream">The stream object with read access to the file data</param>
+            <param name="fileName">Optional file name associated with the stream</param>
+            <param name="contentType">Optional file content type associated with the stream</param>
+        </member>
+        <member name="T:BandwidthSdk.Standard.Http.Client.HttpContext">
+            <summary>
+            Represents the contextual information of HTTP request and response
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.Http.Client.HttpContext.Request">
+            <summary>
+            The http request in the current context
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.Http.Client.HttpContext.Response">
+            <summary>
+            The http response in the current context
+            </summary>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Http.Client.HttpContext.#ctor(BandwidthSdk.Standard.Http.Request.HttpRequest,BandwidthSdk.Standard.Http.Response.HttpResponse)">
+            <summary>
+            Constructor to initialize the context with http request and response information
+            </summary>
+            <param name="request">The http request in the current context</param>
+            <param name="response">The http response in the current context</param>
+        </member>
+        <member name="T:BandwidthSdk.Standard.Http.Client.OnBeforeHttpRequestEventHandler">
+            <summary>
+            Delegate to handle the event on before http request. This event is raised before any
+            network call is made, and can be used for logging, request modification, appending
+            additional headers etc.
+            </summary>
+            <param name="source">The source HttpClient that is going to make the network call</param>
+            <param name="request">The underlying HttpRequest being sent over the network</param>
+        </member>
+        <member name="T:BandwidthSdk.Standard.Http.Client.OnAfterHttpResponseEventHandler">
+            <summary>
+            Delegate to handle the event on after http response. This event is raised after any
+            network response is recieved, and can be used for logging, response modification, extracting
+            additional information etc.
+            </summary>
+            <param name="source">The source HttpClient that recieved the response from the network call</param>
+            <param name="request">The underlying HttpResponse recieved from the network</param>
+        </member>
+        <member name="E:BandwidthSdk.Standard.Http.Client.IHttpClient.OnBeforeHttpRequestEvent">
+            <summary>
+            Event raised before an Http request is sent over the network
+            This event can be used for logging, request modification, appending
+            additional headers etc.
+            </summary>
+        </member>
+        <member name="E:BandwidthSdk.Standard.Http.Client.IHttpClient.OnAfterHttpResponseEvent">
+            <summary>
+            Event raised after an Http response is recieved from the network.
+            This event can be used for logging, response modification, extracting
+            additional information etc.
+            </summary>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Http.Client.IHttpClient.ExecuteAsString(BandwidthSdk.Standard.Http.Request.HttpRequest)">
+            <summary>
+            Execute a given HttpRequest to get string response back
+            </summary>
+            <param name="request">The given HttpRequest to execute</param>
+            <returns> HttpResponse containing raw information</returns>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Http.Client.IHttpClient.ExecuteAsBinary(BandwidthSdk.Standard.Http.Request.HttpRequest)">
+            <summary>
+            Execute a given HttpRequest to get binary response back
+            </summary>
+            <param name="request">The given HttpRequest to execute</param>
+            <returns> HttpResponse containing raw information</returns>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Http.Client.IHttpClient.ExecuteAsStringAsync(BandwidthSdk.Standard.Http.Request.HttpRequest)">
+            <summary>
+            Execute a given HttpRequest to get async string response back
+            </summary>
+            <param name="request">The given HttpRequest to execute</param>
+            <returns> HttpResponse containing raw information</returns>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Http.Client.IHttpClient.ExecuteAsBinaryAsync(BandwidthSdk.Standard.Http.Request.HttpRequest)">
+            <summary>
+            Execute a given HttpRequest to get async binary response back
+            </summary>
+            <param name="request">The given HttpRequest to execute</param>
+            <returns> HttpResponse containing raw information</returns>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Http.Client.IHttpClient.Get(System.String)">
+            <summary>
+            Create a simple HTTP GET request given the URL
+            </summary>
+            <param name="queryUrl">Url the request should be sent to</param>
+            <returns>HttpRequest initialised with the url specified</returns>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Http.Client.IHttpClient.Post(System.String)">
+            <summary>
+            Create a simple HTTP POST request given the URL
+            </summary>
+            <param name="queryUrl">Url the request should be sent to</param>
+            <returns> HttpRequest initialised with the url specified</returns>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Http.Client.IHttpClient.Put(System.String)">
+            <summary>
+            Create a simple HTTP PUT request given the URL
+            </summary>
+            <param name="queryUrl">Url the request should be sent to</param>
+            <returns> HttpRequest initialised with the url specified</returns>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Http.Client.IHttpClient.Delete(System.String)">
+            <summary>
+            Create a simple HTTP DELETE request given the URL
+            </summary>
+            <param name="queryUrl">Url the request should be sent to</param>
+            <returns> HttpRequest initialised with the url specified</returns>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Http.Client.IHttpClient.Patch(System.String)">
+            <summary>
+            Create a simple HTTP PATCH request given the URL
+            </summary>
+            <param name="queryUrl">Url the request should be sent to</param>
+            <returns> HttpRequest initialised with the url specified</returns>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Http.Client.IHttpClient.Get(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.String,System.String)">
+            <summary>
+            Create a simple HTTP GET request given relavent parameters
+            </summary>
+            <param name="queryUrl">Url the request should be sent to</param>
+            <param name="headers">HTTP headers that should be included</param>
+            <param name="username">Basic Auth username</param>
+            <param name="password">Basic Auth password</param>
+            <returns> HttpRequest initialised with the http parameters specified</returns>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Http.Client.IHttpClient.Post(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{System.String,System.Object}},System.String,System.String)">
+            <summary>
+             Create a simple HTTP POST request given relavent parameters
+            </summary>
+            <param name="queryUrl">Url the request should be sent to</param>
+            <param name="headers">HTTP headers that should be included</param>
+            <param name="formParameters">Form parameters to be included</param>
+            <param name="username">Basic Auth username</param>
+            <param name="password">Basic Auth password</param>
+            <returns> HttpRequest initialised with the http parameters specified</returns>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Http.Client.IHttpClient.PostBody(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Object,System.String,System.String)">
+            <summary>
+            Create a simple HTTP POST with a body request given relavent parameters
+            </summary>
+            <param name="queryUrl">Url the request should be sent to</param>
+            <param name="headers">HTTP headers that should be included</param>
+            <param name="body">The body/payload of the response</param>
+            <param name="username">Basic Auth username</param>
+            <param name="password">Basic Auth password</param>
+            <returns> HttpRequest initialised with the http parameters specified</returns>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Http.Client.IHttpClient.Put(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{System.String,System.Object}},System.String,System.String)">
+            <summary>
+             Create a simple HTTP PUT request given relavent parameters
+            </summary>
+            <param name="queryUrl">Url the request should be sent to</param>
+            <param name="headers">HTTP headers that should be included</param>
+            <param name="formParameters">Form parameters to be included</param>
+            <param name="username">Basic Auth username</param>
+            <param name="password">Basic Auth password</param>
+            <returns> HttpRequest initialised with the http parameters specified</returns>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Http.Client.IHttpClient.PutBody(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Object,System.String,System.String)">
+            <summary>
+            Create a simple HTTP PUT with a body request given relavent parameters
+            </summary>
+            <param name="queryUrl">Url the request should be sent to</param>
+            <param name="headers">HTTP headers that should be included</param>
+            <param name="body">The body/payload of the response</param>
+            <param name="username">Basic Auth username</param>
+            <param name="password">Basic Auth password</param>
+            <returns> HttpRequest initialised with the http parameters specified</returns>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Http.Client.IHttpClient.Patch(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{System.String,System.Object}},System.String,System.String)">
+            <summary>
+             Create a simple HTTP PATCH request given relavent parameters
+            </summary>
+            <param name="queryUrl">Url the request should be sent to</param>
+            <param name="headers">HTTP headers that should be included</param>
+            <param name="formParameters">Form parameters to be included</param>
+            <param name="username">Basic Auth username</param>
+            <param name="password">Basic Auth password</param>
+            <returns> HttpRequest initialised with the http parameters specified</returns>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Http.Client.IHttpClient.PatchBody(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Object,System.String,System.String)">
+            <summary>
+            Create a simple HTTP Patch with a body request given relavent parameters
+            </summary>
+            <param name="queryUrl">Url the request should be sent to</param>
+            <param name="headers">HTTP headers that should be included</param>
+            <param name="body">The body/payload of the response</param>
+            <param name="username">Basic Auth username</param>
+            <param name="password">Basic Auth password</param>
+            <returns> HttpRequest initialised with the http parameters specified</returns>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Http.Client.IHttpClient.Delete(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{System.String,System.Object}},System.String,System.String)">
+            <summary>
+             Create a simple HTTP DELETE request given relavent parameters
+            </summary>
+            <param name="queryUrl">Url the request should be sent to</param>
+            <param name="headers">HTTP headers that should be included</param>
+            <param name="formParameters">Form parameters to be included</param>
+            <param name="username">Basic Auth username</param>
+            <param name="password">Basic Auth password</param>
+            <returns> HttpRequest initialised with the http parameters specified</returns>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Http.Client.IHttpClient.DeleteBody(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Object,System.String,System.String)">
+            <summary>
+            Create a simple HTTP Delete with a body request given relavent parameters
+            </summary>
+            <param name="queryUrl">Url the request should be sent to</param>
+            <param name="headers">HTTP headers that should be included</param>
+            <param name="body">The body/payload of the response</param>
+            <param name="username">Basic Auth username</param>
+            <param name="password">Basic Auth password</param>
+            <returns> HttpRequest initialised with the http parameters specified</returns>
+        </member>
+        <member name="P:BandwidthSdk.Standard.Http.Request.HttpRequest.HttpMethod">
+            <summary>
+            The HTTP verb to use for this request
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.Http.Request.HttpRequest.QueryUrl">
+            <summary>
+            The query url for the http request
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.Http.Request.HttpRequest.Headers">
+            <summary>
+            Headers collection for the current http request
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.Http.Request.HttpRequest.FormParameters">
+            <summary>
+            Form parameters for the current http request
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.Http.Request.HttpRequest.Body">
+            <summary>
+            Optional raw string to send as request body
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.Http.Request.HttpRequest.Username">
+            <summary>
+            Optional username for Basic Auth
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.Http.Request.HttpRequest.Password">
+            <summary>
+            Optional password for Basic Auth
+            </summary>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Http.Request.HttpRequest.#ctor(System.Net.Http.HttpMethod,System.String)">
+            <summary>
+            Constructor to initialize the http request obejct
+            </summary>
+            <param name="method">Http verb to use for the http request</param>
+            <param name="queryUrl">The query url for the http request</param>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Http.Request.HttpRequest.#ctor(System.Net.Http.HttpMethod,System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.String,System.String)">
+            <summary>
+            Constructor to initialize the http request with headers and optional Basic auth params
+            </summary>
+            <param name="method">Http verb to use for the http request</param>
+            <param name="queryUrl">The query url for the http request</param>
+            <param name="headers">Headers to send with the request</param>
+            <param name="username">Basic auth username</param>
+            <param name="password">Basic auth password</param>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Http.Request.HttpRequest.#ctor(System.Net.Http.HttpMethod,System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Object,System.String,System.String)">
+            <summary>
+            Constructor to initialize the http request with headers, body and optional Basic auth params
+            </summary>
+            <param name="method">Http verb to use for the http request</param>
+            <param name="queryUrl">The query url for the http request</param>
+            <param name="headers">Headers to send with the request</param>
+            <param name="body">The string to use as raw body of the http request</param>
+            <param name="username">Basic auth username</param>
+            <param name="password">Basic auth password</param>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Http.Request.HttpRequest.#ctor(System.Net.Http.HttpMethod,System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{System.String,System.Object}},System.String,System.String)">
+            <summary>
+            Constructor to initialize the http request with headers, form parameters and optional Basic auth params
+            </summary>
+            <param name="method">Http verb to use for the http request</param>
+            <param name="queryUrl">The query url for the http request</param>
+            <param name="headers">Headers to send with the request</param>
+            <param name="formParameters">Form parameters collection for the request</param>
+            <param name="username">Basic auth username</param>
+            <param name="password">Basic auth password</param>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Http.Request.HttpRequest.AddHeaders(System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            Concatenate values from a Dictionary to this object
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.Http.Response.ApiResponse`1.StatusCode">
+            <summary>
+            HTTP Status code of the http response
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.Http.Response.ApiResponse`1.Headers">
+            <summary>
+            Headers of the http response
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.Http.Response.ApiResponse`1.Data">
+            <summary>
+            The deserialized body of the http response
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.Http.Response.HttpResponse.StatusCode">
+            <summary>
+            HTTP Status code of the http response
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.Http.Response.HttpResponse.Headers">
+            <summary>
+            Headers of the http response
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.Http.Response.HttpResponse.RawBody">
+            <summary>
+            Stream of the body
+            </summary>
+        </member>
+        <member name="P:BandwidthSdk.Standard.Http.Response.HttpStringResponse.Body">
+            <summary>
+            Raw string body of the http response
+            </summary>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Utilities.APIHelper.JsonSerialize(System.Object,Newtonsoft.Json.JsonConverter)">
+            <summary>
+            JSON Serialization of a given object.
+            </summary>
+            <param name="obj">The object to serialize into JSON</param>
+            <param name="converter">The converter to use for date time conversion</param>
+            <returns>The serialized Json string representation of the given object</returns>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Utilities.APIHelper.JsonDeserialize``1(System.String,Newtonsoft.Json.JsonConverter)">
+            <summary>
+            JSON Deserialization of the given json string.
+            </summary>
+            <param name="json">The json string to deserialize</param>
+            <param name="converter">The converter to use for date time conversion</param>
+            <typeparam name="T">The type of the object to desialize into</typeparam>
+            <returns>The deserialized object</returns>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Utilities.APIHelper.AppendUrlWithTemplateParameters(System.Text.StringBuilder,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}})">
+            <summary>
+            Replaces template parameters in the given url
+            </summary>
+            <param name="queryUrl">The query url string to replace the template parameters</param>
+            <param name="parameters">The parameters to replace in the url</param>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Utilities.APIHelper.AppendUrlWithQueryParameters(System.Text.StringBuilder,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Object}},BandwidthSdk.Standard.Utilities.ArrayDeserialization,System.Char)">
+            <summary>
+            Appends the given set of parameters to the given query string
+            </summary>
+            <param name="queryUrl">The query url string to append the parameters</param>
+            <param name="parameters">The parameters to append</param>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Utilities.APIHelper.indexOf(System.Text.StringBuilder,System.String)">
+            <summary>
+            StringBuilder extension method to implement IndexOf functionality.
+            This does a StringComparison.Ordinal kind of comparison.
+            </summary>
+            <param name="stringBuilder">The string builder to find the index in</param>
+            <param name="strCheck">The string to locate in the string builder</param>
+            <returns>The index of string inside the string builder</returns>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Utilities.APIHelper.CleanUrl(System.Text.StringBuilder)">
+            <summary>
+            Validates and processes the given query Url to clean empty slashes
+            </summary>
+            <param name="queryBuilder">The given query Url to process</param>
+            <returns>Clean Url as string</returns>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Utilities.APIHelper.flattenCollection(System.Collections.ICollection,BandwidthSdk.Standard.Utilities.ArrayDeserialization,System.Char,System.Boolean,System.String)">
+            <summary>
+            Used for flattening a collection of objects into a string 
+            </summary>
+            <param name="array">Array of elements to flatten</param>
+            <param name="fmt">Format string to use for array flattening</param>
+            <param name="separator">Separator to use for string concat</param>
+            <returns>Representative string made up of array elements</returns>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Utilities.APIHelper.Add(System.Collections.Generic.Dictionary{System.String,System.Object},System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Add/update entries with the new dictionary.
+            </summary>
+            <param name="dictionary"></param>
+            <param name="dictionary2"></param>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Utilities.APIHelper.RunTaskSynchronously(System.Threading.Tasks.Task)">
+            <summary>
+            Runs asynchronous tasks synchronously and throws the first caught exception
+            </summary>
+            <param name="t">The task to be run synchronously</param>
+        </member>
+        <member name="F:BandwidthSdk.Standard.Utilities.ArrayDeserialization.Indexed">
+            <summary>
+            Example: variableName[0] = value1
+            </summary>
+        </member>
+        <member name="F:BandwidthSdk.Standard.Utilities.ArrayDeserialization.UnIndexed">
+            <summary>
+            Example: variableName[] = value1
+            </summary>
+        </member>
+        <member name="F:BandwidthSdk.Standard.Utilities.ArrayDeserialization.Plain">
+            <summary>
+            Example: variableName = value1, variableName = value 2
+            </summary>
+        </member>
+        <member name="F:BandwidthSdk.Standard.Utilities.ArrayDeserialization.Csv">
+            <summary>
+            Example: variableName = value1,value2
+            </summary>
+        </member>
+        <member name="F:BandwidthSdk.Standard.Utilities.ArrayDeserialization.Tsv">
+            <summary>
+            Example: variableName = value1\tvalue2
+            </summary>
+        </member>
+        <member name="F:BandwidthSdk.Standard.Utilities.ArrayDeserialization.Psv">
+            <summary>
+            Example: variableName = value1|value2
+            </summary>
+        </member>
+        <member name="F:BandwidthSdk.Standard.Utilities.ArrayDeserialization.None">
+            <summary>
+            Example: Ignore format
+            </summary>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Utilities.StringValuedEnumConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Object,Newtonsoft.Json.JsonSerializer)">
+            <summary>
+            Writes the JSON representation of the object.
+            </summary>
+            <param name="writer">The json writer</param>
+            <param name="value">The value to write</param>
+            <param name="serializer">The calling serializer</param>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Utilities.StringValuedEnumConverter.writeStringValue(Newtonsoft.Json.JsonWriter,System.Object)">
+            <summary>
+            Loads and writes the string value against a given enum element
+            </summary>
+            <param name="value">The string valued enum element value</param>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Utilities.StringValuedEnumConverter.loadEnumHelperType(System.Type)">
+            <summary>
+            Load the enum helper class against a given enum type
+            </summary>
+            <param name="enumType">The enum type to locate the helper</param>
+            <returns>System.Type of the helper class for the given enum type</returns>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Utilities.StringValuedEnumConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Object,Newtonsoft.Json.JsonSerializer)">
+            <summary>
+            Reads the JSON representation of the object.
+            </summary>
+            <param name="reader">The json reader</param>
+            <param name="objectType">Type of the object to be read</param>
+            <param name="existingValue">The existing value of object being read</param>
+            <param name="serializer">The calling serializer</param>
+            <returns>The object value as enum element</returns>
+        </member>
+        <member name="M:BandwidthSdk.Standard.Utilities.StringValuedEnumConverter.CanConvert(System.Type)">
+            <summary>
+            Determines whether this instance can convert the specified object type.
+            </summary>
+            <param name="objectType">Type of the object.</param>
+            <returns>
+            <c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
+            </returns>
+        </member>
+    </members>
+</doc>
