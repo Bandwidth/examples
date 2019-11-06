@@ -6,6 +6,7 @@
 
 require 'sinatra'
 require 'bandwidth'
+require 'json'
 
 include Bandwidth
 include Bandwidth::Voice
@@ -38,13 +39,13 @@ $messaging_client = bandwidth_client.messaging_client.client
 
 post "/VoiecCallback" do
     ring_audio = Bandwidth::Voice::PlayAudio.new({
-        :url => "some url"
+        :url => "https://www.kozco.com/tech/piano2.wav"
     })
     leave_voicemail = Bandwidth::Voice::SpeakSentence.new({
         :sentence => "Please leave a message after the beep. Your time limit is 3 minutes. Press # to stop the recording early"
     })
     beep_audio = Bandwidth::Voice::PlayAudio.new({
-        :url => "some url"
+        :url => "https://www.kozco.com/tech/piano2.wav"
     })
     redirect = Bandwidth::Voice::Redirect.new({
         :redirect_url => "/RecordCallback"
@@ -106,11 +107,11 @@ post "/AskToHearRecordingGather" do
     #TBD: Do we need the call id too?
     data = JSON.parse(request.body.read)
     ask_to_hear_recording = Bandwidth::Voice::SpeakSentence.new({
-        :sentence = "Your recording is now available. If you'd like to hear your recording, press 1, otherwise please hangup"
+        :sentence => "Your recording is now available. If you'd like to hear your recording, press 1, otherwise please hangup"
     })
     gather = Bandwidth::Voice::Gather.new({
         :timeout => 15,
-        :speak_sentence = ask_to_hear_recording,
+        :speak_sentence => ask_to_hear_recording,
         :max_digits => 1,
         :gather_url => "/AskToHearRecordingEndGather",
         :tag => data["tag"]
@@ -131,12 +132,12 @@ post "/AskToHearRecordingEndGather" do
             :url => "url of recording"
         })
         ask_to_re_record = Bandwidth::Voice::SpeakSentence.new({
-            :sentence = "Would you like to re record? Press 1 if so, otherwise please hangup"
+            :sentence => "Would you like to re record? Press 1 if so, otherwise please hangup"
         })
         
         gather = Bandwidth::Voice::Gather.new({
             :timeout => 15,
-            :speak_sentence = ask_to_re_record,
+            :speak_sentence => ask_to_re_record,
             :max_digits => 1,
             :gather_url => "/AskToReRecordEndGather",
         })
@@ -154,7 +155,7 @@ post "/AskToReRecordEndGather" do
     response = Bandwidth::Voice::Response.new()
     if data.key?("digits") and data["digits"] == "1"
         beep_audio = Bandwidth::Voice::PlayAudio.new({
-            :url => "some url"
+            :url => "https://www.kozco.com/tech/piano2.wav"
         })
         redirect = Bandwidth::Voice::Redirect.new({
             :redirect_url => "/RecordCallback"
