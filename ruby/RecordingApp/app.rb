@@ -87,12 +87,13 @@ post "/RecordCompleteCallback" do
 end
 
 post "/RecordingAvailableCallback" do
+    #The tag attribute is used to pass along the URL of the recording
     data = JSON.parse(request.body.read)
     if data["status"] == "complete" 
         #Update call to get bxml at "/AskToHearRecordingGather" with the recording id as the tag
         body = ApiModifyCallRequest.new
-        body.redirect_url = BASE_URL + "/AskToHearRecordingGather" #TODO: Can this be a relative url?
-        body.tag = data["recordingId"]
+        body.redirect_url = BASE_URL + "/AskToHearRecordingGather" 
+        body.tag = data["mediaUrl"]
         
         begin
             $voice_client.modify_call(VOICE_ACCOUNT_ID, data["callId"], body: body)
@@ -103,8 +104,7 @@ post "/RecordingAvailableCallback" do
 end
 
 post "/AskToHearRecordingGather" do
-    #ID of recording is in the tag
-    #TBD: Do we need the call id too?
+    #Recording URL is in the "tag" of the data
     data = JSON.parse(request.body.read)
     ask_to_hear_recording = Bandwidth::Voice::SpeakSentence.new({
         :sentence => "Your recording is now available. If you'd like to hear your recording, press 1, otherwise please hangup"
@@ -122,14 +122,15 @@ post "/AskToHearRecordingGather" do
 end
 
 post "/AskToHearRecordingEndGather" do
-    #ID of recording is in the tag
-    #TBD: Do we need the call id too?
+    #URL of recording is in the tag
     data = JSON.parse(request.body.read)
     response = Bandwidth::Voice::Response.new()
     if data.key?("digits") and data["digits"] == "1"
         #play recording
         play_recording = Bandwidth::Voice::PlayAudio.new({
-            :url => "url of recording"
+            :url => data["tag"],
+            :username => VOICE_API_USERNAME,
+            :password => VOICE_API_PASSWORD
         })
         ask_to_re_record = Bandwidth::Voice::SpeakSentence.new({
             :sentence => "Would you like to re record? Press 1 if so, otherwise please hangup"
