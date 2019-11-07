@@ -44,21 +44,20 @@ post "/VoiecCallback" do
     leave_voicemail = Bandwidth::Voice::SpeakSentence.new({
         :sentence => "Please leave a message after the beep. Your time limit is 3 minutes. Press # to stop the recording early"
     })
-    beep_audio = Bandwidth::Voice::PlayAudio.new({
-        :url => "https://www.kozco.com/tech/piano2.wav"
-    })
     redirect = Bandwidth::Voice::Redirect.new({
         :redirect_url => "/RecordCallback"
     }) 
     response = Bandwidth::Voice::Response.new()
     response.push(ring_audio)
     response.push(leave_voicemail)
-    response.push(beep_audio)
     response.push(redirect)
     return response.to_bxml()
 end
 
 post "/RecordCallback" do
+    beep_audio = Bandwidth::Voice::PlayAudio.new({
+        :url => "https://www.kozco.com/tech/piano2.wav"
+    })
     start_recording = Bandwidth::Voice::Record.new({
         :record_complete_url => "/RecordCompleteCallback",
         :record_complete_method => "POST",
@@ -68,6 +67,7 @@ post "/RecordCallback" do
         :terminating_digits => "#"
     })
     response = Bandwidth::Voice::Response.new()
+    response.push(beep_audio)
     response.push(start_recording)
     return response.to_bxml()
 end
@@ -154,13 +154,9 @@ post "/AskToReRecordEndGather" do
     data = JSON.parse(request.body.read)
     response = Bandwidth::Voice::Response.new()
     if data.key?("digits") and data["digits"] == "1"
-        beep_audio = Bandwidth::Voice::PlayAudio.new({
-            :url => "https://www.kozco.com/tech/piano2.wav"
-        })
         redirect = Bandwidth::Voice::Redirect.new({
             :redirect_url => "/RecordCallback"
         })
-        response.push(beep_audio)
         response.push(redirect)
     else
         hangup = Bandwidth::Voice::Hangup.new()
