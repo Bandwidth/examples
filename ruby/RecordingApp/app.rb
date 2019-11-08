@@ -40,19 +40,23 @@ $messaging_client = bandwidth_client.messaging_client.client
 
 post "/VoiceCallbackStatus" do
     data = JSON.parse(request.body.read)
-    #data["tag"] contains the recording url, if present
+    #data["tag"] contains the full recording url, if present
+    #Format: https://voice.bandwidth.com/api/v2/accounts/123/calls/c-id/recordings/r-id/media
     if data.key?("tag")
+        call_id = data["tag"].split("/")[-4]
+        recording_id = data["tag"].split("/")[-2]
+        #Download media from voice API
+        media_content = $voice_client.get_stream_recording_media(VOICE_ACCOUNT_ID, call_id, recording_id).raw_body
+        #Upload media to messaging API
+        $messaging_client.upload_media(MESSAGING_ACCOUNT_ID, recording_id, media_content.length.to_s, media_content, :content_type => "text/plain", :cache_control => "no-cache")
+        #Send text
         body = MessageRequest.new 
         body.application_id = MESSAGING_APPLICATION_ID
         body.from = MESSAGING_PHONE_NUMBER
         body.to = [data["from"]]
         body.text = "Attached is your recorded message"
-        #data["tag"] contains a URL of the format
-        #https://voice.bandwidth.com/api/v2/accounts/123/calls/c-id/recordings/r-id/media.
-        #This URL is protected by basic auth with the voice API credentials.
-        #To attach this URL in a message request, it must be included in the format
-        #https://user:pass@voice.bandwidth.com/api/v2/accounts/123/calls/c-id/recordings/r-id/media.
-        body.media = [data["tag"][0..7] + VOICE_API_USERNAME + ":" + VOICE_API_PASSWORD + data["tag"][7..-1]
+        body.media = ["https://messaging.bandwidth.com/api/v2/users/%s/media/%s" % [MESSAGING_ACCOUNT_ID, recording_id] ]
+        $messaging_client.create_message(MESSAGING_ACCOUNT_ID, body: body)
     end
 end
 
