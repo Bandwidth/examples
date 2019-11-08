@@ -17,6 +17,7 @@ begin
     MESSAGING_API_TOKEN = ENV.fetch("MESSAGING_API_TOKEN")
     MESSAGING_API_SECRET = ENV.fetch("MESSAGING_API_SECRET")
     MESSAGING_APPLICATION_ID = ENV.fetch("MESSAGING_APPLICATION_ID")
+    MESSAGING_PHONE_NUMBER = ENV.fetch("MESSAGING_PHONE_NUMBER")
     VOICE_ACCOUNT_ID = ENV.fetch("VOICE_ACCOUNT_ID")
     VOICE_API_USERNAME = ENV.fetch("VOICE_API_USERNAME")
     VOICE_API_PASSWORD = ENV.fetch("VOICE_API_PASSWORD")
@@ -37,7 +38,25 @@ bandwidth_client = Bandwidth::Client.new(
 $voice_client = bandwidth_client.voice_client.client
 $messaging_client = bandwidth_client.messaging_client.client
 
-post "/VoiecCallback" do
+post "/VoiceCallbackStatus" do
+    data = JSON.parse(request.body.read)
+    #data["tag"] contains the recording url, if present
+    if data.key?("tag")
+        body = MessageRequest.new 
+        body.application_id = MESSAGING_APPLICATION_ID
+        body.from = MESSAGING_PHONE_NUMBER
+        body.to = [data["from"]]
+        body.text = "Attached is your recorded message"
+        #data["tag"] contains a URL of the format
+        #https://voice.bandwidth.com/api/v2/accounts/123/calls/c-id/recordings/r-id/media.
+        #This URL is protected by basic auth with the voice API credentials.
+        #To attach this URL in a message request, it must be included in the format
+        #https://user:pass@voice.bandwidth.com/api/v2/accounts/123/calls/c-id/recordings/r-id/media.
+        body.media = [data["tag"][0..7] + VOICE_API_USERNAME + ":" + VOICE_API_PASSWORD + data["tag"][7..-1]
+    end
+end
+
+post "/VoiceCallback" do
     ring_audio = Bandwidth::Voice::PlayAudio.new({
         :url => "https://www.kozco.com/tech/piano2.wav"
     })
