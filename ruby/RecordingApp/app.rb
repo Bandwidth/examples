@@ -48,7 +48,7 @@ post "/VoiceCallbackStatus" do
         #Download media from voice API
         media_content = $voice_client.get_stream_recording_media(VOICE_ACCOUNT_ID, call_id, recording_id).raw_body
         #Upload media to messaging API
-        $messaging_client.upload_media(MESSAGING_ACCOUNT_ID, recording_id, media_content.length.to_s, media_content, :content_type => "text/plain", :cache_control => "no-cache")
+        $messaging_client.upload_media(MESSAGING_ACCOUNT_ID, recording_id, media_content.length.to_s, media_content, :content_type => "application/octet-stream", :cache_control => "no-cache")
         #Send text
         body = MessageRequest.new 
         body.application_id = MESSAGING_APPLICATION_ID
