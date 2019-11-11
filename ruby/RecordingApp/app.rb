@@ -62,7 +62,7 @@ end
 
 post "/VoiceCallback" do
     ring_audio = Bandwidth::Voice::PlayAudio.new({
-        :url => "https://www.kozco.com/tech/piano2.wav"
+        :url => "https://www.soundjay.com/phone/telephone-ring-01a.wav"
     })
     leave_voicemail = Bandwidth::Voice::SpeakSentence.new({
         :sentence => "Please leave a message after the beep. Your time limit is 3 minutes. Press # to stop the recording early"
@@ -79,7 +79,7 @@ end
 
 post "/RecordCallback" do
     beep_audio = Bandwidth::Voice::PlayAudio.new({
-        :url => "https://www.kozco.com/tech/piano2.wav"
+        :url => "https://www.soundjay.com/button/beep-01a.wav"
     })
     start_recording = Bandwidth::Voice::Record.new({
         :record_complete_url => "/RecordCompleteCallback",
