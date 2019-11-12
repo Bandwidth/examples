@@ -17,7 +17,6 @@ begin
     MESSAGING_API_TOKEN = ENV.fetch("MESSAGING_API_TOKEN")
     MESSAGING_API_SECRET = ENV.fetch("MESSAGING_API_SECRET")
     MESSAGING_APPLICATION_ID = ENV.fetch("MESSAGING_APPLICATION_ID")
-    MESSAGING_PHONE_NUMBER = ENV.fetch("MESSAGING_PHONE_NUMBER")
     VOICE_ACCOUNT_ID = ENV.fetch("VOICE_ACCOUNT_ID")
     VOICE_API_USERNAME = ENV.fetch("VOICE_API_USERNAME")
     VOICE_API_PASSWORD = ENV.fetch("VOICE_API_PASSWORD")
@@ -52,7 +51,7 @@ post "/VoiceCallbackStatus" do
         #Send text
         body = MessageRequest.new 
         body.application_id = MESSAGING_APPLICATION_ID
-        body.from = MESSAGING_PHONE_NUMBER
+        body.from = data["to"]
         body.to = [data["from"]]
         body.text = "Attached is your recorded message"
         body.media = ["https://messaging.bandwidth.com/api/v2/users/%s/media/%s" % [MESSAGING_ACCOUNT_ID, recording_id] ]
