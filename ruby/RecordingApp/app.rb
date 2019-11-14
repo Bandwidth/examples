@@ -112,9 +112,9 @@ post "/RecordingAvailableCallback" do
     #The tag attribute is used to pass along the URL of the recording
     data = JSON.parse(request.body.read)
     if data["status"] == "complete" 
-        #Update call to get bxml at "/AskToHearRecordingGather" with the recording id as the tag
+        #Update call to get bxml at "/RecordingGather1" with the recording id as the tag
         body = ApiModifyCallRequest.new
-        body.redirect_url = BASE_URL + "/AskToHearRecordingGather" 
+        body.redirect_url = BASE_URL + "/RecordingGather1" 
         body.tag = data["mediaUrl"]
         
         begin
@@ -125,7 +125,7 @@ post "/RecordingAvailableCallback" do
     end
 end
 
-post "/AskToHearRecordingGather" do
+post "/RecordingGather1" do
     #Recording URL is in the "tag" of the data
     data = JSON.parse(request.body.read)
     ask_to_hear_recording = Bandwidth::Voice::SpeakSentence.new({
@@ -135,7 +135,7 @@ post "/AskToHearRecordingGather" do
         :timeout => 15,
         :speak_sentence => ask_to_hear_recording,
         :max_digits => 1,
-        :gather_url => "/AskToHearRecordingEndGather",
+        :gather_url => "/EndGather1",
         :tag => data["tag"]
     })
     response = Bandwidth::Voice::Response.new()
@@ -143,7 +143,7 @@ post "/AskToHearRecordingGather" do
     return response.to_bxml()
 end
 
-post "/AskToHearRecordingEndGather" do
+post "/EndGather1" do
     #URL of recording is in the tag
     data = JSON.parse(request.body.read)
     response = Bandwidth::Voice::Response.new()
@@ -162,7 +162,7 @@ post "/AskToHearRecordingEndGather" do
             :timeout => 15,
             :speak_sentence => ask_to_re_record,
             :max_digits => 1,
-            :gather_url => "/AskToReRecordEndGather",
+            :gather_url => "/EndGather2",
         })
         response.push(play_recording)
         response.push(gather)
@@ -173,7 +173,7 @@ post "/AskToHearRecordingEndGather" do
     return response.to_bxml()
 end
 
-post "/AskToReRecordEndGather" do
+post "/EndGather2" do
     data = JSON.parse(request.body.read)
     response = Bandwidth::Voice::Response.new()
     if data.key?("digits") and data["digits"] == "1"
