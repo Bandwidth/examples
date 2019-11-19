@@ -1,0 +1,192 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "A sample spec for generating a sever to handle Bandwidth's API interactions",
+    "version" : "1.0.0",
+    "title" : "Bandwidth Example"
+  },
+  "host" : "your-server.com",
+  "schemes" : [ "https" ],
+  "paths" : {
+    "/": {
+      "get": {
+        "summary": "HTML hompeage for the app",
+        "description": "HomePage",
+        "operationId": "HomePage",
+        "produces": ["text/html"],
+        "responses": {
+          "200": {
+            "description": "Home page"
+          }
+        }
+      }
+    },        
+    "/MessagingCallback" : {
+      "post" : {
+        "summary" : "Handles messaging callbacks from Bandwidth",
+        "description" : "MessagingCallback",
+        "operationId" : "MessagingCallback",
+        "parameters" : [
+          {
+            "in" : "body",
+            "name" : "body",
+            "required" : true,
+            "schema" : {
+              "$ref" : "#/definitions/MessagingCallback"
+            }
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "Received callback"
+          }
+        }
+      }
+    },
+    "/VoiceCallback/Outbound" : {
+      "post" : {
+        "summary" : "Handles outbound voice callbacks from Bandwidth",
+        "description" : "VoiceCallbackOutbound",
+        "operationId" : "VoiceCallbackOutbound",
+        "produces": ["application/xml"],
+        "parameters" : [
+          {
+            "in" : "body",
+            "name" : "body",
+            "required" : true,
+            "schema" : {
+              "$ref" : "#/definitions/VoiceCallback"
+            }
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "Received callback"
+          }
+        }
+      }
+    },
+    "/VoiceCallback/Inbound" : {
+      "post" : {
+        "summary" : "Handles inbound voice callbacks from Bandwidth",
+        "description" : "VoiceCallbackInbound",
+        "operationId" : "VoiceCallbackInbound",
+        "produces": ["application/xml"],
+        "parameters" : [
+          {
+            "in" : "body",
+            "name" : "body",
+            "required" : true,
+            "schema" : {
+              "$ref" : "#/definitions/VoiceCallback"
+            }
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "Received callback"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions" : {
+    "basicAuth" : {
+      "type" : "basic"
+    }
+  },
+  "definitions" : {
+    "Message": {
+      "type": "object",
+      "required": [ "id", "owner", "time", "direction", "to", "from", "text", "applicationId", "segmentCount" ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "time": {
+          "type": "string"
+        },
+        "direction": {
+          "type": "string"
+        },
+        "to": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "from": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "applicationId": {
+          "type": "string"
+        },
+        "media": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "segmentCount": {
+          "type": "integer"
+        }
+      }
+    },
+    "MessagingCallback" : {
+      "type" : "object",
+      "required" : [ "type", "time", "description", "to", "message" ],
+      "properties" : {
+        "type" : {
+          "type" : "string"
+        },
+        "time" : {
+          "type" : "string"
+        },
+        "description" : {
+          "type" : "string"
+        },
+        "to" : {
+          "type" : "string"
+        },
+        "message" : {
+          "type" : "object",
+          "$ref": "#/definitions/Message"
+        }
+      }
+    },
+    "VoiceCallback": {
+      "type": "object",
+      "required": [ "eventType", "to", "from", "direction", "callId", "callUrl" ],
+      "properties": {
+        "eventType": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        },
+        "from": {
+          "type": "string"
+        },
+        "direction": {
+          "type": "string"
+        },
+        "callId": {
+          "type": "string"
+        },
+        "callUrl": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
+
