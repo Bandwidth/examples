@@ -20,8 +20,52 @@
           }
         }
       }
-    },        
-    "/MessagingCallback" : {
+    },
+    "/Create/Message": {
+      "post" : {
+        "summary" : "Creates a new message",
+        "description" : "CreateMessage",
+        "operationId" : "CreateMessage",
+        "parameters" : [
+          {
+            "in" : "body",
+            "name" : "body",
+            "required" : true,
+            "schema" : {
+              "$ref" : "#/definitions/CreateMessage"
+            }
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "Message Created"
+          }
+        }
+      }
+    },
+    "/Create/Call": {
+      "post" : {
+        "summary" : "Creates a new call",
+        "description" : "CreateCall",
+        "operationId" : "CreateCall",
+        "parameters" : [
+          {
+            "in" : "body",
+            "name" : "body",
+            "required" : true,
+            "schema" : {
+              "$ref" : "#/definitions/CreateCall"
+            }
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "Call Created"
+          }
+        }
+      }
+    },
+    "/Callbacks/Messaging" : {
       "post" : {
         "summary" : "Handles messaging callbacks from Bandwidth",
         "description" : "MessagingCallback",
@@ -43,7 +87,7 @@
         }
       }
     },
-    "/VoiceCallback/Outbound" : {
+    "/Callbacks/Voice/Outbound" : {
       "post" : {
         "summary" : "Handles outbound voice callbacks from Bandwidth",
         "description" : "VoiceCallbackOutbound",
@@ -66,7 +110,7 @@
         }
       }
     },
-    "/VoiceCallback/Inbound" : {
+    "/Callbacks/Voice/Inbound" : {
       "post" : {
         "summary" : "Handles inbound voice callbacks from Bandwidth",
         "description" : "VoiceCallbackInbound",
@@ -181,6 +225,75 @@
         },
         "callUrl": {
           "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        }
+      }
+    },
+    "CreateMessage": {
+      "type": "object",
+      "required": [ "from", "to", "text", "applicationId" ],
+      "properties": {
+        "from": {
+          "type": "string"
+        },
+        "to": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "text": {
+          "type": "string"
+        },
+        "applicationId": {
+          "type": "string"
+        },
+        "media": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tag": {
+          "type": "string"
+        }
+      }
+    },
+    "CreateCall": {
+      "type": "object",
+      "required": [ "from", "to", "applicationId", "answerUrl" ],
+      "properties": {
+        "from": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        },
+        "applicationId": {
+          "type": "string"
+        },
+        "answerUrl": {
+          "type": "string"
+        },
+        "answerMethod": {
+          "type": "string"
+        },
+        "disconnectUrl": {
+          "type": "string"
+        },
+        "disconnectMethod": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "callTimeout": {
+          "type": "integer"
         },
         "tag": {
           "type": "string"
