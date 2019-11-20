@@ -50,10 +50,7 @@ def handle_voice_callback_status():
         call_id = data["tag"].split("/")[-4]
         recording_id = data["tag"].split("/")[-2]
         #Download media from voice API
-        media_content = voice_client.get_stream_recording_media(VOICE_ACCOUNT_ID, call_id, recording_id)
-        with open("body.wav", "wb") as f:
-            f.write(media_content.body)
-        media_content = media_content.body
+        media_content = voice_client.get_stream_recording_media(VOICE_ACCOUNT_ID, call_id, recording_id).body
 
         #Upload media to messaging API
         messaging_client.upload_media(MESSAGING_ACCOUNT_ID, recording_id, str(len(media_content)), body=media_content)
