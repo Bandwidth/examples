@@ -41,11 +41,23 @@ end
 
 post "/Create/Message" do
     data = JSON.parse(request.body.read)
+    body = MessageRequest.new
+    body.application_id = MESSAGING_APPLICATION_ID
+    body.to = [data["to"]]
+    body.from = data["from"]
+    body.text = data["text"]
+    $messaging_client.create_message(MESSAGING_ACCOUNT_ID, body: body)
     return "Send a text message"
 end
 
 post "/Create/Call" do
     data = JSON.parse(request.body.read)
+    body = ApiCreateCallRequest.new
+    body.to = data["to"]
+    body.from = data["from"]
+    body.answer_url = data["answerUrl"] 
+    body.application_id = VOICE_APPLICATION_ID
+    $voice_client.create_call(VOICE_ACCOUNT_ID ,body: body)
     return "Make a phone call"
 end
 

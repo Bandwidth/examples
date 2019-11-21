@@ -48,11 +48,22 @@ def home_page():
 @app.route("/Create/Message", methods=["POST"])
 def create_message():
     data = json.loads(request.data)
+    body = MessageRequest()
+    body.to = [data["to"]]
+    body.mfrom = data["from"]
+    body.text = data["text"]
+    messaging_client.create_message(MESSAGING_ACCOUNT_ID, body)
     return "Send a text message"
 
 @app.route("/Create/Call", methods=["POST"])
 def create_call():
     data = json.loads(request.data)
+    body = ApiCreateCallRequest()
+    body.to = data["to"]
+    body.mfrom = data["from"]
+    body.answer_url = data["answerUrl"] 
+    body.application_id = VOICE_APPLICATION_ID
+    voice_client.create_call(VOICE_ACCOUNT_ID, body)
     return "Create a phone call"
 
 @app.route("/Callbacks/Messaging", methods=["POST"])
