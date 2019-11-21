@@ -179,10 +179,10 @@ def handle_end_gather_2():
         redirect = Redirect(
             redirect_url="/RecordCallback"
         )
-        response.push(redirect)
+        response.add_verb(redirect)
     else:
         hangup = Hangup()
-        response.push(hangup)
+        response.add_verb(hangup)
     return response.to_bxml()
 
 if __name__ == '__main__':
