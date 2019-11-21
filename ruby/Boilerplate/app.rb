@@ -1,4 +1,3 @@
-#
 # app.rb
 #
 # A template to create Sinatra apps that utilize Bandwidth's APIs
@@ -21,7 +20,6 @@ begin
     VOICE_API_USERNAME = ENV.fetch("VOICE_API_USERNAME")
     VOICE_API_PASSWORD = ENV.fetch("VOICE_API_PASSWORD")
     VOICE_APPLICATION_ID = ENV.fetch("VOICE_APPLICATION_ID")
-    BASE_URL = ENV.fetch("BASE_URL")
 rescue
     puts "Please set the environmental variables defined in the README"
     exit(-1)
