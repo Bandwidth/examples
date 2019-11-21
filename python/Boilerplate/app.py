@@ -52,7 +52,8 @@ def create_message():
     body.to = [data["to"]]
     body.mfrom = data["from"]
     body.text = data["text"]
-    messaging_client.create_message(MESSAGING_ACCOUNT_ID, body)
+    body.application_id = MESSAGING_APPLICATION_ID
+    messaging_client.create_message(MESSAGING_ACCOUNT_ID, body=body)
     return "Send a text message"
 
 @app.route("/Create/Call", methods=["POST"])
@@ -63,7 +64,7 @@ def create_call():
     body.mfrom = data["from"]
     body.answer_url = data["answerUrl"] 
     body.application_id = VOICE_APPLICATION_ID
-    voice_client.create_call(VOICE_ACCOUNT_ID, body)
+    voice_client.create_call(VOICE_ACCOUNT_ID, body=body)
     return "Create a phone call"
 
 @app.route("/Callbacks/Messaging", methods=["POST"])
@@ -87,3 +88,6 @@ def handle_bxml():
     response = Response()
     #Add more verbs here
     return response.to_bxml()
+
+if __name__ == '__main__':
+    app.run()
