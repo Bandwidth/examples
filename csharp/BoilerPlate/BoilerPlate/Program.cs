@@ -25,7 +25,7 @@ namespace BoilerPlate
         private static string voicePassword = Environment.GetEnvironmentVariable("VOICE_API_PASSWORD");
         private static string voiceAccountId = Environment.GetEnvironmentVariable("VOICE_ACCOUNT_ID");
         private static string voicApplicationId = Environment.GetEnvironmentVariable("VOICE_APPLICATION_ID");
-        private static string voiceServer = Environment.GetEnvironmentVariable("VOICE_SERVER");
+        private static string voiceServer = Environment.GetEnvironmentVariable("SERVER_PUBLIC_URL");
 
 
         private static string msgUser = Environment.GetEnvironmentVariable("MSG_API_USERNAME");
