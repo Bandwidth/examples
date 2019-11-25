@@ -24,7 +24,7 @@ namespace BoilerPlate
         private static string voiceUsername = Environment.GetEnvironmentVariable("VOICE_API_USERNAME");
         private static string voicePassword = Environment.GetEnvironmentVariable("VOICE_API_PASSWORD");
         private static string voiceAccountId = Environment.GetEnvironmentVariable("VOICE_ACCOUNT_ID");
-        private static string voicApplicationId = Environment.GetEnvironmentVariable("VOICE_APPLICATION_ID");
+        private static string voiceApplicationId = Environment.GetEnvironmentVariable("VOICE_APPLICATION_ID");
         private static string voiceServer = Environment.GetEnvironmentVariable("SERVER_PUBLIC_URL");
 
 
@@ -70,7 +70,7 @@ namespace BoilerPlate
                 apiCreateCallRequest.To = body.To;
                 apiCreateCallRequest.From = body.From;
                 apiCreateCallRequest.AnswerUrl = body.AnswerUrl;
-                apiCreateCallRequest.ApplicationId = voicApplicationId;
+                apiCreateCallRequest.ApplicationId = voiceApplicationId;
                 try
                 {
                     voiceController.CreateCall(voiceAccountId, apiCreateCallRequest);
@@ -91,7 +91,7 @@ namespace BoilerPlate
 
                 Newtonsoft.Json.Linq.JArray arr = body.To;
 
-                messageReqeust.To = arr.ToObject<List<string>>(); ;
+                messageReqeust.To = arr.ToObject<List<string>>();
                 messageReqeust.From = body.From;
                 messageReqeust.Text = body.Text;
                 messageReqeust.ApplicationId = msgApplicationId;
