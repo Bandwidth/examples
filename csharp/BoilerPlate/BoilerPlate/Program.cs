@@ -28,8 +28,8 @@ namespace BoilerPlate
         private static string voiceServer = Environment.GetEnvironmentVariable("SERVER_PUBLIC_URL");
 
 
-        private static string msgUser = Environment.GetEnvironmentVariable("MSG_API_USERNAME");
-        private static string msgPassword = Environment.GetEnvironmentVariable("MSG_API_PASSWORD");
+        private static string msgApiToken = Environment.GetEnvironmentVariable("MSG_API_TOKEN");
+        private static string msgApiSecret = Environment.GetEnvironmentVariable("MSG_API_SECRET");
         private static string msgApplicationId = Environment.GetEnvironmentVariable("MSG_APPLICATION_ID");
         private static string msgAccountId = Environment.GetEnvironmentVariable("MSG_ACCOUNT_ID");
 
@@ -38,8 +38,8 @@ namespace BoilerPlate
         private static Configuration config = new Configuration().ToBuilder()
                 .WithVoiceBasicAuthPassword(voicePassword)
                 .WithVoiceBasicAuthUserName(voiceUsername)
-                .WithMessagingBasicAuthPassword(msgPassword)
-                .WithMessagingBasicAuthUserName(msgUser)
+                .WithMessagingBasicAuthPassword(msgApiSecret)
+                .WithMessagingBasicAuthUserName(msgApiToken)
                 .WithEnvironment(Configuration.Environments.PRODUCTION)
                 .Build();
 
@@ -97,7 +97,7 @@ namespace BoilerPlate
                 messageReqeust.ApplicationId = msgApplicationId;
                 try
                 {
-                    msgController.CreateMessage(msgUser, messageReqeust);
+                    msgController.CreateMessage(msgApiToken, messageReqeust);
                 } catch (APIException ex)
                 {
                     throw new HttpStatusAwareException(ex.ResponseCode, ex.Message);
