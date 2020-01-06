@@ -1,14 +1,14 @@
 <?php
 
 /*
- * messaging.php
+ * callback.php
  *
  * A simple php app to demonstrate how to use Bandwidth's Messaging API with callbacks.
  *
  * @copyright Bandwidth INC
  */
 
-require_once "vendor/autoload.php";
+require_once "../vendor/autoload.php";
 
 $MESSAGING_ACCOUNT_ID = getenv("MESSAGING_ACCOUNT_ID");
 $MESSAGING_API_TOKEN = getenv("MESSAGING_API_TOKEN");
