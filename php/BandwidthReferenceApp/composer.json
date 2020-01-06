@@ -1,0 +1,7 @@
+{
+    "name": "bandwidth/reference-app",
+    "description": "A reference app for Bandwidth's Voice and Messaging APIs",
+    "require": {
+        "bandwidth/sdk": "^1.0"
+    }
+}
