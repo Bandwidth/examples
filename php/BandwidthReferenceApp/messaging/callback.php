@@ -22,7 +22,6 @@ if($MESSAGING_API_TOKEN == NULL || $MESSAGING_API_SECRET == NULL || $MESSAGING_A
 
 $config = new BandwidthLib\Configuration(
     array(
-        // Set authentication parameters
         'messagingBasicAuthUserName' => $MESSAGING_API_TOKEN,
         'messagingBasicAuthPassword' => $MESSAGING_API_SECRET
     )
@@ -33,12 +32,32 @@ $messagingClient = $client->getMessaging()->getClient();
 
 $data = json_decode(file_get_contents('php://input'), true);
 
+/*
+ * Handle the inbound message based on the following rules:
+ *  If the message contains "call me", make an outbound call
+ *  If the message contains media, the media is downloaded
+ *   locally, uploaded to Bandwidth, and is sent as a MMS reply
+ *  Otherwise, the response is the current datetime
+ * All other message callbacks are ignored
+ */
 if ($data[0]["type"] == "message-received") {
-    $body = new BandwidthLib\Messaging\Models\MessageRequest();
-    $body->applicationId = $MESSAGING_APPLICATION_ID;
-    $body->to = array($data[0]["message"]["from"]);
-    $body->from = $data[0]["message"]["to"][0];
-    $body->text = "The current date-time is: " . microtime() . " milliseconds since the epoch";
+    if (strpos($data[0]["message"]["text"], "call me") !== false) {
+        echo "NYI";
+    }
+    elseif (array_key_exists("media", $data[0]["message"])) {
+        echo "NYI";
+    }
+    else {
+        //handleInboundSms(array($data[0]["message"]["from"]), $data[0]["message"]["to"][0]);
+        $to = array($data[0]["message"]["from"]);
+        $from = $data[0]["message"]["to"][0];
 
-    $response = $messagingClient->createMessage($MESSAGING_ACCOUNT_ID, $body);
+        $body = new BandwidthLib\Messaging\Models\MessageRequest();
+        $body->applicationId = $MESSAGING_APPLICATION_ID;
+        $body->to = $to;
+        $body->from = $from;
+        $body->text = "The current date-time is: " . microtime() . " milliseconds since the epoch";
+
+        $messagingClient->createMessage($MESSAGING_ACCOUNT_ID, $body);
+    }
 }
