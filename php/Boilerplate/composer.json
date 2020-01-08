@@ -1,0 +1,5 @@
+{
+    "require": {
+        "bandwidth/sdk": "^1.0"
+    }
+}
