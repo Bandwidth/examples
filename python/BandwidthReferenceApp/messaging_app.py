@@ -3,7 +3,6 @@ messaging_app.py
 
 A simple Flask app to demonstrate how to use Bandwidth's Messaging API with callbacks
 
-@author Jacob Mulford
 @copyright Bandwidth INC
 """
 from voice_app import handle_call_me
