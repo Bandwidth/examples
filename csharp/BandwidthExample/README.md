@@ -28,5 +28,3 @@ This is the Bandwidth C# example app.
 * Create gather asking for a phone number
 * speak sentence asking "hey you asked to call, who should I call for you"
 * forward the call to the number they pressed in the gather.
-
-
