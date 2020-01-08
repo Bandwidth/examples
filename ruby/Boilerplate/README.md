@@ -1,9 +1,7 @@
-<div align="center">
-
-# Bandwidth Template
+# Bandwidth Ruby Template
 
 ## Description
-A template to be used to build Bandwidth apps
+A template to be used to build Bandwidth apps in Ruby
 
 ## Running The App
 
@@ -27,5 +25,5 @@ Run the following commands to get started
 ```
 gem install bundler
 bundle install
-ruby app.rb -p
+ruby app.rb
 ```
