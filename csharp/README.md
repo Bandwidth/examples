@@ -1,3 +1,3 @@
 # Bandwidth C-Sharp
 
-Example projects written in C# using Bandwidth's APIs.
+Example projects written in C# using Bandwidth's APIs and SDKs.

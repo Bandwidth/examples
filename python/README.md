@@ -1,3 +1,3 @@
 # Bandwidth Python
 
-Example projects written in Python using Bandwidth's APIs.
+Example projects written in Python using Bandwidth's APIs and SDKs.

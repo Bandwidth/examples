@@ -1,3 +1,3 @@
 # Bandwidth PHP
 
-Example projects written in PHP using Bandwidth's APIs.
+Example projects written in PHP using Bandwidth's APIs and SDKs.

@@ -1,3 +1,3 @@
 # Bandwidth NodeJS
 
-Example projects written in NodeJS using Bandwidth's APIs.
+Example projects written in NodeJS using Bandwidth's APIs and SDKs.
