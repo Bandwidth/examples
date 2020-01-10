@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Bandwidth.Sdk" Version="1.0.1" />
+    <PackageReference Include="EagleServer" Version="1.1.5" />
+    <PackageReference Include="Json.Net" Version="1.0.18" />
+  </ItemGroup>
+
+</Project>
