@@ -3,7 +3,6 @@ voice_app.py
 
 A simple Flask app to demonstrate how to use Bandwidth's Voice API with callbacks
 
-@author Jacob Mulford
 @copyright Bandwidth INC
 """
 

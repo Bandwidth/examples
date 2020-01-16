@@ -1,3 +1,3 @@
 # Bandwidth Ruby
 
-Example projects written in Ruby using Bandwidth's APIs.
+Example projects written in Ruby using Bandwidth's APIs and SDKs.

@@ -1,7 +1,7 @@
-# Bandwidth Ruby Template
+# Bandwidth Template
 
 ## Description
-A template to be used to build Bandwidth apps in Ruby
+A template to be used to build Bandwidth apps
 
 ## Running The App
 
@@ -23,7 +23,6 @@ The following environmental variables need to be set
 Run the following commands to get started
 
 ```
-gem install bundler
-bundle install
-ruby app.rb
+composer require bandwidth/sdk
+php -S localhost:<some-available-port>
 ```
