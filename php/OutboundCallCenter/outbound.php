@@ -42,7 +42,6 @@ $body = new BandwidthLib\Voice\Models\ApiCreateCallRequest();
 $body->from = $BW_PHONE_NUMBER;
 $body->to = $data["agentPhoneNumber"];
 $body->answerUrl = $BASE_URL . "/transfer.php";
-//$body->answerUrl = "https://endhh020rj2iq.x.pipedream.net";
 $body->applicationId = $VOICE_APPLICATION_ID;
 $body->tag = json_encode($tagObject);
 
