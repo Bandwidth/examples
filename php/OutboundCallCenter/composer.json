@@ -1,0 +1,13 @@
+{
+    "name": "bandwidth/outbound-call-center",
+    "description": "A sample demonstrating outbound calls via API requests and BXML",
+    "require": {
+        "bandwidth/sdk": "^1.1"
+    },
+    "authors": [
+        {
+            "name": "Bandwidth",
+            "email": "dx@bandwidth.com"
+        }
+    ]
+}
