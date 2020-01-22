@@ -1,0 +1,19 @@
+{
+  "name": "bandwidthapp",
+  "version": "1.0.0",
+  "description": "A sample Bandwidth app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "Bandwidth",
+  "license": "ISC",
+  "dependencies": {
+    "@bandwidth/bxml": "^2.2.0",
+    "@bandwidth/messaging": "^1.0.0",
+    "@bandwidth/numbers": "^1.0.0",
+    "@bandwidth/voice": "^1.0.0",
+    "express": "^4.17.1"
+  }
+}
