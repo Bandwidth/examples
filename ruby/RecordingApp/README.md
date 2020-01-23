@@ -30,6 +30,13 @@ The following environmental variables need to be set
 | VOICE_APPLICATION_ID | Your Bandwidth Voice application ID |
 | BASE_URL | The base url of the server running this application |
 
+### Callback URLs For Bandwidth Applications
+
+| Callback Type | URL |
+|--|--|
+| Inbound Voice Callback | <url>/VoiceCallback |
+| Call Status Callback | <url>/VoiceCallbackStatus |
+
 ### Commands
 Run the following commands to get started
 
