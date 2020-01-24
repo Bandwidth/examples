@@ -19,6 +19,15 @@ const messagingController = BandwidthMessaging.APIController;
 const voice = require("./voice");
 
 /*
+ * A method for handling the requirements for an inbound MMS with a media attachment
+ *
+ * @param {object} data The Bandwidth Messaging Callback object
+ */
+handleMediaRequest = function(data) {
+    console.log("Not yet implemented");
+}
+
+/*
  * A method for showing how to handle Bandwidth messaging callbacks.
  * For inbound SMS that contains the phrase "call me", a phone call is made and the user is asked to
  *      forward the call to another number
