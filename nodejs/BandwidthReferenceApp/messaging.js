@@ -34,6 +34,19 @@ exports.handleInboundMessage = function(req, res) {
         if (data[0]["message"]["text"].includes("call me")) {
             voice.callMe(data[0]["message"]["from"], data[0]["message"]["to"][0]);
         }
+        else if ("media" in data[0]["message"]) {
+            console.log("media found");
+        }
+        else {
+            var body = new BandwidthMessaging.MessageRequest({
+                "applicationId" : process.env.MESSAGING_APPLICATION_ID ,
+                "to" : [data[0]["message"]["from"]],
+                "from" : data[0]["message"]["to"][0],
+                "text" : "The current date-time in milliseconds since the epoch is " + Date.now()
+            });
+
+            messagingController.createMessage(process.env.MESSAGING_ACCOUNT_ID, body);
+        }
     } else {
         console.log(data);
     }
