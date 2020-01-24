@@ -6,7 +6,7 @@ var voice = require('./voice');
 var app = express();
 app.use(express.json());
 
-//app.post('/MessageCallback', messaging.handleInboundMessage);
+app.post('/MessageCallback', messaging.handleInboundMessage);
 app.post('/StartGatherTransfer', voice.startGatherTransfer);
 app.post('/EndGatherTransfer', voice.endGatherTransfer);
 app.post('/VoiceCallback', voice.handleInboundCall);
