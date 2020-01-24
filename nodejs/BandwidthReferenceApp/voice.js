@@ -24,7 +24,7 @@ const BandwidthBxml = require('@bandwidth/bxml');
  * @param {string} to The phone number to receive the call
  * @param {string} from The phone number to make the call
  */
-exports.callMe = function(to, from) {
+exports.callMe = async function(to, from) {
     var body = new BandwidthVoice.ApiCreateCallRequest({
         "from" : from,
         "to": to,
@@ -33,11 +33,15 @@ exports.callMe = function(to, from) {
         "answerMethod" : "POST",
         "callTimeout" : 30
     });
-    voiceController.createCall(process.env.VOICE_ACCOUNT_ID, body, function(error, response, context) {
-        console.log(error);
+
+    try {
+        var response = await voiceController.createCall(process.env.VOICE_ACCOUNT_ID, body);
+        console.log("Success");
         console.log(response);
-        console.log(context);
-    });
+    } catch (e) {
+        console.log("Error");
+        console.log(e);
+    }
 }
 
 /*

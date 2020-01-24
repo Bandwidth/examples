@@ -23,7 +23,7 @@ const voice = require("./voice");
  *
  * @param {object} data The Bandwidth Messaging Callback object
  */
-handleMediaRequest = function(data) {
+handleMediaRequest = async function(data) {
     //download media via HTTP request
     //Grab the media id from the media URL of the format
     //"https://messaging.bandwidth.com/api/v2/users/{accountId}/media/123/0/image.png"
@@ -50,13 +50,14 @@ handleMediaRequest = function(data) {
         "media" : mediaUrls
     });
 
-    messagingController.createMessage(process.env.MESSAGING_ACCOUNT_ID, body, function(error, response, context) {
-        console.log(error);
+    try {
+        var response = await messagingController.createMessage(process.env.MESSAGING_ACCOUNT_ID, body);
+        console.log("Success");
         console.log(response);
-        console.log(context);
-    });
-
-    
+    } catch (e) {
+        console.log("Error");
+        console.log(e);
+    }
 }
 
 /*
@@ -68,7 +69,7 @@ handleMediaRequest = function(data) {
  *      media attachment sent through Bandwidth's media resource.
  * For all other events, the callback is logged to console
  */
-exports.handleInboundMessage = function(req, res) {
+exports.handleInboundMessage = async function(req, res) {
     data = req.body;
 
     if (data[0]["type"] == "message-received") {
@@ -86,14 +87,17 @@ exports.handleInboundMessage = function(req, res) {
                 "text" : "The current date-time in milliseconds since the epoch is " + Date.now()
             });
             
-            messagingController.createMessage(process.env.MESSAGING_ACCOUNT_ID, body, function(error, response, context) {
-                console.log(error);
+            try {
+                var response = await messagingController.createMessage(process.env.MESSAGING_ACCOUNT_ID, body);
+                console.log("Success");
                 console.log(response);
-                console.log(context);
-            });
+            } catch (e) {
+                console.log("Error");
+                console.log(e);
+            }
         }
     } else {
         console.log(data);
     }
-    res.send("success")
+    res.send("received")
 }
