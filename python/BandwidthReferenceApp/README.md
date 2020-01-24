@@ -26,7 +26,15 @@ The following environmental variables need to be set
 | VOICE_APPLICATION_ID | Your Bandwidth Voice application ID |
 | BASE_URL | The base url of the server running this application |
 
-After setting the environmental variables, start the server by running the following command
+## Callback URLs For Bandwidth Applications
+
+| Callback Type | URL |
+|--|--|
+| Messaging Callback | <url>/MessageCallback |
+| Inbound Voice Callback | <url>/VoiceCallback |
+
+## Run The Server
+Run the following command to start the server
 
 ```
 python app.py

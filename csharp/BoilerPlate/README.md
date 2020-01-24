@@ -19,3 +19,10 @@ The following environmental variables need to be set
 | VOICE_API_PASSWORD | Your Bandwidth Voice API password |
 | VOICE_APPLICATION_ID | Your Bandwidth Voice application ID |
 | SERVER_PUBLIC_URL | The public url for the server |
+
+### Callback URLs For Bandwidth Applications
+
+| Callback Type | URL |
+|--|--|
+| Messaging Callback | <url>/Callbacks/Messaging |
+| Inbound Voice Callback | <url>/Callbacks/Voice/Inbound |
