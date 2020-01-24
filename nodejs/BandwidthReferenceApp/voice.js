@@ -33,7 +33,11 @@ exports.callMe = function(to, from) {
         "answerMethod" : "POST",
         "callTimeout" : 30
     });
-    voiceController.createCall(process.env.VOICE_ACCOUNT_ID, body);
+    voiceController.createCall(process.env.VOICE_ACCOUNT_ID, body, function(error, response, context) {
+        console.log(error);
+        console.log(response);
+        console.log(context);
+    });
 }
 
 /*

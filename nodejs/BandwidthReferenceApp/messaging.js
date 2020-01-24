@@ -50,7 +50,12 @@ handleMediaRequest = function(data) {
         "media" : mediaUrls
     });
 
-    messagingController.createMessage(process.env.MESSAGING_ACCOUNT_ID, body);
+    messagingController.createMessage(process.env.MESSAGING_ACCOUNT_ID, body, function(error, response, context) {
+        console.log(error);
+        console.log(response);
+        console.log(context);
+    });
+
     
 }
 
@@ -80,8 +85,12 @@ exports.handleInboundMessage = function(req, res) {
                 "from" : data[0]["message"]["to"][0],
                 "text" : "The current date-time in milliseconds since the epoch is " + Date.now()
             });
-
-            messagingController.createMessage(process.env.MESSAGING_ACCOUNT_ID, body);
+            
+            messagingController.createMessage(process.env.MESSAGING_ACCOUNT_ID, body, function(error, response, context) {
+                console.log(error);
+                console.log(response);
+                console.log(context);
+            });
         }
     } else {
         console.log(data);
