@@ -24,7 +24,34 @@ const voice = require("./voice");
  * @param {object} data The Bandwidth Messaging Callback object
  */
 handleMediaRequest = function(data) {
-    var mediaUrl = "https://messaging.bandwidth.com/api/v2/users/" + process.MESSAGING_ACCOUNT_ID + "/media/";
+    //download media via HTTP request
+    //Grab the media id from the media URL of the format
+    //"https://messaging.bandwidth.com/api/v2/users/{accountId}/media/123/0/image.png"
+    //The media id is the 123/0/image.png value (includes the /s)
+    var mediaIds = [];
+    data[0]["message"]["media"].forEach(element => {
+        var mediaUrlArray = element.split("/");
+        var mediaId = mediaUrlArray.slice(mediaUrlArray.length-3, mediaUrlArray.length).join("/");
+        mediaIds.push(mediaId);
+    });
+   
+    //skipping media download for now because of a messaging api bug
+    var mediaUrlBase = "https://messaging.bandwidth.com/api/v2/users/" + process.env.MESSAGING_ACCOUNT_ID + "/media/";
+    var mediaUrls = [];
+    mediaIds.forEach(element => {
+        mediaUrls.push(mediaUrlBase + element);
+    });
+
+    var body = new BandwidthMessaging.MessageRequest({
+        "applicationId" : process.env.MESSAGING_APPLICATION_ID ,
+        "to" : [data[0]["message"]["from"]],
+        "from" : data[0]["message"]["to"][0],
+        "text" : "Rebound!",
+        "media" : mediaUrls
+    });
+
+    messagingController.createMessage(process.env.MESSAGING_ACCOUNT_ID, body);
+    
 }
 
 /*
