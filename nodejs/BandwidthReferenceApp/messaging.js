@@ -24,7 +24,7 @@ const voice = require("./voice");
  * @param {object} data The Bandwidth Messaging Callback object
  */
 handleMediaRequest = function(data) {
-    console.log("Not yet implemented");
+    var mediaUrl = "https://messaging.bandwidth.com/api/v2/users/" + process.MESSAGING_ACCOUNT_ID + "/media/";
 }
 
 /*
@@ -44,7 +44,7 @@ exports.handleInboundMessage = function(req, res) {
             voice.callMe(data[0]["message"]["from"], data[0]["message"]["to"][0]);
         }
         else if ("media" in data[0]["message"]) {
-            console.log("media found");
+            handleMediaRequest(data);
         }
         else {
             var body = new BandwidthMessaging.MessageRequest({
@@ -59,4 +59,5 @@ exports.handleInboundMessage = function(req, res) {
     } else {
         console.log(data);
     }
+    res.send("success")
 }
