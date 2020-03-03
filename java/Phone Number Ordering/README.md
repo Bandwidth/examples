@@ -1,7 +1,7 @@
 # Java Boilerplate Code
 
 ## Description
-A demo app to order numbers using teh bandwidth-java-iris-sdk
+A demo app to order numbers using the bandwidth-java-iris-sdk
 
 ## Running The App
 
