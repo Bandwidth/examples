@@ -131,7 +131,7 @@ Deletes a phone number
 
 Request
 ```
-GET /phoneNumbers/{phoneNumber}
+DELETE /phoneNumbers/{phoneNumber}
 ```
 
 ## Error Schema
