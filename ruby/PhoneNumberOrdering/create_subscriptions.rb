@@ -37,7 +37,7 @@ BandwidthIris::Client.global_options = {
 
 subscription = {
   :order_type => "orders",
-  :callback_subcription => {
+  :callback_subscription => {
     :URL => order_url 
   }
 }
@@ -45,7 +45,7 @@ BandwidthIris::Subscription.create(subscription)
 
 subscription = {
   :order_type => "disconnects",
-  :callback_subcription => {
+  :callback_subscription=> {
     :URL => disconnects_url 
   }
 }
