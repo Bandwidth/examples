@@ -39,7 +39,7 @@ to setup your subscription callbacks
 Run
 
 ```
-php phone_number_ordering.php
+php -S localhost:5000
 ```
 
 to start the server
