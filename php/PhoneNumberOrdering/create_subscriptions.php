@@ -31,8 +31,8 @@ if (substr($base_url, -1) != "/") {
     $base_url = $base_url . "/";
 }
 
-$orders_url = $base_url + "subscriptions/orders";
-$disconnects_url = $base_url + "subscriptions/disconnects";
+$orders_url = $base_url . "subscriptions/orders";
+$disconnects_url = $base_url . "subscriptions/disconnects";
 
 $client = new \Iris\Client($IRIS_USERNAME, $IRIS_PASSWORD, ['url' => 'https://dashboard.bandwidth.com/api/']);
 $account = new \Iris\Account($IRIS_ACCOUNT_ID, $client);
