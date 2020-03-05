@@ -28,6 +28,15 @@ $account = new \Iris\Account($IRIS_ACCOUNT_ID, $client);
 
 class PhoneNumbers {
 
+    private static $instance = null;
+
+    public static function getInstance() {
+        if (self::$instance == null) {
+            self::$instance = new PhoneNumbers();
+        }
+        return self::$instance;
+    }
+
     /**
      * Maps a phone number to the phoneNumber/bandwidthOrderId structure
      *
@@ -35,7 +44,7 @@ class PhoneNumbers {
      */
     private $phoneNumbers;
 
-    function __construct() {
+    private function __construct() {
         $this->phoneNumbers = array();
     }
 
@@ -59,7 +68,7 @@ class PhoneNumbers {
      * @throws Exception If the phone number is not found
      */
     function removePhoneNumber($phoneNumber) {
-        if (phoneNumberExists($phoneNumber)) {
+        if ($this->phoneNumberExists($phoneNumber)) {
             unset($this->phoneNumbers[$phoneNumber]);
         } else {
             throw new Exception("Phone number not found");
@@ -104,16 +113,67 @@ function errorJson($type, $description, $bandwidthErrorCode, $bandwidthErrorDesc
     ));
 }
 
+/**
+ * Taken from https://www.php.net/manual/en/class.simplexmlelement.php
+ *
+ * @param SimpleXMLElement $xml
+ * @return array
+ */
+function xmlToArray(SimpleXMLElement $xml): array
+{
+    $parser = function (SimpleXMLElement $xml, array $collection = []) use (&$parser) {
+        $nodes = $xml->children();
+        $attributes = $xml->attributes();
+
+        if (0 !== count($attributes)) {
+            foreach ($attributes as $attrName => $attrValue) {
+                $collection['attributes'][$attrName] = strval($attrValue);
+            }
+        }
+
+        if (0 === $nodes->count()) {
+            $collection['value'] = strval($xml);
+            return $collection;
+        }
+
+        foreach ($nodes as $nodeName => $nodeValue) {
+            if (count($nodeValue->xpath('../' . $nodeName)) < 2) {
+                $collection[$nodeName] = $parser($nodeValue);
+                continue;
+            }
+
+            $collection[$nodeName][] = $parser($nodeValue);
+        }
+
+        return $collection;
+    };
+
+    return [
+        $xml->getName() => $parser($xml)
+    ];
+}
+
 $app = AppFactory::create();
 
 $app->addErrorMiddleware(true, true, true);
 
 $app->post('/subscriptions/orders', function (Request $request, Response $response) {
-    
+    $body = xmlToArray(simplexml_load_string($request->getBody()));
+    $orderId = $body["Notification"]["OrderId"]["value"];
+    $phoneNumber = $body["Notification"]["CompletedTelephoneNumbers"]["TelephoneNumber"]["value"];
+
+    PhoneNumbers::getInstance()->addPhoneNumber($phoneNumber, $orderId);
+    $response->getBody()->write("success");
+    return $response;
 });
 
 $app->post('/subscriptions/disconnects', function (Request $request, Response $response) {
-    
+    $body = xmlToArray(simplexml_load_string($request->getBody()));
+    $phoneNumber = $body["Notification"]["CompletedTelephoneNumbers"]["TelephoneNumber"]["value"];
+
+    PhoneNumbers::getInstance()->removePhoneNumber($phoneNumber);
+    $response->getBody()->write("success");
+    return $response;
 });
 
 $app->get('/availablePhoneNumbers', function (Request $request, Response $response) {
@@ -186,11 +246,36 @@ $app->post('/phoneNumbers', function (Request $request, Response $response) {
 });
 
 $app->get('/phoneNumbers', function (Request $request, Response $response) {
+    $response->getBody()->write(PhoneNumbers::getInstance()->getPhoneNumbersJson());
+    return $response;
     
 });
 
 $app->delete('/phoneNumbers/{phoneNumber}', function (Request $request, Response $response, $args) {
+    $phoneNumber = $args["phoneNumber"];
     
+    if (PhoneNumbers::getInstance()->phoneNumberExists($phoneNumber)) {
+        try {
+            global $account;
+            $account->disconnects()->create(array(
+                "Name" => "PHP Sample App Disconnect",
+                "DisconnectTelephoneNumberOrderType" => array(
+                    "TelephoneNumberList" => array(
+                        "TelephoneNumber" => [$phoneNumber]
+                    )
+                )
+            ));
+            $response->getbody()->write("received");
+            return $response->withstatus(201);
+        } catch (Exception $e) {
+            $response->getbody()->write(errorjson("disconnect-failure", "disconnect request has failed", "", $e->getmessage()));
+            return $response->withstatus(400);
+        }
+    }
+    else {
+        $response->getBody()->write(errorJson("number-not-found", "Phone number not found", "", ""));
+        return $response->withStatus(404);
+    }
 });
 
 $app->run();
