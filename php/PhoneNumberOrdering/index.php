@@ -155,7 +155,34 @@ $app->get('/availablePhoneNumbers', function (Request $request, Response $respon
 });
 
 $app->post('/phoneNumbers', function (Request $request, Response $response) {
-    
+    $body = json_decode($request->getBody(), true);
+    $phoneNumber = $body["phoneNumber"];
+
+    if (!$phoneNumber || !(preg_match('/^\d{10}$/', $phoneNumber))) {
+        $response->getBody()->write(errorJson("validation", "Phone number is in an invalid format", "", ""));
+        return $response->withStatus(400);
+    }
+
+
+    try {
+        global $account;
+        global $SITE_ID;
+        $order = $account->orders()->create([
+            "Name" => "PHP Sample App Order",
+            "SiteId" => $SITE_ID,
+            "ExistingTelephoneNumberOrderType" => [
+                "TelephoneNumberList" => [
+                    "TelephoneNumber" => [$phoneNumber]
+                ]
+            ]
+        ]);
+
+        $response->getBody()->write(json_encode(array("phoneNumber" => $phoneNumber, "bandwidthOrderId" => $order->id)));
+        return $response->withStatus(201);
+    } catch (Exception $e) {
+        $response->getBody()->write(errorJson("order-failure", "Order request has failed", "", $e->getMessage()));
+        return $response->withStatus(400);
+    }
 });
 
 $app->get('/phoneNumbers', function (Request $request, Response $response) {
