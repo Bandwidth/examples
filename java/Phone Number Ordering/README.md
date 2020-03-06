@@ -17,6 +17,8 @@ The following environmental variables need to be set
 
 ### Build Project
 
+* Note Must use Java version 1.8
+
 ```bash
 mvn compile
 ```
