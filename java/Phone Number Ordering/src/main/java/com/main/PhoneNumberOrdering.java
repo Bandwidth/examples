@@ -28,7 +28,7 @@ public class PhoneNumberOrdering {
 
     public static void main(String[] args) {
 
-        port(8080);
+        port(4567);
 
         // Ping page to check that the server is up
         get("/", (req, res) -> {
@@ -91,6 +91,23 @@ public class PhoneNumberOrdering {
 
         });
 
+        get("/phoneNumbers", (req, res) -> {
+
+            String ret = "[";
+
+            for(JSONObject obj : storage.values()){
+                ret = ret.concat(obj.toString() + ",");
+            }
+
+            if(ret.endsWith(",")){
+                ret = ret.substring(0, ret.length() - 2);
+            }
+
+            ret = ret.concat("]");
+
+            return ret;
+        });
+
         post("/phoneNumbers", (req, res) -> {
 
             JSONParser jp = new JSONParser();
@@ -147,7 +164,7 @@ public class PhoneNumberOrdering {
                 return e.getMessage();
             }
 
-            return "Ordered";//
+            return "Recieved";//
         });
 
 

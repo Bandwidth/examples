@@ -15,6 +15,18 @@ The following environmental variables need to be set
 | IRIS_ACCOUNT_ID | Your Bandwidth AccountID |
 | SITE_ID | Your Bandwidth Sub Account ID |
 
+### Build Project
+
+```bash
+mvn compile
+```
+
+### Run Project
+
+```bash
+mvn exec:java -Dexec.mainClass=com.main.PhoneNumberOrdering
+```
+
 ### Creating Subscriptions
 
 In order to recieve Notifications from Bandwidth two subscriptions must be created.
@@ -29,7 +41,7 @@ POST the following bodies (seperately) to https://dashboard.bandwidth.com/api/ac
     <OrderType>disconnects</OrderType>
     <CallbackSubscription>
         <URL>https://YOUR_BASE_URL.com/subscriptions/disconnects</URL> <!-- Change the base url -->
-        <Expiry>10000</Expiry>
+        <Expiry>100000</Expiry>
     </CallbackSubscription>
 </Subscription>
 ```
@@ -39,7 +51,7 @@ POST the following bodies (seperately) to https://dashboard.bandwidth.com/api/ac
     <OrderType>orders</OrderType>
     <CallbackSubscription>
         <URL>https://YOUR_BASE_URL.com/subscriptions/orders</URL> <!-- Change the base url -->
-        <Expiry>1000</Expiry>
+        <Expiry>10000</Expiry>
     </CallbackSubscription>
 </Subscription>
 ```
@@ -68,4 +80,10 @@ POST localhost:8080/phoneNumbers
 
 ```html
 DELETE localhost:8080/phoneNumbers/9194569878
+```
+
+### List Phone Numbers 
+
+```html
+
 ```
