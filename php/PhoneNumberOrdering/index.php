@@ -49,16 +49,42 @@ class PhoneNumbers {
     }
 
     /**
+     * Workaround for the fact that Slim doesn't keep the in-memory storage
+     *
+     * Reads the in memory storage
+     */
+    private function readStorage() {
+        $f = fopen("storage.json", "r") or die("Unable to open");
+        $contents = fread($f, filesize("storage.json"));
+        fclose($f);
+        $this->phoneNumbers = json_decode($contents, true);
+        echo $this->phoneNumbers;
+    }
+
+    /**
+     * Workaround for the fact that Slim doesn't keep the in-memory storage
+     *
+     * Writes the in memory storage
+     */
+    private function writeStorage() {
+        $f = fopen("storage.json", "w") or die("Unable to write");
+        fwrite($f, json_encode($this->phoneNumbers));
+        fclose($f);
+    }
+
+    /**
      * Adds a phone number and its order id to the in memory storage
      *
      * @param string $phoneNumber The phone number to add
      * @param string $orderId The order id
      */
     function addPhoneNumber($phoneNumber, $orderId) {
+        $this->readStorage();
         $this->phoneNumbers[$phoneNumber] = array(
             "phoneNumber" => $phoneNumber,
             "bandwidthOrderId" => $orderId
         );
+        $this->writeStorage();
     }
 
     /**
@@ -68,8 +94,10 @@ class PhoneNumbers {
      * @throws Exception If the phone number is not found
      */
     function removePhoneNumber($phoneNumber) {
+        //no need to read storage, phoneNumberExists() does that
         if ($this->phoneNumberExists($phoneNumber)) {
             unset($this->phoneNumbers[$phoneNumber]);
+            $this->writeStorage();
         } else {
             throw new Exception("Phone number not found");
         }
@@ -81,6 +109,7 @@ class PhoneNumbers {
      * @return string
      */
     function getPhoneNumbersJson() {
+        $this->readStorage();
         return json_encode(array_values($this->phoneNumbers));
     }
 
@@ -91,6 +120,7 @@ class PhoneNumbers {
      * @return bool
      */
     function phoneNumberExists($phoneNumber) {
+        $this->readStorage();
         return array_key_exists($phoneNumber, $this->phoneNumbers);
     }
 }
