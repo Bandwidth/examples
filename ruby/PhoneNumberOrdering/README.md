@@ -1,5 +1,10 @@
+<div align="center">
+
 # Phone Number Ordering Server
 
+![BW_all](../../.readme_images/BW_PhoneNumbers.png)
+
+</div>
 A demo app that creates a Ruby/Sinatra server that exposes endpoints to order phone numbers from Bandwidth
 
 ## Running The App

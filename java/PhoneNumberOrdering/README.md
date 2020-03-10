@@ -1,4 +1,10 @@
+<div align="center">
+
 # Java Boilerplate Code
+
+![BW_all](../../.readme_images/BW_PhoneNumbers.png)
+
+</div>
 
 ## Description
 A demo app to order numbers using the bandwidth-java-iris-sdk
@@ -63,12 +69,12 @@ POST the following bodies (seperately) to https://dashboard.bandwidth.com/api/ac
 ```html
 GET localhost:8080/availablePhoneNumbers/?city=RALEIGH&state=NC
 
-[ 
+[
 ...
 ]
 ```
 
-### Order a Phone Number 
+### Order a Phone Number
 
 ```html
 POST localhost:8080/phoneNumbers
@@ -78,13 +84,13 @@ POST localhost:8080/phoneNumbers
 }
 ```
 
-### Disconnect a Phone Number 
+### Disconnect a Phone Number
 
 ```html
 DELETE localhost:8080/phoneNumbers/9194569878
 ```
 
-### List Phone Numbers 
+### List Phone Numbers
 
 ```html
 
