@@ -24,7 +24,9 @@ In order to run the examples, you'll need a Bandwidth account with valid API Cre
 
 #### SDKs
 
-* [Numbers-SDK](https://www.npmjs.com/package/@bandwidth/numbers)
+The NodeJS SDK(s) are available via NPM & Github
+
+* `@banwdidth/number`: Manage phone numbers and account settings [npm](https://www.npmjs.com/package/@bandwidth/numbers), [github](https://github.com/Bandwidth/node-numbers)
 * [Voice-SDK](https://www.npmjs.com/package/@bandwidth/voice)
   * [BXML-Generator](https://www.npmjs.com/package/@bandwidth/bxml)
 * [Messaging-SDK](https://www.npmjs.com/package/@bandwidth/messaging)
