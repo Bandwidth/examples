@@ -49,7 +49,7 @@ The NodeJS SDK(s) are available via [NPM](https://www.npmjs.com/) & Github.
 | [Reference App](nodejs/BandwidthReferenceApp) | A small sample app that covers basic use cases with Bandwidth's Voice and Messaging APIs | Voice/Messaging |
 | [BoilerPlate](nodejs/BoilerPlate)             | A template to be used to build Bandwidth apps in NodeJS                                  | Voice/Messaging |
 
-## C# {#csharp}
+## C#
 
 ### SDKs
 
