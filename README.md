@@ -33,7 +33,7 @@ In order to run the examples, you'll need a Bandwidth account with valid API Cre
 
 ## NodeJS
 
-<img src="https://github.com/Bandwidth/examples/raw/master/.readme_images/js.png" width="15%">
+[<img src="https://github.com/Bandwidth/examples/raw/master/.readme_images/js.png" width="15%">](nodejs)
 
 </div>
 
@@ -59,7 +59,7 @@ The NodeJS SDK(s) are available via [NPM](https://www.npmjs.com/) & Github.
 
 ## C#
 
-<img src="https://github.com/Bandwidth/examples/raw/master/.readme_images/csharp.png" width="15%">
+[<img src="https://github.com/Bandwidth/examples/raw/master/.readme_images/csharp.png" width="15%">](csharp)
 
 
 </div>
@@ -84,7 +84,7 @@ The C# SDK(s) are available via [NuGet](https://www.nuget.org/) & Github
 
 ## Ruby
 
-<img src="https://github.com/Bandwidth/examples/raw/master/.readme_images/ruby.png" width="15%">
+[<img src="https://github.com/Bandwidth/examples/raw/master/.readme_images/ruby.png" width="15%">](ruby)
 
 </div>
 
@@ -110,7 +110,7 @@ The Ruby SDK(s) are available via [RubyGems](https://rubygems.org/) & Github
 
 ## Python
 
-<img src="https://github.com/Bandwidth/examples/raw/master/.readme_images/python.png" width="15%">
+[<img src="https://github.com/Bandwidth/examples/raw/master/.readme_images/python.png" width="15%">](python)
 
 </div>
 
@@ -134,7 +134,7 @@ The Python SDK(s) are available via [PyPi](https://pypi.org/) & Github
 
 ## PHP
 
-<img src="https://github.com/Bandwidth/examples/raw/master/.readme_images/php.png" width="15%">
+[<img src="https://github.com/Bandwidth/examples/raw/master/.readme_images/php.png" width="15%">](php)
 
 ### SDKs
 
@@ -161,7 +161,7 @@ The PHP SDK(s) are available via [Packagist](https://packagist.org/) & Github
 
 ## Java
 
-<img src="https://github.com/Bandwidth/examples/raw/master/.readme_images/java.png" width="15%">
+[<img src="https://github.com/Bandwidth/examples/raw/master/.readme_images/java.png" width="15%">](java)
 
 </div>
 
