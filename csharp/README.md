@@ -2,7 +2,7 @@
 
 # Bandwidth C#
 
-<img src="https://github.com/Bandwidth/examples/raw/README-UPDATE/.readme_images/csharp.png" width="15%">
+<img src="https://github.com/Bandwidth/examples/raw/master/.readme_images/csharp.png" width="15%">
 
 
 </div>

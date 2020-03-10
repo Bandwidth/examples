@@ -2,7 +2,7 @@
 
 # Bandwidth Python
 
-<img src="https://github.com/Bandwidth/examples/raw/README-UPDATE/.readme_images/python.png" width="15%">
+<img src="https://github.com/Bandwidth/examples/raw/master/.readme_images/python.png" width="15%">
 
 </div>
 
@@ -20,4 +20,4 @@ The Python SDK(s) are available via [PyPi](https://pypi.org/) & Github
 |:----------------------------------------------|:-----------------------------------------------------------------------------------------|:----------------|
 | [Reference App](BandwidthReferenceApp) | A small sample app that covers basic use cases with Bandwidth's Voice and Messaging APIs | Voice/Messaging |
 | [BoilerPlate](BoilerPlate)             | A template to be used to build Bandwidth apps in Python                                  | Voice/Messaging |
-| [Recording](RecordingApp)              | A sample app that mimics a voicemail service using Bandwidth's Voice API and Recording   | Voice/Messaging |
+| [Voicemail](RecordingApp)              | A sample app that mimics a voicemail service using Bandwidth's Voice API and Recording   | Voice/Messaging |

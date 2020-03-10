@@ -2,7 +2,7 @@
 
 # Bandwidth Ruby
 
-<img src="https://github.com/Bandwidth/examples/raw/README-UPDATE/.readme_images/ruby.png" width="15%">
+<img src="https://github.com/Bandwidth/examples/raw/master/.readme_images/ruby.png" width="15%">
 
 </div>
 
@@ -21,5 +21,5 @@ The Ruby SDK(s) are available via [RubyGems](https://rubygems.org/) & Github
 |:--------------------------------------------------|:-----------------------------------------------------------------------------------------------------------|:----------------|
 | [Reference App](BandwidthReferenceApp)       | A small sample app that covers basic use cases with Bandwidth's Voice and Messaging APIs                   | Voice/Messaging |
 | [BoilerPlate](BoilerPlate)                   | A template to be used to build Bandwidth apps in Ruby                                                      | Voice/Messaging |
-| [Recording](RecordingApp)                    | A sample app that mimics a voicemail service using Bandwidth's Voice API and Recording                     | Voice/Messaging |
+| [Voicemail](RecordingApp)                    | A sample app that mimics a voicemail service using Bandwidth's Voice API and Recording                     | Voice/Messaging |
 | [Phone Number Ordering](PhoneNumberOrdering) | A demo app that creates a Ruby/Sinatra server that exposes endpoints to order phone numbers from Bandwidth | Numbers         |
