@@ -1,4 +1,11 @@
+<div align="center">
+
 # OutboundCallCenter
+
+![BW_all](../../.readme_images/BW_Voice.png)
+
+</div>
+
 
 A sample app to show how to create an outbound call with a desired caller ID
 

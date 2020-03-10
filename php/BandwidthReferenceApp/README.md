@@ -1,4 +1,10 @@
+<div align="center">
+
 # BandwidthReferenceApp
+
+![BW_all](../../.readme_images/BW_all.png)
+
+</div>
 
 A small sample app that covers basic use cases with Bandwidth's Voice and Messaging APIs
 

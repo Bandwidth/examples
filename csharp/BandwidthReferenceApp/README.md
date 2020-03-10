@@ -1,4 +1,10 @@
+<div align="center">
+
 # Bandwidth C# Example
+
+![BW_all](../../.readme_images/BW_all.png)
+
+</div>
 
 This is the Bandwidth C# example app.
 
@@ -19,7 +25,7 @@ This is the Bandwidth C# example app.
 * Creates a gather asking them a sum of two integers
 * after the gather callback
     * checks the sum
-    * if they got it right, play a winning media file 
+    * if they got it right, play a winning media file
     * if they got it wrong, play a diffrent media file
 * after file plays end the call
 ### Voice & Messaging

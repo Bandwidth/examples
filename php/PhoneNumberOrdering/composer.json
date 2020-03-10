@@ -1,0 +1,10 @@
+{
+    "name": "bandwidth/phone-number-ordering",
+    "description": "A sample app for ordering phone numbers",
+    "require": {
+        "slim/slim": "^4.4",
+        "bandwidth/iris": "^2.3",
+        "slim/http": "^1.0",
+        "slim/psr7": "^1.0"
+    }
+}

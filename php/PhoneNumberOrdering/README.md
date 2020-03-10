@@ -5,7 +5,7 @@
 ![BW_all](../../.readme_images/BW_PhoneNumbers.png)
 
 </div>
-A demo app that creates a Ruby/Sinatra server that exposes endpoints to order phone numbers from Bandwidth
+A demo app that creates a PHP/Slim server that exposes endpoints to order phone numbers from Bandwidth
 
 ## Running The App
 
@@ -14,7 +14,7 @@ A demo app that creates a Ruby/Sinatra server that exposes endpoints to order ph
 Run
 
 ```
-bundle install
+composer install
 ```
 
 to install the required dependencies
@@ -34,7 +34,7 @@ The following environmental variables need to be set
 Run
 
 ```
-ruby create_subscriptions.rb <BASE_URL>
+php create_subscriptions.php <BASE_URL>
 ```
 
 to setup your subscription callbacks
@@ -44,7 +44,7 @@ to setup your subscription callbacks
 Run
 
 ```
-ruby phone_number_ordering.rb
+php -S localhost:5000
 ```
 
 to start the server
