@@ -22,13 +22,12 @@ In order to run the examples, you'll need a Bandwidth account with valid API Cre
 
 ## Contents
 
-* [NodeJS](#nodejs)
-* [C#](#csharp)
-* [Ruby](#ruby)
-* [Python](#python)
-* [PHP](#php)
-* [Java](#java)
-
+* [NodeJS](nodejs)
+* [C#](csharp)
+* [Ruby](ruby)
+* [Python](python)
+* [PHP](php)
+* [Java](java)
 
 <div align="center">
 
