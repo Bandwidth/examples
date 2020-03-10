@@ -33,7 +33,7 @@ In order to run the examples, you'll need a Bandwidth account with valid API Cre
 
 <div align="center">
 
-<img src="https://github.com/Bandwidth/examples/raw/README-UPDATE/.readme_images/js.png" size="10%">
+<img src="https://github.com/Bandwidth/examples/raw/README-UPDATE/.readme_images/js.png" width="10%">
 
 </div>
 
