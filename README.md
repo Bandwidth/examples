@@ -33,7 +33,7 @@ In order to run the examples, you'll need a Bandwidth account with valid API Cre
 
 ## NodeJS
 
-<img src="https://github.com/Bandwidth/examples/raw/master/.readme_images/js.png" width="15%">
+[<img src="https://github.com/Bandwidth/examples/raw/master/.readme_images/js.png" width="15%">](nodejs)
 
 </div>
 
