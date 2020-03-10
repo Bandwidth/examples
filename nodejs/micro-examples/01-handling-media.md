@@ -3,6 +3,7 @@
 _As a developer, how do I display a media attachment to my end user?_
 
 **This tutorial assumes you are familiar with:**
+
 * Receiving Messaging Callbacks (Coming Soon)
 
 When developing a Bandwidth enabled application that accepts MMS, you will often need to display received media to your end user. This process is not always as straightforward as it may appear.
@@ -90,7 +91,7 @@ app.post('/callback', async (req, res) => {
     // add the message, with updated mediaUrls, to the database
     db.add(newRecord)
   }
-})
+});
 ```
 
 ## Streaming a File to Cloud Storage
@@ -133,7 +134,7 @@ const getCloudMediaUrl = (mediaUrl) => {
 
   // return the promise of the S3 Upload.
   return s3.upload(params).promise();
-}
+};
 ```
 
 ### Google Cloud
@@ -176,7 +177,7 @@ const getCloudMediaUrl = (mediaUrl) => {
         return `https://storage.googleapis.com/${'myBucket'}/${fileName}`
       });
     })
-}
+};
 ```
 
 ### Microsoft Azure
@@ -212,7 +213,7 @@ const getCloudMediaUrl = (mediaUrl) => {
   // azure uses this object to abort after a specififed timeout (here 1 min)
   const aborter = Aborter.timeout(60 * 1000);
 
-  
+
   // STORAGE_ACCOUNT_NAME is from your azure credentials
   const conatinerName = "demo";
   const pipeline = StorageURL.newPipeline(credentials);
@@ -222,10 +223,6 @@ const getCloudMediaUrl = (mediaUrl) => {
   // will only create a conatiner if it doesn't already exist
   // azure best practices recommends this
   await containerURL.create(aborter);
-
-  
-
-
 
   // perform the fetch, and create a read stream from the body.
   return fetch(mediaUrl, {
@@ -241,15 +238,15 @@ const getCloudMediaUrl = (mediaUrl) => {
 
       // upload the stream to the url
       await uploadStreamToBlockBlob(
-        aborter, 
-        res.body, 
-        blockBlobURL, 
-        16384, // default highwatermark for stream 
+        aborter,
+        res.body,
+        blockBlobURL,
+        16384, // default highwatermark for stream
         2 // max buffers, adjust as necessary
       );
 
       // return the URL
       return blockBlobURL
     })
-}
+};
 ```
