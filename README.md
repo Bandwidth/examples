@@ -41,11 +41,11 @@ In order to run the examples, you'll need a Bandwidth account with valid API Cre
 
 The NodeJS SDK(s) are available via [NPM](https://www.npmjs.com/) & Github.
 
-| Module                                                                       | Description                                                                   | Github                                                |
-|:-----------------------------------------------------------------------------|:------------------------------------------------------------------------------|:------------------------------------------------------|
+| Module                                                                       | Description                                                                   | Github                                                                                    |
+|:-----------------------------------------------------------------------------|:------------------------------------------------------------------------------|:------------------------------------------------------------------------------------------|
 | [`@banwdidth/numbers`](https://www.npmjs.com/package/@bandwidth/numbers)     | Manage phone numbers and account settings                                     | [<img src="https://github.com/favicon.ico">](https://github.com/Bandwidth/node-numbers)   |
 | [`@bandwidth/voice`](https://www.npmjs.com/package/@bandwidth/numbers)       | Create outbound phone calls and manage call media (recordings/transcriptions) | [<img src="https://github.com/favicon.ico">](https://github.com/Bandwidth/node-voice)     |
-| [`@bandwidth/bxml`](https://www.npmjs.com/package/@bandwidth/bxml)           | Create BXML for managing call flow                                            | N/A                                                   |
+| [`@bandwidth/bxml`](https://www.npmjs.com/package/@bandwidth/bxml)           | Create BXML for managing call flow                                            | N/A                                                                                       |
 | [`@bandwidth/messaging`](https://www.npmjs.com/package/@bandwidth/messaging) | Create outbound messages and manage message media (MMS)                       | [<img src="https://github.com/favicon.ico">](https://github.com/Bandwidth/node-messaging) |
 
 ### Examples
@@ -68,8 +68,8 @@ The NodeJS SDK(s) are available via [NPM](https://www.npmjs.com/) & Github.
 
 The C# SDK(s) are available via [NuGet](https://www.nuget.org/) & Github
 
-| Module                                                             | Description                                                                     | Github                                                       |
-|:-------------------------------------------------------------------|:--------------------------------------------------------------------------------|:-------------------------------------------------------------|
+| Module                                                             | Description                                                                     | Github                                                                                           |
+|:-------------------------------------------------------------------|:--------------------------------------------------------------------------------|:-------------------------------------------------------------------------------------------------|
 | [`Bandwidth.Sdk`](https://www.nuget.org/packages/Bandwidth.Sdk/)   | Manage Phone Calls with BXML, Create outbound calls, SMS messages, MMS messages | [<img src="https://github.com/favicon.ico">](https://github.com/Bandwidth/csharp-sdk)            |
 | [`Bandwidth.Iris`](https://www.nuget.org/packages/Bandwidth.Iris/) | Manage phone numbers and account settings                                       | [<img src="https://github.com/favicon.ico">](https://github.com/Bandwidth/csharp-bandwidth-iris) |
 
@@ -92,8 +92,8 @@ The C# SDK(s) are available via [NuGet](https://www.nuget.org/) & Github
 
 The Ruby SDK(s) are available via [RubyGems](https://rubygems.org/) & Github
 
-| Module                                                                 | Description                                                                     | Github                                                     |
-|:-----------------------------------------------------------------------|:--------------------------------------------------------------------------------|:-----------------------------------------------------------|
+| Module                                                                 | Description                                                                     | Github                                                                                         |
+|:-----------------------------------------------------------------------|:--------------------------------------------------------------------------------|:-----------------------------------------------------------------------------------------------|
 | [`bandwidth-sdk`](https://rubygems.org/gems/bandwidth-sdk)             | Manage Phone Calls with BXML, Create outbound calls, SMS messages, MMS messages | [<img src="https://github.com/favicon.ico">](https://github.com/Bandwidth/ruby-sdk)            |
 | [`ruby-bandwidth-iris`](https://rubygems.org/gems/ruby-bandwidth-iris) | Manage phone numbers and account settings                                       | [<img src="https://github.com/favicon.ico">](https://github.com/Bandwidth/ruby-bandwidth-iris) |
 
@@ -118,8 +118,8 @@ The Ruby SDK(s) are available via [RubyGems](https://rubygems.org/) & Github
 
 The Python SDK(s) are available via [PyPi](https://pypi.org/) & Github
 
-| Module                                                     | Description                                                                     | Github                                            |
-|:-----------------------------------------------------------|:--------------------------------------------------------------------------------|:--------------------------------------------------|
+| Module                                                     | Description                                                                     | Github                                                                                |
+|:-----------------------------------------------------------|:--------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------|
 | [`bandwidth-sdk`](https://pypi.org/project/bandwidth-sdk/) | Manage Phone Calls with BXML, Create outbound calls, SMS messages, MMS messages | [<img src="https://github.com/favicon.ico">](https://github.com/Bandwidth/python-sdk) |
 
 ### Examples
@@ -143,18 +143,19 @@ The Python SDK(s) are available via [PyPi](https://pypi.org/) & Github
 
 The PHP SDK(s) are available via [Packagist](https://packagist.org/) & Github
 
-| Module                                                            | Description                                                                     | Github                                                    |
-|:------------------------------------------------------------------|:--------------------------------------------------------------------------------|:----------------------------------------------------------|
+| Module                                                            | Description                                                                     | Github                                                                                        |
+|:------------------------------------------------------------------|:--------------------------------------------------------------------------------|:----------------------------------------------------------------------------------------------|
 | [`bandwidth/sdk`](https://packagist.org/packages/bandwidth/sdk)   | Manage Phone Calls with BXML, Create outbound calls, SMS messages, MMS messages | [<img src="https://github.com/favicon.ico">](https://github.com/Bandwidth/php-sdk)            |
 | [`bandwidth/iris`](https://packagist.org/packages/bandwidth/iris) | Manage phone numbers and account settings                                       | [<img src="https://github.com/favicon.ico">](https://github.com/Bandwidth/php-bandwidth-iris) |
 
 ### Examples
 
-| Example                                        | Description                                                                              | Products        |
-|:-----------------------------------------------|:-----------------------------------------------------------------------------------------|:----------------|
-| [Reference App](php/BandwidthReferenceApp)     | A small sample app that covers basic use cases with Bandwidth's Voice and Messaging APIs | Voice/Messaging |
-| [BoilerPlate](php/BoilerPlate)                 | A template to be used to build Bandwidth apps in PHP                                     | Voice/Messaging |
-| [Outbound Call Center](php/OutboundCallCenter) | A sample app to show how to create an outbound call with a desired caller ID             | Voice           |
+| Example                                          | Description                                                                                            | Products        |
+|:-------------------------------------------------|:-------------------------------------------------------------------------------------------------------|:----------------|
+| [Reference App](php/BandwidthReferenceApp)       | A small sample app that covers basic use cases with Bandwidth's Voice and Messaging APIs               | Voice/Messaging |
+| [BoilerPlate](php/BoilerPlate)                   | A template to be used to build Bandwidth apps in PHP                                                   | Voice/Messaging |
+| [Outbound Call Center](php/OutboundCallCenter)   | A sample app to show how to create an outbound call with a desired caller ID                           | Voice           |
+| [Phone Number Ordering](php/PhoneNumberOrdering) | A demo app that creates a PHP/Slim server that exposes endpoints to order phone numbers from Bandwidth | Numbers         |
 
 <div align="center">
 
@@ -168,8 +169,8 @@ The PHP SDK(s) are available via [Packagist](https://packagist.org/) & Github
 
 The Java SDK(s) are available via [Maven](https://mvnrepository.com/) & Github
 
-| Module                                                                                                                      | Description                                                                     | Github                                                     |
-|:----------------------------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------|:-----------------------------------------------------------|
+| Module                                                                                                                      | Description                                                                     | Github                                                                                         |
+|:----------------------------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------|:-----------------------------------------------------------------------------------------------|
 | [`com.bandwidth.sdk/bandwidth-sdk`](https://mvnrepository.com/artifact/com.bandwidth.sdk/bandwidth-sdk)                     | Manage Phone Calls with BXML, Create outbound calls, SMS messages, MMS messages | [<img src="https://github.com/favicon.ico">](https://github.com/Bandwidth/java-sdk)            |
 | [`com.bandwidth.sdk/bandwidth-java-iris-sdk`](https://mvnrepository.com/artifact/com.bandwidth.sdk/bandwidth-java-iris-sdk) | Manage phone numbers and account settings                                       | [<img src="https://github.com/favicon.ico">](https://github.com/Bandwidth/java-bandwidth-iris) |
 
