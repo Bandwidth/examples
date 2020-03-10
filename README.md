@@ -26,12 +26,12 @@ In order to run the examples, you'll need a Bandwidth account with valid API Cre
 
 The NodeJS SDK(s) are available via NPM & Github.
 
-| Module                                                                       | Description                                                                   | Github                                                      | NPM                                                       |
-|:-----------------------------------------------------------------------------|:------------------------------------------------------------------------------|:------------------------------------------------------------|:----------------------------------------------------------|
-| [`@banwdidth/numbers`](https://www.npmjs.com/package/@bandwidth/numbers)     | Manage phone numbers and account settings                                     | [github](https://github.com/Bandwidth/node-numbers)         | [npm](https://www.npmjs.com/package/@bandwidth/numbers)   |
-| [`@bandwidth/voice`](https://www.npmjs.com/package/@bandwidth/numbers)       | Create outbound phone calls and manage call media (recordings/transcriptions) | [github](https://github.com/Bandwidth/node-voice)           | [npm](https://www.npmjs.com/package/@bandwidth/voice)     |
-| [`@bandwidth/bxml`](https://www.npmjs.com/package/@bandwidth/bxml)           | Create BXML for managing call flow                                            | ![github](.readme_images/gh_icon.png =36x36)| [npm](https://www.npmjs.com/package/@bandwidth/bxml)      |
-| [`@bandwidth/messaging`](https://www.npmjs.com/package/@bandwidth/messaging) | Create outbound messages and manage message media (MMS)                       | [github](https://github.com/Bandwidth/node-messaging)       | [npm](https://www.npmjs.com/package/@bandwidth/messaging) |
+| Module                                                                       | Description                                                                   | Github                                                | NPM                                                       |
+|:-----------------------------------------------------------------------------|:------------------------------------------------------------------------------|:------------------------------------------------------|:----------------------------------------------------------|
+| [`@banwdidth/numbers`](https://www.npmjs.com/package/@bandwidth/numbers)     | Manage phone numbers and account settings                                     | [github](https://github.com/Bandwidth/node-numbers)   | [npm](https://www.npmjs.com/package/@bandwidth/numbers)   |
+| [`@bandwidth/voice`](https://www.npmjs.com/package/@bandwidth/numbers)       | Create outbound phone calls and manage call media (recordings/transcriptions) | [github](https://github.com/Bandwidth/node-voice)     | [npm](https://www.npmjs.com/package/@bandwidth/voice)     |
+| [`@bandwidth/bxml`](https://www.npmjs.com/package/@bandwidth/bxml)           | Create BXML for managing call flow                                            | N/A                                                   | [npm](https://www.npmjs.com/package/@bandwidth/bxml)      |
+| [`@bandwidth/messaging`](https://www.npmjs.com/package/@bandwidth/messaging) | Create outbound messages and manage message media (MMS)                       | [github](https://github.com/Bandwidth/node-messaging) | [npm](https://www.npmjs.com/package/@bandwidth/messaging) |
 
 #### Examples
 
