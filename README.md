@@ -31,6 +31,8 @@ In order to run the examples, you'll need a Bandwidth account with valid API Cre
 
 ## NodeJS
 
+![node](.readme_images/node.png)
+
 ### SDKs
 
 The NodeJS SDK(s) are available via [NPM](https://www.npmjs.com/) & Github.
@@ -51,6 +53,8 @@ The NodeJS SDK(s) are available via [NPM](https://www.npmjs.com/) & Github.
 
 ## C#
 
+![C#](.readme_images/c#.png)
+
 ### SDKs
 
 The C# SDK(s) are available via [NuGet](https://www.nuget.org/) & Github
@@ -68,6 +72,8 @@ The C# SDK(s) are available via [NuGet](https://www.nuget.org/) & Github
 | [BoilerPlate](csharp/BoilerPlate)             | A template to be used to build Bandwidth apps in C#                                      | Voice/Messaging |
 
 ## Ruby
+
+![ruby](.readme_images/ruby.png)
 
 ### SDKs
 
@@ -89,6 +95,8 @@ The Ruby SDK(s) are available via [RubyGems](https://rubygems.org/) & Github
 
 ## Python
 
+![python](.readme_images/python.png)
+
 ### SDKs
 
 The Python SDK(s) are available via [PyPi](https://pypi.org/) & Github
@@ -106,6 +114,8 @@ The Python SDK(s) are available via [PyPi](https://pypi.org/) & Github
 | [Recording](python/RecordingApp)              | A sample app that mimics a voicemail service using Bandwidth's Voice API and Recording   | Voice/Messaging |
 
 ## PHP
+
+![php](.readme_images/php.png)
 
 ### SDKs
 
@@ -125,6 +135,8 @@ The PHP SDK(s) are available via [Packagist](https://packagist.org/) & Github
 | [Outbound Call Center](php/OutboundCallCenter) | A sample app to show how to create an outbound call with a desired caller ID             | Voice           |
 
 ## Java
+
+![java](.readme_images/java.png)
 
 ### SDKs
 
