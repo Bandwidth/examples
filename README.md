@@ -31,7 +31,7 @@ In order to run the examples, you'll need a Bandwidth account with valid API Cre
 
 ## NodeJS
 
-![node](.readme_images/js.png)
+<img src="https://github.com/Bandwidth/examples/raw/README-UPDATE/.readme_images/js.png" size="25%">
 
 ### SDKs
 
