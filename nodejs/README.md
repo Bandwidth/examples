@@ -2,7 +2,7 @@
 
 # Bandwidth NodeJS
 
-<img src="https://github.com/Bandwidth/examples/raw/README-UPDATE/.readme_images/js.png" width="15%">
+<img src="https://github.com/Bandwidth/examples/raw/master/.readme_images/js.png" width="15%">
 
 </div>
 
