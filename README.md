@@ -24,12 +24,14 @@ In order to run the examples, you'll need a Bandwidth account with valid API Cre
 
 #### SDKs
 
-The NodeJS SDK(s) are available via NPM & Github
+The NodeJS SDK(s) are available via NPM & Github.
 
-* `@banwdidth/number`: Manage phone numbers and account settings [npm](https://www.npmjs.com/package/@bandwidth/numbers), [github](https://github.com/Bandwidth/node-numbers)
-* [Voice-SDK](https://www.npmjs.com/package/@bandwidth/voice)
-  * [BXML-Generator](https://www.npmjs.com/package/@bandwidth/bxml)
-* [Messaging-SDK](https://www.npmjs.com/package/@bandwidth/messaging)
+| Module                                                                       | Description                                                                   | Github                                                | NPM                                                       |
+|:-----------------------------------------------------------------------------|:------------------------------------------------------------------------------|:------------------------------------------------------|:----------------------------------------------------------|
+| [`@banwdidth/numbers`](https://www.npmjs.com/package/@bandwidth/numbers)     | Manage phone numbers and account settings                                     | [github](https://github.com/Bandwidth/node-numbers)   | [npm](https://www.npmjs.com/package/@bandwidth/numbers)   |
+| [`@bandwidth/voice`](https://www.npmjs.com/package/@bandwidth/numbers)       | Create outbound phone calls and manage call media (recordings/transcriptions) | [github](https://github.com/Bandwidth/node-voice)     | [npm](https://www.npmjs.com/package/@bandwidth/voice)     |
+| [`@bandwidth/bxml`](https://www.npmjs.com/package/@bandwidth/bxml)           | Create BXML for managing call flow                                            | N/A                                                   | [npm](https://www.npmjs.com/package/@bandwidth/bxml)      |
+| [`@bandwidth/messaging`](https://www.npmjs.com/package/@bandwidth/messaging) | Create outbound messages and manage message media (MMS)                       | [github](https://github.com/Bandwidth/node-messaging) | [npm](https://www.npmjs.com/package/@bandwidth/messaging) |
 
 #### Examples
 
