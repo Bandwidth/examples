@@ -29,11 +29,12 @@ In order to run the examples, you'll need a Bandwidth account with valid API Cre
 * [PHP](#php)
 * [Java](#java)
 
-## NodeJS
 
 <div align="center">
 
-<img src="https://github.com/Bandwidth/examples/raw/README-UPDATE/.readme_images/js.png" width="10%">
+## NodeJS
+
+<img src="https://github.com/Bandwidth/examples/raw/README-UPDATE/.readme_images/js.png" width="15%">
 
 </div>
 
@@ -55,9 +56,14 @@ The NodeJS SDK(s) are available via [NPM](https://www.npmjs.com/) & Github.
 | [Reference App](nodejs/BandwidthReferenceApp) | A small sample app that covers basic use cases with Bandwidth's Voice and Messaging APIs | Voice/Messaging |
 | [BoilerPlate](nodejs/BoilerPlate)             | A template to be used to build Bandwidth apps in NodeJS                                  | Voice/Messaging |
 
+<div align="center">
+
 ## C#
 
-![C#](.readme_images/csharp.png)
+<img src="https://github.com/Bandwidth/examples/raw/README-UPDATE/.readme_images/csharp.png" width="15%">
+
+
+</div>
 
 ### SDKs
 
@@ -75,9 +81,13 @@ The C# SDK(s) are available via [NuGet](https://www.nuget.org/) & Github
 | [Reference App](csharp/BandwidthReferenceApp) | A small sample app that covers basic use cases with Bandwidth's Voice and Messaging APIs | Voice/Messaging |
 | [BoilerPlate](csharp/BoilerPlate)             | A template to be used to build Bandwidth apps in C#                                      | Voice/Messaging |
 
+<div align="center">
+
 ## Ruby
 
-![ruby](.readme_images/ruby.png)
+<img src="https://github.com/Bandwidth/examples/raw/README-UPDATE/.readme_images/ruby.png" width="15%">
+
+</div>
 
 ### SDKs
 
@@ -97,9 +107,13 @@ The Ruby SDK(s) are available via [RubyGems](https://rubygems.org/) & Github
 | [Recording](ruby/RecordingApp)                    | A sample app that mimics a voicemail service using Bandwidth's Voice API and Recording                     | Voice/Messaging |
 | [Phone Number Ordering](ruby/PhoneNumberOrdering) | A demo app that creates a Ruby/Sinatra server that exposes endpoints to order phone numbers from Bandwidth | Numbers         |
 
+<div align="center">
+
 ## Python
 
-![python](.readme_images/python.png)
+<img src="https://github.com/Bandwidth/examples/raw/README-UPDATE/.readme_images/python.png" width="15%">
+
+</div>
 
 ### SDKs
 
@@ -117,11 +131,16 @@ The Python SDK(s) are available via [PyPi](https://pypi.org/) & Github
 | [BoilerPlate](python/BoilerPlate)             | A template to be used to build Bandwidth apps in Python                                  | Voice/Messaging |
 | [Recording](python/RecordingApp)              | A sample app that mimics a voicemail service using Bandwidth's Voice API and Recording   | Voice/Messaging |
 
+<div align="center">
+
 ## PHP
 
-![php](.readme_images/php.png)
+<img src="https://github.com/Bandwidth/examples/raw/README-UPDATE/.readme_images/php.png" width="15%">
 
 ### SDKs
+
+</div>
+
 
 The PHP SDK(s) are available via [Packagist](https://packagist.org/) & Github
 
@@ -138,9 +157,13 @@ The PHP SDK(s) are available via [Packagist](https://packagist.org/) & Github
 | [BoilerPlate](php/BoilerPlate)                 | A template to be used to build Bandwidth apps in PHP                                     | Voice/Messaging |
 | [Outbound Call Center](php/OutboundCallCenter) | A sample app to show how to create an outbound call with a desired caller ID             | Voice           |
 
+<div align="center">
+
 ## Java
 
-![java](.readme_images/java.png)
+<img src="https://github.com/Bandwidth/examples/raw/README-UPDATE/.readme_images/java.png" width="15%">
+
+</div>
 
 ### SDKs
 
