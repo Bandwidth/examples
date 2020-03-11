@@ -50,7 +50,7 @@ You are now ready to text your Bandwidth phone number that is associated with th
 
 ## What You Can Do
 
-* Text your phone number any phrase other than `call me` and you will receive a response with the current date-time
 * Text your phone number `call me` and you will receive a phone call asking you to transfer the call via a 10 digit dtmf gather
-* Text your phone number an image and you will receive the same image sent through Bandwidth's media API
+* Text your phone number `dog` and you will recieve a picture of a dog sent back
+* Text your phone number any phrase other than `call me` or `dog` and you will receive a response with the current date-time
 * Call your phone number and you will be asked to play a game

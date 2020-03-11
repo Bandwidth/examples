@@ -7,12 +7,13 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
   },
+  "repository": "https://github.com/Bandwidth/examples",
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@bandwidth/bxml": "^2.2.0",
+    "@bandwidth/bxml": "^2.4.0",
     "@bandwidth/messaging": "^1.0.1",
-    "@bandwidth/voice": "^1.0.0",
+    "@bandwidth/voice": "^1.1.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1"
   }

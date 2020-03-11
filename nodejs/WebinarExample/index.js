@@ -1,7 +1,7 @@
 require('dotenv').config()
 
 const express = require('express');
-const config = require('config');
+const config = require('./config');
 const messaging = require('./messaging');
 const voice = require('./voice');
 
@@ -16,5 +16,5 @@ app.post('/VoiceCallback', voice.handleInboundCall);
 app.post('/StartGatherGame', voice.startGatherGame);
 app.post('/EndGatherGame', voice.endGatherGame);
 
-app.listen(config.port);
-console.log(`Server listening on port ${config.port}`);
+app.listen(config.PORT);
+console.log(`Server listening on port ${config.PORT}`);

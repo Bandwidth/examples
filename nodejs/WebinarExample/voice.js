@@ -22,22 +22,23 @@ const voiceController = BandwidthVoice.APIController;
  */
 
 exports.callMe = async (to, from) => {
+    const accountId = config.BANDWIDTH_ACCOUNT_ID;
+    const applicationId = config.VOICE_APPLICATION_ID;
     const answerUrl = (new URL('/StartGatherTransfer', config.BASE_URL)).href;
     const body = new BandwidthVoice.ApiCreateCallRequest({
         from          : from,
         to            : to,
-        applicationId : config.VOICE_APPLICATION_ID,
-        answerUrl     : answerUrl
+        applicationId : applicationId,
+        answerUrl     : answerUrl,
         answerMethod  : 'POST',
         callTimeout   : 30
     });
-
+    console.log(body);
     try {
-        const response = await voiceController.createCall(process.env.VOICE_ACCOUNT_ID, body);
-        console.log('Success');
-        console.log(response);
+        const callResponse = await voiceController.createCall(accountId, body);
+        console.log(`Created outbound call with callId: ${callResponse.callId}`);
     } catch (e) {
-        console.log('Error');
+        console.log('Error creating outbound call');
         console.log(e);
     }
 }
@@ -142,17 +143,10 @@ exports.endGatherGame = function(req, res) {
     const data = req.body;
     const digits = data['digits'];
 
-    const url;
-
-    if (digits == '11') {
-        url = 'https://www.kozco.com/tech/piano2.wav';
-    }
-    else {
-        url = '';
-    }
+    const audioFile = (digits === '11') ? 'https://www.kozco.com/tech/piano2.wav' : '';
 
     const playAudio = new BandwidthBxml.Verbs.PlayAudio();
-    playAudio.setUrl(url);
+    playAudio.setUrl(audioFile);
 
     const response = new BandwidthBxml.Response();
     response.addVerb(playAudio);

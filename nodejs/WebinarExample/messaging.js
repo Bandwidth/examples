@@ -6,9 +6,8 @@
  * @copyright Bandwidth INC
  */
 
-
 const BandwidthMessaging = require('@bandwidth/messaging');
-const config = reqire('./config');
+const config = require('./config');
 const voice = require("./voice");
 
 const sendMessage = async message => {
@@ -46,8 +45,9 @@ const buildToArray = message => {
 exports.handleMessageCallback = async function(req, res) {
     res.sendStatus(200);
     const message = req.body[0];
-    if (message.direction === 'out') {
-        console.log(`Callback Received for: MessageId: ${message.id}, status: ${message.description}`);
+    const isDLR = (message.message.direction.toLowerCase() === 'out');
+    if (isDLR) {
+        console.log(`Callback Received for: MessageId: ${message.message.id}, status: ${message.description}`);
         return;
     }
     const messageText = (message.message.text).toLowerCase().trim();
@@ -58,7 +58,7 @@ exports.handleMessageCallback = async function(req, res) {
     switch (messageText) {
         case "call me":
             try {
-                const voiceResponse = await voice.callMe(message.from, message.to);
+                const voiceResponse = await voice.callMe(message.message.from, message.to);
             }
             catch (e) {
                 console.log('Error creating outbound call');
