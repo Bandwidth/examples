@@ -57,13 +57,7 @@ exports.handleMessageCallback = async function(req, res) {
     };
     switch (messageText) {
         case "call me":
-            try {
-                const voiceResponse = await voice.callMe(message.message.from, message.to);
-            }
-            catch (e) {
-                console.log('Error creating outbound call');
-                console.log(e);
-            }
+            const voiceResponse = await voice.callMe(message.message.from, message.to);
             return;
             break;
         case "dog":

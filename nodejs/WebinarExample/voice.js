@@ -37,6 +37,7 @@ exports.callMe = async (to, from) => {
     try {
         const callResponse = await voiceController.createCall(accountId, body);
         console.log(`Created outbound call with callId: ${callResponse.callId}`);
+        return callResponse;
     } catch (e) {
         console.log('Error creating outbound call');
         console.log(e);
@@ -63,7 +64,8 @@ exports.startGatherTransfer = function(req, res) {
     const response = new BandwidthBxml.Response();
     response.addVerb(gather);
 
-    res.send(response.toBxml());
+    const bxml = response.toBxml();
+    res.send(bxml);
 }
 
 /*
@@ -73,7 +75,7 @@ exports.startGatherTransfer = function(req, res) {
  */
 exports.endGatherTransfer = (req, res) => {
     const data = req.body;
-    const phoneNumberString = '+1' + data['digits'];
+    const phoneNumberString = `+1${data['digits']}`;
 
     const phoneNumber = new BandwidthBxml.Verbs.PhoneNumber();
     phoneNumber.setNumber(phoneNumberString);
@@ -84,7 +86,8 @@ exports.endGatherTransfer = (req, res) => {
     const response = new BandwidthBxml.Response();
     response.addVerb(transfer);
 
-    res.send(response.toBxml());
+    const bxml = response.toBxml();
+    res.send(bxml);
 }
 
 /*
@@ -114,7 +117,8 @@ exports.handleInboundCall = (req, res) => {
     response.addVerb(speakSentence2);
     response.addVerb(redirect);
 
-    res.send(response.toBxml());
+    const bxml = response.toBxml();
+    res.send(bxml);
 }
 
 /*
@@ -130,7 +134,8 @@ exports.startGatherGame = (req, res) => {
     const response = new BandwidthBxml.Response();
     response.addVerb(gather);
 
-    res.send(response.toBxml());
+    const bxml = response.toBxml();
+    res.send(bxml);
 }
 
 /*
@@ -151,5 +156,6 @@ exports.endGatherGame = function(req, res) {
     const response = new BandwidthBxml.Response();
     response.addVerb(playAudio);
 
-    res.send(response.toBxml());
+    const bxml = response.toBxml();
+    res.send(bxml);
 }
