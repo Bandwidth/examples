@@ -1,6 +1,6 @@
 <div align="center">
 
-# BandwidthReferenceApp
+# Bandwidth Node Webinar App
 
 ![BW_all](../../.readme_images/BW_all.png)
 
