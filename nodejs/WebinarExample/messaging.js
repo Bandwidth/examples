@@ -11,8 +11,8 @@ const config = require('./config');
 const voice = require("./voice");
 
 const sendMessage = async message => {
-    BandwidthMessaging.Configuration.basicAuthUserName = config.MESSAGING_API_TOKEN;
-    BandwidthMessaging.Configuration.basicAuthPassword = config.MESSAGING_API_SECRET;
+    BandwidthMessaging.Configuration.basicAuthUserName = config.VOICE_API_USERNAME;
+    BandwidthMessaging.Configuration.basicAuthPassword = config.VOICE_API_PASSWORD;
     const accountId = config.BANDWIDTH_ACCOUNT_ID;
     const messagingController = BandwidthMessaging.APIController;
 

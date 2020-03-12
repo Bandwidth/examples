@@ -158,6 +158,10 @@ exports.endGatherGame = (req, res) => {
     const response = new BandwidthBxml.Response();
     response.addVerb(playAudio);
 
+    const hangup = new BandwidthBxml.Verbs.Hangup();
+    response.addVerb(hangup);
+
+
     const bxml = response.toBxml();
     res.send(bxml);
 }
