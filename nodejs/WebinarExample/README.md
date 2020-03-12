@@ -91,7 +91,8 @@ require('dotenv').config()
 
 const express = require('express');
 const config = require('./config');
-
+const messaging = require('./messaging');
+const voice = require('./voice');
 const app = express();
 
 app.use(express.json());
