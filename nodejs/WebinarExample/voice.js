@@ -49,7 +49,7 @@ exports.callMe = async (to, from) => {
  *
  * @return {string} The generated BXML
  */
-exports.startGatherTransfer = function(req, res) {
+exports.startGatherTransfer = (req, res) => {
     const speakSentence = new BandwidthBxml.Verbs.SpeakSentence();
     speakSentence.setSentence('Who do you want to transfer this call to? Enter the 10 digit phone number');
     speakSentence.setVoice('susan');
@@ -144,11 +144,13 @@ exports.startGatherGame = (req, res) => {
  *
  * @return {string} The generated BXML
  */
-exports.endGatherGame = function(req, res) {
+exports.endGatherGame = (req, res) => {
     const data = req.body;
     const digits = data['digits'];
+    const successFile = 'https://bw-demo.s3.amazonaws.com/tada.wav';
+    const failFile = 'https://bw-demo.s3.amazonaws.com/fail.wav';
 
-    const audioFile = (digits === '11') ? 'https://www.kozco.com/tech/piano2.wav' : '';
+    const audioFile = (digits === '11') ? successFile : failFile;
 
     const playAudio = new BandwidthBxml.Verbs.PlayAudio();
     playAudio.setUrl(audioFile);
