@@ -11,8 +11,8 @@ const config = require('./config');
 const voice = require("./voice");
 
 const sendMessage = async message => {
-    BandwidthMessaging.Configuration.basicAuthUserName = config.VOICE_API_USERNAME;
-    BandwidthMessaging.Configuration.basicAuthPassword = config.VOICE_API_PASSWORD;
+    BandwidthMessaging.Configuration.basicAuthUserName = config.MESSAGING_API_TOKEN;
+    BandwidthMessaging.Configuration.basicAuthPassword = config.MESSAGING_API_SECRET;
     const accountId = config.BANDWIDTH_ACCOUNT_ID;
     const messagingController = BandwidthMessaging.APIController;
 
@@ -38,8 +38,6 @@ const buildToArray = message => {
  * For inbound SMS that contains the phrase "call me", a phone call is made and the user is asked to
  *      forward the call to another number
  * For inbound SMS that doesn't contain the phrase "call me", the response is a SMS with the date and time.
- * For inbound MMS with a media attachment, the response is the same
- *      media attachment sent through Bandwidth's media resource.
  * For all other events, the callback is logged to console
  */
 exports.handleMessageCallback = async function(req, res) {

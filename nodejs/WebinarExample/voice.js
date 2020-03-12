@@ -8,7 +8,7 @@
 const BandwidthVoice = require('@bandwidth/voice');
 const BandwidthBxml = require('@bandwidth/bxml');
 const url = require('url');
-const config = require('./config')
+const config = require('./config');
 
 BandwidthVoice.Configuration.basicAuthUserName = config.VOICE_API_USERNAME;
 BandwidthVoice.Configuration.basicAuthPassword = config.VOICE_API_PASSWORD;
@@ -33,7 +33,6 @@ exports.callMe = async (to, from) => {
         answerMethod  : 'POST',
         callTimeout   : 30
     });
-    console.log(body);
     try {
         const callResponse = await voiceController.createCall(accountId, body);
         console.log(`Created outbound call with callId: ${callResponse.callId}`);
@@ -109,34 +108,18 @@ exports.handleInboundCall = (req, res) => {
     speakSentence2.setGender('female');
     speakSentence2.setLocale('en_US');
 
-    const redirect = new BandwidthBxml.Verbs.Redirect();
-    redirect.setRedirectUrl('/StartGatherGame');
-
-    const response = new BandwidthBxml.Response();
-    response.addVerb(speakSentence1);
-    response.addVerb(speakSentence2);
-    response.addVerb(redirect);
-
-    const bxml = response.toBxml();
-    res.send(bxml);
-}
-
-/*
- * Callback endpoint that returns BXML for making a gather
- *
- * @return {string} The generated BXML
- */
-exports.startGatherGame = (req, res) => {
     const gather = new BandwidthBxml.Verbs.Gather();
     gather.setGatherUrl('/EndGatherGame');
     gather.setMaxDigits(2);
 
     const response = new BandwidthBxml.Response();
+    response.addVerb(speakSentence1);
+    response.addVerb(speakSentence2);
     response.addVerb(gather);
 
     const bxml = response.toBxml();
     res.send(bxml);
-}
+};
 
 /*
  * Callback endpoint that expects a gather callback. Plays an audio file based on if the answer to the
@@ -164,4 +147,4 @@ exports.endGatherGame = (req, res) => {
 
     const bxml = response.toBxml();
     res.send(bxml);
-}
+};
