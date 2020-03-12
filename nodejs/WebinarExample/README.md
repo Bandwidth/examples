@@ -175,6 +175,7 @@ Pull in config and declare the SDK
 ```js
 const BandwidthMessaging = require('@bandwidth/messaging');
 const config = require('./config');
+const voice = require("./voice");
 ```
 
 ### Create sendMessage function
@@ -256,6 +257,7 @@ const buildToArray = message => {
         to: buildToArray(message),
         from: message.to
     };
+    const messageText = (message.message.text).toLowerCase().trim();
     switch (messageText) {
         case "call me":
             return;
