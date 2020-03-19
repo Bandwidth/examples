@@ -1,20 +1,25 @@
 package com.main;
 
+import com.bandwidth.ApiHelper;
 import com.bandwidth.BandwidthClient;
 import com.bandwidth.Configuration;
 import com.bandwidth.Environment;
+import com.bandwidth.exceptions.ApiException;
 import com.bandwidth.http.response.ApiResponse;
+import com.bandwidth.messaging.models.BandwidthCallbackMessage;
 import com.bandwidth.messaging.models.BandwidthMessage;
 import com.bandwidth.messaging.models.MessageRequest;
-import com.bandwidth.voice.bxml.verbs.Response;
+import com.bandwidth.voice.bxml.verbs.*;
 import com.bandwidth.voice.models.ApiCallResponse;
 import com.bandwidth.voice.models.ApiCreateCallRequest;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import java.util.Arrays;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static spark.Spark.*;
 
@@ -40,91 +45,121 @@ public class BoilerPlate {
 
     public static void main(String[] args) {
 
-
-
-
         get("/", (req, res) -> {
 
             return "Hello World";
         });
 
-
-        post("/Create/Message", (req, res) -> {
+        post("/Callbacks/Messaging", (req, res) -> {
+            // We can set the status now
+            res.status(200);
 
             String json = req.body();
-            Object obj = new JSONParser().parse(json);
+            BandwidthCallbackMessage[] incomingMessageArray = ApiHelper.deserialize(json, BandwidthCallbackMessage[].class);
+            BandwidthCallbackMessage incomingMessage = incomingMessageArray[0];
+            BandwidthMessage message = incomingMessage.getMessage();
 
-            JSONObject jsonObject = (JSONObject) obj;
+            // Handle DLRs
+            if(message.getDirection().equals("out")) {
+                String logMessage = String.format("Message ID: %s DLR Status: %s", message.getId(), incomingMessage.getDescription());
+                System.out.println(logMessage);
+                return "";
+            }
 
-            JSONArray jsonArray = (JSONArray) jsonObject.get("To");
+            String owner = message.getOwner();
+            List<String> numbers = new ArrayList<>(message.getTo());
 
-            List<String> to = Arrays.asList( (String[]) jsonArray.toArray() ) ;
-            String from = (String) jsonObject.get("From");
-            String text = (String) jsonObject.get("Text");
+            numbers.removeIf(number -> Objects.equals(number, owner));
+            numbers.add(message.getFrom());
 
             MessageRequest messageRequest = new MessageRequest.Builder()
                     .applicationId(MESSAGING_APPLICATION_ID)
-                    .from(from)
-                    .to(to)
-                    .text(text)
+                    .from(owner)
+                    .to(numbers)
                     .build();
 
-            ApiResponse<BandwidthMessage> response = messagingController.createMessage(MESSAGING_ACCOUNT_ID, messageRequest );
+            boolean isDog = message.getText().trim().toLowerCase().equals("dog");
+            if (isDog) {
+                List<String> media = Collections.singletonList("https://bw-demo.s3.amazonaws.com/dog.jpg");
+                MessageRequest mmsMessage = messageRequest.toBuilder()
+                        .text("🐶")
+                        .media(media)
+                        .build();
+                try {
+                    ApiResponse<BandwidthMessage> response = messagingController.createMessage(MESSAGING_ACCOUNT_ID, mmsMessage);
+                    System.out.println(String.format("Sent Message with ID: %s", response.getResult().getId()));
+                } catch (ApiException | IOException e){
+                    System.out.println("Failed sending message");
+                    System.out.println(e);
+                }
+            }
+            else {
+                MessageRequest smsMessage = messageRequest.toBuilder()
+                        .text("👋 Hello from Bandwidth")
+                        .build();
 
-            return "Message Id:  " + response.getResult().getId();
-        });
-
-        post("/Create/Call", (req, res) -> {
-
-            String json = req.body();
-            Object obj = new JSONParser().parse(json);
-
-            JSONObject jsonObject = (JSONObject) obj;
-
-            String to = (String) jsonObject.get("To");
-            String from = (String) jsonObject.get("From");
-            String answerUrl = (String) jsonObject.get("AnswerUrl");
-
-            ApiCreateCallRequest createCallRequest = new ApiCreateCallRequest.Builder()
-                    .applicationId(VOICE_APPLICATION_ID)
-                    .to(to)
-                    .from(from)
-                    .build();
-
-            ApiResponse<ApiCallResponse> response = voiceController.createCall(VOICE_ACCOUNT_ID, createCallRequest);
-
-
-            return "Call Id: " + response.getResult().getCallId();
-        });
-
-        post("/Callbacks/Messaging", (req, res) -> {
-
+                try {
+                    ApiResponse<BandwidthMessage> response = messagingController.createMessage(MESSAGING_ACCOUNT_ID, smsMessage);
+                    System.out.println(String.format("Sent Message with ID: %s", response.getResult().getId()));
+                } catch (ApiException | IOException e){
+                    System.out.println("Failed sending message");
+                    System.out.println(e);
+                }
+            }
 
             return "";//Just needs an ACK
         });
 
-        post("/Callbacks/Voice/Outbound", (req, res) -> {
-
-
-            return "";//Just needs and ACK
-        });
-
         post("/Callbacks/Voice/Inbound", (req, res) -> {
 
+            SpeakSentence speakSentence = SpeakSentence.builder()
+                    .text("Let's play a game, what is 9 plus 2")
+                    .voice("kate")
+                    .build();
 
-            return "Handle voice inbound call";//
+            Gather gather = Gather.builder()
+                    .gatherUrl("gatherResponse")
+                    .maxDigits(2)
+                    .firstDigitTimeout(10.0)
+                    .build();
+
+            Response response = Response.builder().build()
+                    .add(speakSentence)
+                    .add(gather);
+
+            String bxml = response.toBXML();
+            res.status(200);
+            res.type("application/xml");
+            return bxml;
         });
 
-        post("/Bxml", (req, res) -> {
+        post("/Callbacks/Voice/gatherResponse", (req, res) -> {
+            final String SUCCESS_FILE = "https://bw-demo.s3.amazonaws.com/tada.wav";
+            final String FAIL_FILE = "https://bw-demo.s3.amazonaws.com/fail.wav";
 
-            Response response = Response.builder().build();
+            String json = req.body();
+            Object obj = new JSONParser().parse(json);
 
-            //Add more verbs to response
-            //response.add( speakSentence );
+            JSONObject jsonObject = (JSONObject) obj;
 
-            return response.toBXML();
+            String digits = (String) jsonObject.get("digits");
+
+            String mediaUri = digits.equals("11") ? SUCCESS_FILE : FAIL_FILE;
+
+            PlayAudio playAudio = PlayAudio.builder()
+                    .audioUri(mediaUri)
+                    .build();
+            Hangup hangup = Hangup.builder().build();
+            Response response = Response.builder().build()
+                    .add(playAudio)
+                    .add(hangup);
+
+            res.type("application/xml");
+            res.status(200);
+            String bxml = response.toBXML();
+            return bxml;
+
         });
-
 
     }
 }
