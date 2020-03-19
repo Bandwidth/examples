@@ -39,7 +39,7 @@ public class BoilerPlate {
             .environment(Environment.PRODUCTION)
             .build();
 
-    //Fully qualified name to remove confilicts
+    //Fully qualified name to remove conflicts
     private static com.bandwidth.messaging.controllers.APIController messagingController = client.getMessagingClient().getAPIController();
     private static com.bandwidth.voice.controllers.APIController voiceController = client.getVoiceClient().getAPIController();
 
@@ -52,7 +52,6 @@ public class BoilerPlate {
 
         post("/Callbacks/Messaging", (req, res) -> {
             // We can set the status now
-            res.status(200);
 
             String json = req.body();
             BandwidthCallbackMessage[] incomingMessageArray = ApiHelper.deserialize(json, BandwidthCallbackMessage[].class);
@@ -106,6 +105,7 @@ public class BoilerPlate {
                     System.out.println(e);
                 }
             }
+            res.status(200);
 
             return "";//Just needs an ACK
         });
@@ -134,9 +134,6 @@ public class BoilerPlate {
         });
 
         post("/Callbacks/Voice/gatherResponse", (req, res) -> {
-            final String SUCCESS_FILE = "https://bw-demo.s3.amazonaws.com/tada.wav";
-            final String FAIL_FILE = "https://bw-demo.s3.amazonaws.com/fail.wav";
-
             String json = req.body();
             Object obj = new JSONParser().parse(json);
 
@@ -144,6 +141,8 @@ public class BoilerPlate {
 
             String digits = (String) jsonObject.get("digits");
 
+            final String SUCCESS_FILE = "https://bw-demo.s3.amazonaws.com/tada.wav";
+            final String FAIL_FILE = "https://bw-demo.s3.amazonaws.com/fail.wav";
             String mediaUri = digits.equals("11") ? SUCCESS_FILE : FAIL_FILE;
 
             PlayAudio playAudio = PlayAudio.builder()
