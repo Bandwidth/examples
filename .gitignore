@@ -8,3 +8,6 @@
 obj/
 
 .DS_Store
+
+**/.idea/*
+*.iml
