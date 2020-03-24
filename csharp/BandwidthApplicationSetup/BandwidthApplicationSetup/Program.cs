@@ -23,6 +23,14 @@ namespace BandwidthApplicationSetup
             createVoiceApplication().Wait();
         }
 
+        /// <summary>
+        /// This method will create a Bandwidth
+        /// 
+        /// Site which on the Bandwidth Console is a Subaccount
+        /// 
+        /// SipPeer which on the Bandwidth Console is a location
+        /// </summary>
+        /// <returns></returns>
         static async Task createSiteAndSipPeer()
         {
             site = await Site.Create(client, new Site
@@ -49,6 +57,14 @@ namespace BandwidthApplicationSetup
             });
         }
 
+        /// <summary>
+        /// Using the Site and SipPeer created in the createSiteAndSipPeer()
+        /// this method will create a Messaging application and associate it with
+        /// the newly created SipPeer (location).
+        /// It will also add the SMS and MMS features toteh SipPeer (location)
+        /// This makes it possible for the SipPeer (location) to be used by a Messaging Application
+        /// </summary>
+        /// <returns></returns>
         static async Task createMessageApplication()
         {
             var appMsg = await Application.Create(client, new Application
@@ -101,6 +117,13 @@ namespace BandwidthApplicationSetup
             });
         }
 
+        /// <summary>
+        /// Using the Site and SipPeer created in the createSiteAndSipPeer()
+        /// this method will create a Voice application and associate it with
+        /// the newly created SipPeer (location).
+        /// This is done through the SipPeer by setting the Origination Settings
+        /// </summary>
+        /// <returns></returns>
         static async Task createVoiceApplication()
         {
             var appVoice = await Application.Create(client, new Application
