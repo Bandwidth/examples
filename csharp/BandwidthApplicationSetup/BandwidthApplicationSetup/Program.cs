@@ -77,7 +77,7 @@ namespace BandwidthApplicationSetup
                 MsgCallbackUrl = "https://yourcallback.com"
             });
 
-            Console.WriteLine($"Created Messaging Appliction with ID: {appMsg.Application.ApplicationId}");
+            Console.WriteLine($"Created Messaging Application with ID: {appMsg.Application.ApplicationId}");
 
             var featureSmsMsg = await SipPeer.CreateSMSSettings(client, site.Id, sipPeer.Id, new SipPeerSmsFeature
             {
@@ -154,7 +154,7 @@ namespace BandwidthApplicationSetup
                 }
             });
 
-            Console.WriteLine("Updated SipPeer/Location with Voice Application");
+            Console.WriteLine("Updated SipPeer/Location with Voice Application")
         }
     }
 }

@@ -51,7 +51,7 @@ Will build and and run the Program.cs script
 $ dotnet run
 Created Site/Subaccount with ID: 32597
 Created SipPeer/Location with ID: 611568
-Created Messaging Appliction with ID: 5adf6d43-7da9-4486-a7b2-df869c043911
+Created Messaging Application with ID: 5adf6d43-7da9-4486-a7b2-df869c043911
 Updated SipPeer/Location with SMS Settings.
 Updated SipPeer/Location with MMS Settings.
 Updated SipPeer/Location with Messaging Application
