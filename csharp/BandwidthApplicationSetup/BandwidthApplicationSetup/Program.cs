@@ -7,9 +7,9 @@ namespace BandwidthApplicationSetup
     class Program
     {
 
-        private static readonly string ACCOUNT_ID = Environment.GetEnvironmentVariable("IRIS_ACCOUNT_ID");
-        private static readonly string USERNAME = Environment.GetEnvironmentVariable("IRIS_USERNAME");
-        private static readonly string PASSWORD = Environment.GetEnvironmentVariable("IRIS_PASSWORD");
+        private static readonly string ACCOUNT_ID = Environment.GetEnvironmentVariable("BANDWIDTH_ACCOUNT_ID");
+        private static readonly string USERNAME = Environment.GetEnvironmentVariable("BANDWIDTH_API_USER");
+        private static readonly string PASSWORD = Environment.GetEnvironmentVariable("BANDWIDTH_API_PASSWORD");
 
         private static Client client = Client.GetInstance(ACCOUNT_ID, USERNAME, PASSWORD, "https://dashboard.bandwidth.com");
 
@@ -25,9 +25,9 @@ namespace BandwidthApplicationSetup
 
         /// <summary>
         /// This method will create a Bandwidth
-        /// 
+        ///
         /// Site which on the Bandwidth Console is a Subaccount
-        /// 
+        ///
         /// SipPeer which on the Bandwidth Console is a location
         /// </summary>
         /// <returns></returns>
@@ -48,6 +48,7 @@ namespace BandwidthApplicationSetup
                 }
             });
 
+            Console.WriteLine($"Created Site/Subaccount with ID: {site.Id}");
 
             sipPeer = await SipPeer.Create(client, new SipPeer
             {
@@ -55,6 +56,8 @@ namespace BandwidthApplicationSetup
                 Name = "BandwidthApplicationLocation",
                 IsDefaultPeer = true
             });
+
+            Console.WriteLine($"Created SipPeer/Location with ID: {sipPeer.Id}");
         }
 
         /// <summary>
@@ -73,7 +76,9 @@ namespace BandwidthApplicationSetup
                 ServiceType = "Messaging-V2",
                 MsgCallbackUrl = "https://yourcallback.com"
             });
-      
+
+            Console.WriteLine($"Created Messaging Appliction with ID: {appMsg.Application.ApplicationId}");
+
             var featureSmsMsg = await SipPeer.CreateSMSSettings(client, site.Id, sipPeer.Id, new SipPeerSmsFeature
             {
                 SipPeerSmsFeatureSettings = new SipPeerSmsFeatureSettings
@@ -93,6 +98,8 @@ namespace BandwidthApplicationSetup
                 }
             });
 
+            Console.WriteLine("Updated SipPeer/Location with SMS Settings.");
+
             var featureMmsMsg = await SipPeer.CreateMMSSettings(client, site.Id, sipPeer.Id, new MmsFeature
             {
                 MmsSettings = new MmsSettings
@@ -101,20 +108,23 @@ namespace BandwidthApplicationSetup
                 },
                 Protocols = new Protocols
                 {
-                    HTTP = new HTTP { 
+                    HTTP = new HTTP {
                         HttpSettings = new HttpSettings
                         {
-                            
+
                         }
                     }
-
                 }
             });
+
+            Console.WriteLine("Updated SipPeer/Location with MMS Settings.");
 
             await SipPeer.UpdateApplicationSettings(client, site.Id, sipPeer.Id, new ApplicationsSettings
             {
                 HttpMessagingV2AppId = appMsg.Application.ApplicationId
             });
+
+            Console.WriteLine("Updated SipPeer/Location with Messaging Application");
         }
 
         /// <summary>
@@ -133,6 +143,8 @@ namespace BandwidthApplicationSetup
                 CallInitiatedCallbackUrl = "https://yourcallback.com"
             });
 
+            Console.WriteLine($"Created Voice Application with ID: {appVoice.Application.ApplicationId}");
+
             var featureVoice = await SipPeer.SetOriginationSettings(client, site.Id, sipPeer.Id, new SipPeerOriginationSettings
             {
                 VoiceProtocol = "HTTP",
@@ -142,8 +154,7 @@ namespace BandwidthApplicationSetup
                 }
             });
 
+            Console.WriteLine("Updated SipPeer/Location with Voice Application");
         }
-
-
     }
 }
