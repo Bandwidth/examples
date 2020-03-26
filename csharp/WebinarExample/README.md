@@ -355,7 +355,7 @@ public string VoiceCallback()
   string bxml = response.ToBXML();
 
   return bxml;
-};
+}
 ```
 
 ### Create the GatherController
