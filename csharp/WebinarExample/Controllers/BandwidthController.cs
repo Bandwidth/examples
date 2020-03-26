@@ -22,7 +22,7 @@ namespace WebinarExample.Controllers
     private static string bandwidthAPIPassowrd = System.Environment.GetEnvironmentVariable("BANDWIDTH_API_PASSWORD");
     private static string msgApiToken = System.Environment.GetEnvironmentVariable("BANDWIDTH_MESSAGING_TOKEN");
     private static string msgApiSecret = System.Environment.GetEnvironmentVariable("BANDWIDTH_MESSAGING_SECRET");
-    private static string msgApplicationId = System.Environment.GetEnvironmentVariable("MSG_APPLICATION_ID");
+    private static string msgApplicationId = System.Environment.GetEnvironmentVariable("MESSAGING_APPLICATION_ID");
 
     // POST bandwidth/messageCallback
     [HttpPost]
@@ -71,7 +71,7 @@ namespace WebinarExample.Controllers
       BandwidthClient client = new BandwidthClient.Builder()
         .Environment(Bandwidth.Standard.Environment.Production)
         .VoiceBasicAuthCredentials(bandwidthAPIUser, bandwidthAPIPassowrd)
-        .MessagingBasicAuthCredentials(bandwidthAPIUser, bandwidthAPIPassowrd)
+        .MessagingBasicAuthCredentials(msgApiToken, msgApiSecret)
         .Build();
 
       Bandwidth.Standard.Messaging.Controllers.APIController msgController = client.Messaging.APIController;
