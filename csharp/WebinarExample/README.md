@@ -136,9 +136,18 @@ namespace WebinarExample.Controllers
 
 ### Create MessagingCallback handler
 
+* For this guide, we're only actually hitting the Bandwidth API on inbound messages
+  * We'll go ahead and declare our envVars here.
 * Within the `MessagingController` class add our callback handler
 
 ```csharp
+private static string bandwidthAccountId = System.Environment.GetEnvironmentVariable("BANDWIDTH_ACCOUNT_ID");
+private static string bandwidthAPIUser = System.Environment.GetEnvironmentVariable("BANDWIDTH_API_USER");
+private static string bandwidthAPIPassowrd = System.Environment.GetEnvironmentVariable("BANDWIDTH_API_PASSWORD");
+private static string msgApiToken = System.Environment.GetEnvironmentVariable("BANDWIDTH_MESSAGING_TOKEN");
+private static string msgApiSecret = System.Environment.GetEnvironmentVariable("BANDWIDTH_MESSAGING_SECRET");
+private static string msgApplicationId = System.Environment.GetEnvironmentVariable("MESSAGING_APPLICATION_ID");
+
 // POST bandwidth/messageCallback
 [HttpPost]
 [Consumes("application/json")]
