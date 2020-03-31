@@ -18,7 +18,7 @@ begin
   BANDWIDTH_API_PASSWORD             = ENV.fetch('BANDWIDTH_API_PASSWORD')
   BANDWIDTH_MESSAGING_TOKEN          = ENV.fetch('BANDWIDTH_MESSAGING_TOKEN')
   BANDWIDTH_MESSAGING_SECRET         = ENV.fetch('BANDWIDTH_MESSAGING_SECRET')
-  BANDWIDTH_MESSAGING_APPLICATION_ID = ENV.fetch('BANDWIDTH_MESSAGING_APPLICATION_ID')
+  BANDWIDTH_MSG_APPLICATION_ID       = ENV.fetch('BANDWIDTH_MESSAGING_APPLICATION_ID')
   BANDWIDTH_VOICE_APPLICATION_ID     = ENV.fetch('BANDWIDTH_VOICE_APPLICATION_ID')
 rescue
   puts 'Please set the environmental variables defined in the README'
@@ -32,33 +32,9 @@ bandwidth_client = Bandwidth::Client.new(
   messaging_basic_auth_password: BANDWIDTH_MESSAGING_SECRET,
 )
 
-$voice_client = bandwidth_client.voice_client.client
-$messaging_client = bandwidth_client.messaging_client.client
 
 get '/' do
   return 'Hello world'
-end
-
-post '/Create/Message' do
-  data = JSON.parse(request.body.read)
-  body = MessageRequest.new
-  body.application_id = BANDWIDTH_MESSAGING_APPLICATION_ID
-  body.to = [data['to']]
-  body.from = data['from']
-  body.text = data['text']
-  $messaging_client.create_message(BANDWIDTH_ACCOUNT_ID, body: body)
-  return 'Send a text message'
-end
-
-post '/Create/Call' do
-  data = JSON.parse(request.body.read)
-  body = ApiCreateCallRequest.new
-  body.to = data['to']
-  body.from = data['from']
-  body.answer_url = data['answerUrl']
-  body.application_id = VOICE_APPLICATION_ID
-  $voice_client.create_call(BANDWIDTH_ACCOUNT_ID ,body: body)
-  return 'Make a phone call'
 end
 
 post '/Callbacks/Messaging' do
@@ -67,17 +43,20 @@ post '/Callbacks/Messaging' do
   message = messaging_callback.message
   is_dlr = message.direction.downcase.strip == 'out'
   if is_dlr
-    puts "Callback Received for: MessageId: #{message.id}, status: #{messaging_callback.description}"
+    log_message = 'Callback Received for: MessageId: %s, status: %s'
+    puts format(log_message, message.id, messaging_callback.description)
     return 'Received Callback'
   end
+
   owner = message.owner
   to_numbers = message.to.clone
   to_numbers.delete(owner)
   to_numbers.push(message.from)
   message_request = MessageRequest.new(
-      application_id=BANDWIDTH_MESSAGING_APPLICATION_ID,
-      to=to_numbers,
-      from=owner)
+    BANDWIDTH_MSG_APPLICATION_ID,
+    to_numbers,
+    owner
+  )
   message_text = message.text.downcase.strip
   case message_text
   when 'dog'
@@ -86,15 +65,46 @@ post '/Callbacks/Messaging' do
   else
     message_request.text = '👋 Hello From bandwidth!'
   end
-
-  message_response = $messaging_client.create_message(BANDWIDTH_ACCOUNT_ID, body: message_request)
-  puts "Sent message with MessageId: #{message_response.data.id}"
+  messaging_client = bandwidth_client.messaging_client.client
+  message_response = messaging_client.create_message(BANDWIDTH_ACCOUNT_ID,
+                                                     body: message_request)
+  log_message = 'Sent message with MessageId: %s'
+  puts format(log_message, message_response.data.id)
 
   return 'Handle messaging callback'
 end
 
 
 post '/Callbacks/Voice/Inbound' do
+  sentence = 'Hello, let\'s play a game. What is 9 + 2'
+  voice = 'kate'
+  speak_sentence = SpeakSentence.new({ sentence: sentence,
+                                       voice: voice })
+  gather = Gather.new({ max_digits: 2,
+                        first_digit_timeout: 10,
+                        gather_url: '/Callbacks/Voice/Gather',
+                        speak_sentence: speak_sentence })
+  response = Bandwidth::Voice::Response.new
+  response.push(gather)
+  bxml = response.to_bxml
+  puts bxml
+  return bxml
+end
+
+post '/Callbacks/Voice/Gather' do
   data = JSON.parse(request.body.read)
-  return 'Handle voice inbound callback'
+  success_file = 'https://bw-demo.s3.amazonaws.com/tada.wav'
+  fail_file = 'https://bw-demo.s3.amazonaws.com/fail.wav'
+  digits = data['digits']
+  audio_uri = digits == '11' ? success_file : fail_file
+
+  play_audio = PlayAudio.new({ url: audio_uri })
+  hangup = Hangup.new
+  response = Response.new
+  response.push(play_audio)
+  response.push(hangup)
+
+  bxml = response.to_bxml
+  puts bxml
+  return bxml
 end
