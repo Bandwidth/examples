@@ -8,6 +8,8 @@
 
 This is the Bandwidth C# example app.
 
+⚠️ This project uses an old SDK and will be updated soon
+
 ## Notes
 * Modify the `local.props` file with your creadintials.
 * The application needs to be accessible to the Bandwidth callbacks. (open to internet)
