@@ -1,5 +1,7 @@
 # Bandwidth Template
 
+⚠️ This project uses an old SDK and will be updated soon
+
 ## Description
 A template to be used to build Bandwidth C# apps
 
