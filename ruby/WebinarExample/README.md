@@ -1,4 +1,16 @@
-# Bandwidth Ruby Webinar Example
+<div align="center">
+
+# Bandwidth Ruby Webinar App
+
+![BW_all](../../.readme_images/BW_all.png)
+
+</div>
+
+A small sample app that covers basic use cases with Bandwidth's Voice and Messaging APIs
+
+## Pre-Reqs
+
+You will need to set up Bandwidth Applications and have phone numbers associated with these application, and point the callback URL on these applications to the messaging and voice endpoints on the server running this app. `ngrok` is highly recommended for local prototyping.
 
 ## Description
 A small example demonstrating basic Bandwidth operations with the Ruby SDK
