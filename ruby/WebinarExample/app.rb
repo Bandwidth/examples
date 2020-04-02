@@ -93,9 +93,9 @@ end
 
 post '/Callbacks/Voice/Gather' do
   data = JSON.parse(request.body.read)
+  digits = data['digits']
   success_file = 'https://bw-demo.s3.amazonaws.com/tada.wav'
   fail_file = 'https://bw-demo.s3.amazonaws.com/fail.wav'
-  digits = data['digits']
   audio_uri = digits == '11' ? success_file : fail_file
 
   play_audio = PlayAudio.new({ url: audio_uri })
