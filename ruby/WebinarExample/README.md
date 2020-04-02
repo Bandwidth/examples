@@ -238,6 +238,18 @@ return bxml
 
 ### Handle the Gather Callback
 
+#### Create the endpoint
+
+* We need to define a new route for the gather event.
+
+```ruby
+post '/Callbacks/Voice/Gather' do
+
+end
+```
+
+#### Extract Digits
+
 * We need to pull the `digits` pressed values out of the callback to check if their arithmetic is correct
 
 ```ruby
