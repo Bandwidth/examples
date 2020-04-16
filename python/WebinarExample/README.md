@@ -49,7 +49,7 @@ python app.py
 ## What You Can Do
 
 * Text your phone number `dog` and you will receive a picture of a dog sent back
-* Text your phone number any phrase other than `dog` and you will receive a response with the current date-time
+* Text your phone number any phrase other than `dog` and you will receive a response with '👋 Hello From bandwidth!'
 * Call your phone number and you will be asked to play a game
 
 
