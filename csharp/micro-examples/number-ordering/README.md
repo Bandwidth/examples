@@ -2,7 +2,7 @@
 
 # Bandwidth C# (dotnet core) Phone Number Ordering App
 
-![BW_all](../../.readme_images/BW_all.png)
+![BW_all](../../../.readme_images/BW_PhoneNumbers.png)
 
 </div>
 
