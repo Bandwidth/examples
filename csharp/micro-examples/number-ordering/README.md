@@ -30,6 +30,8 @@ The following environmental variables need to be set
 
 ## Walk Through
 
+* ⚠️ App **does not** handle errors anywhere, will fail if an exception is thrown
+
 * Searches for 10 phone numbers in an areaCode
 * Searches for 10 phone numbers in a zipCode
 * Searches for 10 toll free numbers
