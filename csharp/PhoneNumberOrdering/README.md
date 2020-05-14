@@ -24,15 +24,17 @@ The following environmental variables need to be set
 
 | Variable               | Description                   |
 |------------------------|-------------------------------|
-| BANDWIDTH_ACCOUNTID    | Your Bandwidth AccountID      |
+| BANDWIDTH_ACCOUNT_ID    | Your Bandwidth AccountID      |
 | BANDWIDTH_API_USERNAME | Your Bandwidth Iris password  |
 | BANDWIDTH_API_USERNAME | Your Bandwidth Iris Username  |
 | BANDWIDTH_SITE_ID      | Your Bandwidth Sub Account ID |
 
 ### Creating Subscriptions
 
+{accountId} = Your Bandwidth account ID
+
 ```http
-POST https://dashboard.bandwidth.com/api/accounts/{{accountId}}/subscriptions
+POST https://dashboard.bandwidth.com/api/accounts/{accountId}/subscriptions
 
 <Subscription>
     <OrderType>disconnects</OrderType>
@@ -44,12 +46,12 @@ POST https://dashboard.bandwidth.com/api/accounts/{{accountId}}/subscriptions
 ```
 
 ```http
-POST https://dashboard.bandwidth.com/api/accounts/{{accountId}}/subscriptions
+POST https://dashboard.bandwidth.com/api/accounts/{accountId}/subscriptions
 
 <Subscription>
     <OrderType>orders</OrderType>
     <CallbackSubscription>
-        <URL>****YourHost.com/subscriptions/disconnects</URL>
+        <URL>****YourHost.com/subscriptions/orders</URL>
         <Expiry>10000</Expiry>
     </CallbackSubscription>
 </Subscription>
