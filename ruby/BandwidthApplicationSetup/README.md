@@ -56,9 +56,7 @@ to run the script.
 
 ```
 Site ID: 1234
-SipPeer ID: 876543
-Messaging Application
-{:application_id=>"01a-7d-42-ac-e8ee", :service_type=>"Messaging-V2", :app_name=>"BandwidthMsgApplication", :callback_url=>"https://yourcallback.com", :msg_callback_url=>"https://yourcallback.com", :callback_creds=>{}}
-Voice Application
-{:application_id=>"49-32-47-b2-05ef71", :service_type=>"Voice-V2", :app_name=>"BandwidthVoiceApplication", :call_initiated_callback_url=>"https://yourcallback.com", :call_initiated_method=>"POST"}
+SipPeer ID: 654321
+Messaging Application ID: 48-90-45-80-638f
+Voice Application ID: 53-d2-42-b1-6e7e
 ```
