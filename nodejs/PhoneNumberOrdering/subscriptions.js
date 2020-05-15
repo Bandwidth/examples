@@ -1,6 +1,6 @@
 require('dotenv').config()
 const config = require('./config');
-const bandwidth = require('bandwidth-iris');
+const bandwidth = require('@bandwidth/numbers');
 const commandLineArgs = require('command-line-args')
 
 const optionDefinitions = [
