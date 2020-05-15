@@ -1,4 +1,4 @@
-const bandwidth = require('bandwidth-iris');
+const bandwidth = require('@bandwidth/numbers');
 const xml2js = require("xml2js");
 const config = require('./config');
 
