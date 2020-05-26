@@ -49,12 +49,12 @@ namespace WebinarExample.Controllers
       string owner = message.Owner;
       List<string> numbers = new List<string>(message.To);
       numbers.Remove(owner);
-      numbers.Add(message.MFrom);
+      numbers.Add(message.From);
 
       MessageRequest messageRequest = new MessageRequest();
       messageRequest.ApplicationId = msgApplicationId;
       messageRequest.To = numbers;
-      messageRequest.MFrom = owner;
+      messageRequest.From = owner;
 
       bool isDog = message.Text.ToLower().Trim().Equals("dog");
       if (isDog)
@@ -145,4 +145,68 @@ namespace WebinarExample.Controllers
       return bxml;
     }
   }
+
+  [ApiController]
+  [Route("bandwidth/[controller]")]
+  public class TestController : ControllerBase
+  {
+
+    [HttpPost]
+    [Consumes("application/json")]
+    public async Task<string> TestCallback()
+    {
+
+      Response response = new Response();
+
+
+      PhoneNumber phoneNumber = new PhoneNumber()
+      {
+        Number = $"+19198675309"
+      };
+      Transfer transfer = new Transfer()
+      {
+        TransferCompleteUrl = "transferRequestUrl.AbsoluteUri",
+        CallTimeout = 15,
+        PhoneNumbers = new PhoneNumber[] { phoneNumber }
+      };
+      response.Add(transfer);
+
+      if (true)
+      {
+        Record record = new Record
+        {
+          RecordCompleteUrl = "recordUrl.AbsoluteUri",
+          MaxDuration = 15,
+          SilenceTimeout = 0
+        };
+        response.Add(record);
+      }
+
+      Redirect redirect = new Redirect()
+      {
+        RedirectUrl = "redirectRequestUrl.AbsoluteUri"
+      };
+      response.Add(redirect);
+      var a = response.ToBXML();
+
+
+      Response response1 = new Response();
+
+      PlayAudio playAudio = new PlayAudio()
+      {
+        Url = "HttpUtility.UrlPathEncode(model.AudioFileUrl)"
+      };
+      Gather gather = new Gather()
+      {
+        GatherUrl = "gatherUrl.AbsoluteUri",
+        InterDigitTimeout = 5,
+        PlayAudio = playAudio,
+        MaxDigits = 3
+      };
+      response1.Add(gather);
+      var b = response1.ToBXML();
+      return $"{a}\n{b}";
+    }
+  }
+
 }
