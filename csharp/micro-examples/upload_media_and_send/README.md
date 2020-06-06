@@ -13,7 +13,7 @@ A small sample that uploads two pictures to Bandwidth's messaging media API and 
 You will need the following setup:
 * [Messaging Credentials](https://dev.bandwidth.com/guides/accountCredentials.html#messaging)
 * [Account Configured for v2 Messaging](https://support.bandwidth.com/hc/en-us/articles/360033658613-Messaging-V2-API-Account-Setup-UI-)
-* ⚠️ This script is not setup to receive callback urls. A free service like [RequestBin](https://requestbin.com/) can be used as your application's callback URL for quick testing.
+* ⚠️ This script is not setup to receive callbacks (IE does not expose a callback URL). A free service like [RequestBin](https://requestbin.com/) can be used as your application's callback URL for quick testing.
 * A phone number allocated to your location
 * A test phone number to receive the picture messages
 
