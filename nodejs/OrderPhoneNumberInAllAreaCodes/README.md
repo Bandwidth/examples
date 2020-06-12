@@ -25,7 +25,8 @@ You can see the list of failed orders and their reasons in your bandwidth dashbo
 
 To get the script to run properly please do the following IN ORDER in the command line or bash:
 
-1. Change to the OrderNumers directory (cd filepath/to/direcotry/OrderNumers) and run the following commands:
+1. Download this OrderPhoneNumebrInAllAreaCodes directory (you can git clone this repository and checkout the `all-number-order` branch.). Change directory until you are in this one.
+2. Set the environemnt variables as seen below
 
 ### Environment Variables
 
