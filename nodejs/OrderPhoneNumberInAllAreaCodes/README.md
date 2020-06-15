@@ -7,10 +7,10 @@
 
 ## Brief Descirption
 
-Requests for every area code in the us will be created in your Bandwidth account.
+Requests for every area code in the US will be created in your Bandwidth account.
 
 To view the results of the request, you can go to your bandwidth dashboard and view orders.
-If you a failed order: this is likely due to either the area code not being available from bandwidth, or bandwidth not having a number in that area code at this time.
+If you see a failed order, this is likely due to Bandwidth not having numbers in this area code.
 
 You can see the list of failed orders and their reasons in your bandwidth dashboard, under the subaccount/site you ordered it with within the "alerts" section.
 
@@ -25,7 +25,7 @@ You can see the list of failed orders and their reasons in your bandwidth dashbo
 
 To get the script to run properly please do the following IN ORDER in the command line or bash:
 
-1. Download this OrderPhoneNumebrInAllAreaCodes directory (you can git clone this repository and checkout the `all-number-order` branch.). Change directory until you are in this one.
+1. Download this OrderPhoneNumebrInAllAreaCodes directory (you can git clone this repository). Change directory until you are in this one(the OrderPhoneNumberInAllAreaCodes directory).
 2. Set the environemnt variables as seen below
 
 ### Environment Variables
@@ -52,7 +52,7 @@ set BANDWIDTH_SITE_ID=your_site_id
 ```
 
 This will set the environment variables so that the program can securely access and use them to place phone orders.
-NOTE THAT FOR MAC AND LINUX, SETTING ENVIRONMENT VARIABLES TAKES A DIFFERENT SYNTAX.
+_NOTE THAT FOR MAC AND LINUX, SETTING ENVIRONMENT VARIABLES TAKES A DIFFERENT SYNTAX._
 If you are using a mac system, a helpful google would be "mac setting environment variables".
 
 ### Install and run
