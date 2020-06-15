@@ -40,7 +40,23 @@ const orderPhone = (code) => {
     .catch((err) => console.log(`${code} order failed: something went wrong while ordering. Please try again`));
 }
 
+const allAreaCodes = [];
+
 lineReader.eachLine('area_codes.txt', (line) => {
   let areaCode = line.split(" ")[0];
-  orderPhone(areaCode);
+  allAreaCodes.push(areaCode);
 });
+
+
+let orderNumbers = (areaCodes, index) => {
+  if (index >= areaCodes.length) {
+    return;
+  }
+  orderPhone(areaCodes[index]);
+  setTimeout((areaCodes, index) => {
+    orderNumbers(areaCodes, index + 1)
+  }, 1000, areaCodes, index)
+}
+
+
+setTimeout(orderNumbers, 3000, allAreaCodes, 0)
