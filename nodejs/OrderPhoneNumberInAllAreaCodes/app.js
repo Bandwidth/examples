@@ -59,4 +59,4 @@ let orderNumbers = (areaCodes, index) => {
 }
 
 
-setTimeout(orderNumbers, 3000, allAreaCodes, 0)
+setTimeout(orderNumbers, 3000, allAreaCodes, 0) // wait for lineReader to populate the areaCodes before reading through. 
