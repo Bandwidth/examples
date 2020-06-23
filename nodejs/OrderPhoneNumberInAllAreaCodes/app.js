@@ -20,10 +20,9 @@ const orderPhone = async (code) => {
   }
 }
 
-const allAreaCodes = fs.readFileSync('./area_codes.txt').toString().split('\n').map(line => line.split(' ')[0]);
-console.log(allAreaCodes.pop())
-
 const main = async () => {
+  const allAreaCodes = fs.readFileSync('./area_codes.txt').toString().split('\n').map(line => line.split(' ')[0]);
+  console.log(allAreaCodes.pop())
   for await (areaCode of allAreaCodes) {
     await orderPhone(areaCode);
   }
