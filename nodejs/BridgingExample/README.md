@@ -20,19 +20,18 @@ Clone the repo and run `npm install` to get started
 
 The following environmental variables need to be set
 
-| Variable                   | Description                                         |
-|:---------------------------|:----------------------------------------------------|
-| `BANDWIDTH_ACCOUNT_ID`     | Your Bandwidth Messaging account ID                 |                               
-| `BANDWIDTH_API_USERNAME`       | Your Bandwidth Voice API username                   |
-| `BANDWIDTH_API_PASSWORD`       | Your Bandwidth Voice API password                   |
-| `BANDWIDTH_VOICE_APPLICATION_ID`     | Your Bandwidth Voice application ID                 |
-| `BASE_URL`                 | The base url of the server running this application |
+| Variable                         | Description                                         |
+|:---------------------------------|:----------------------------------------------------|
+| `BANDWIDTH_ACCOUNT_ID`           | Your Bandwidth Messaging account ID                 |
+| `BANDWIDTH_API_USERNAME`         | Your Bandwidth Voice API username                   |
+| `BANDWIDTH_API_PASSWORD`         | Your Bandwidth Voice API password                   |
+| `BANDWIDTH_VOICE_APPLICATION_ID` | Your Bandwidth Voice application ID                 |
 
 ## Callback URLs For Bandwidth Applications
 
-| Callback Type          | URL                   |
-|:-----------------------|:----------------------|
-| Inbound Voice Callback | <url>/VoiceCallback   |
+| Callback Type          | URL                 |
+|:-----------------------|:--------------------|
+| Inbound Voice Callback | <url>/VoiceCallback |
 
 ## Run The Server
 Run the following command to start the server
@@ -45,7 +44,7 @@ You are now ready to text your Bandwidth phone number that is associated with th
 
 ## What You Can Do
 
-* 
+*
 
 ---
 
