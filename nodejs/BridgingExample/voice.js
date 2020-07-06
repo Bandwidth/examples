@@ -36,17 +36,13 @@ exports.handleInboundCall = async (req, res) => {
 
   const response = new BandwidthBxml.Response();
   response.addVerb(speakSentence);
-  response.addVerb(ringing);
-  response.addVerb(ringing);
-  response.addVerb(ringing);
-  response.addVerb(ringing);
-  response.addVerb(ringing);
-  response.addVerb(ringing);
-  response.addVerb(ringing);
-  response.addVerb(ringing);
-  response.addVerb(ringing);
-  response.addVerb(ringing);
-  response.addVerb(ringing);
+
+  var i;
+  for (i = 0; i <= 10; i++) {
+    //add ringing verb to play to callee while we create the outbound call
+      response.addVerb(ringing);
+  }
+
 
   const bxml = response.toBxml();
   res.send(bxml);

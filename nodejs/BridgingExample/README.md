@@ -22,16 +22,19 @@ The following environmental variables need to be set
 
 | Variable                         | Description                                         |
 |:---------------------------------|:----------------------------------------------------|
-| `BANDWIDTH_ACCOUNT_ID`           | Your Bandwidth Messaging account ID                 |
+| `BANDWIDTH_ACCOUNT_ID`           | Your Bandwidth account ID                           |
 | `BANDWIDTH_API_USERNAME`         | Your Bandwidth Voice API username                   |
 | `BANDWIDTH_API_PASSWORD`         | Your Bandwidth Voice API password                   |
 | `BANDWIDTH_VOICE_APPLICATION_ID` | Your Bandwidth Voice application ID                 |
 
 ## Callback URLs For Bandwidth Applications
 
-| Callback Type          | URL                 |
-|:-----------------------|:--------------------|
-| Inbound Voice Callback | <url>/VoiceCallback |
+| Callback Type             |     URL               |
+|:--------------------------|:----------------------|
+| Inbound Voice Callback    | <url>/VoiceCallback   |
+| Outbound Answer Callback  | <url>/Outbound/Answer |
+| Outbound Gather Callback  | <url>/Outbound/Gather |
+
 
 ## Run The Server
 Run the following command to start the server
@@ -44,7 +47,11 @@ You are now ready to text your Bandwidth phone number that is associated with th
 
 ## What You Can Do
 
-*
+* Receive an Inbound call from a 3rd party
+* Imitate a hold while you create an outbound call
+* Allow the callee to accept or decline the incoming call
+* Bridge the calls if accepted
+* If declined, record a voicemail from the incoming caller
 
 ---
 
@@ -73,4 +80,3 @@ touch .env
 ```
 
 ## Code-along
-
