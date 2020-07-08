@@ -8,7 +8,7 @@ This sample app shows the simplest way to get a phone to talk to a browser throu
 
 This app runs an HTTP server that listens for requests from browsers to get connection information. This connection information tells a browser the unique ID it should use to join a WebRTC conference. The HTTP server will also handle requests coming from Bandwidth's Voice API when a phone call comes in.
 
-The server also connects a websocket to Bandwidth's WebRTC API, which it will use to create a conference and participant IDs. This websocket is managed by the WebRTC SDK.
+The server connects to Bandwidth's HTTP WebRTC API, which it will use to create a conference and participant IDs. You can also choose to use a Bandwidth WebRTC SDK, but in this simple example, we make the HTTP calls ourselves.
 
 The web browser will also use a websocket managed by the WebRTC browser SDK to handle signaling to the WebRTC API. Once both a browser and a phone have joined the conference, they will be able to talk to each other.
 
