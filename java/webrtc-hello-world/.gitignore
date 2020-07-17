@@ -30,3 +30,10 @@ build/
 .vscode/
 
 .DS_Store
+
+### Node ###
+**/node_modules
+**/src/main/resources/static
+
+### Credentials ###
+application-default.properties
