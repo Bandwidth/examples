@@ -2695,6 +2695,41 @@
                             }
                         },
                         {
+                            "name": "getConferencesByAccount",
+                            "description": "",
+                            "request": {
+                                "method": "get",
+                                "description": "",
+                                "url": {
+                                    "raw": "voice.bandwidth.com/api/v2/accounts/{accountId}/conferences",
+                                    "protocol": "",
+                                    "host": [],
+                                    "path": [
+                                        "voice.bandwidth.com",
+                                        "api",
+                                        "v2",
+                                        "accounts",
+                                        "{{accountId}}",
+                                        "conferences"
+                                    ],
+                                    "variable": [
+                                        {
+                                            "id": "accountId",
+                                            "key": "accountId"
+                                        }
+                                    ]
+                                },
+                                "header": [],
+                                "body": {
+                                    "options": {
+                                        "raw": {
+                                            "language": ""
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
                             "name": "getConferenceById",
                             "description": "",
                             "request": {
@@ -2771,7 +2806,55 @@
                                             "language": "json"
                                         }
                                     },
-                                    "raw": "{\n    \"status\": \"string\"\n}",
+                                    "raw": "{\n    \"status\": \"string\",\n    \"redirectUrl\": \"string\",\n    \"redirectMethod\": \"string\",\n    \"username\": \"string\",\n    \"password\": \"string\"\n}",
+                                    "mode": "raw"
+                                }
+                            }
+                        },
+                        {
+                            "name": "modifyConferenceMember",
+                            "description": "",
+                            "request": {
+                                "method": "put",
+                                "description": "",
+                                "url": {
+                                    "raw": "voice.bandwidth.com/api/v2/accounts/{accountId}/conferences/{conferenceId}/members/{callId}",
+                                    "protocol": "",
+                                    "host": [],
+                                    "path": [
+                                        "voice.bandwidth.com",
+                                        "api",
+                                        "v2",
+                                        "accounts",
+                                        "{{accountId}}",
+                                        "conferences",
+                                        ":conferenceId",
+                                        "members",
+                                        ":callId"
+                                    ],
+                                    "variable": [
+                                        {
+                                            "id": "accountId",
+                                            "key": "accountId"
+                                        },
+                                        {
+                                            "id": "conferenceId",
+                                            "key": "conferenceId"
+                                        },
+                                        {
+                                            "id": "callId",
+                                            "key": "callId"
+                                        }
+                                    ]
+                                },
+                                "header": [],
+                                "body": {
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "raw": "{\n    \"callId\": \"string\",\n    \"conferenceId\": \"string\",\n    \"memberUrl\": \"string\",\n    \"mute\": \"boolean\",\n    \"hold\": \"boolean\",\n    \"callIdsToCoach\": \"[ string ]\"\n}",
                                     "mode": "raw"
                                 }
                             }
@@ -2809,6 +2892,140 @@
                                         {
                                             "id": "memberId",
                                             "key": "memberId"
+                                        }
+                                    ]
+                                },
+                                "header": [],
+                                "body": {
+                                    "options": {
+                                        "raw": {
+                                            "language": ""
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": "queryMetadataForAccountAndConference",
+                            "description": "Returns a (potentially empty) list of metadata for the recordings that took place during the specified conference",
+                            "request": {
+                                "method": "get",
+                                "description": "Returns a (potentially empty) list of metadata for the recordings that took place during the specified conference",
+                                "url": {
+                                    "raw": "voice.bandwidth.com/api/v2/accounts/{accountId}/conferences/{conferenceId}/recordings",
+                                    "protocol": "",
+                                    "host": [],
+                                    "path": [
+                                        "voice.bandwidth.com",
+                                        "api",
+                                        "v2",
+                                        "accounts",
+                                        "{{accountId}}",
+                                        "conferences",
+                                        ":conferenceId",
+                                        "recordings"
+                                    ],
+                                    "variable": [
+                                        {
+                                            "id": "accountId",
+                                            "key": "accountId"
+                                        },
+                                        {
+                                            "id": "conferenceId",
+                                            "key": "conferenceId"
+                                        }
+                                    ]
+                                },
+                                "header": [],
+                                "body": {
+                                    "options": {
+                                        "raw": {
+                                            "language": ""
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": "getMetadataForConferenceRecording",
+                            "description": "",
+                            "request": {
+                                "method": "get",
+                                "description": "",
+                                "url": {
+                                    "raw": "voice.bandwidth.com/api/v2/accounts/{accountId}/conferences/{conferenceId}/recordings/{recordingId}",
+                                    "protocol": "",
+                                    "host": [],
+                                    "path": [
+                                        "voice.bandwidth.com",
+                                        "api",
+                                        "v2",
+                                        "accounts",
+                                        "{{accountId}}",
+                                        "conferences",
+                                        ":conferenceId",
+                                        "recordings",
+                                        ":recordingId"
+                                    ],
+                                    "variable": [
+                                        {
+                                            "id": "accountId",
+                                            "key": "accountId"
+                                        },
+                                        {
+                                            "id": "conferenceId",
+                                            "key": "conferenceId"
+                                        },
+                                        {
+                                            "id": "recordingId",
+                                            "key": "recordingId"
+                                        }
+                                    ]
+                                },
+                                "header": [],
+                                "body": {
+                                    "options": {
+                                        "raw": {
+                                            "language": ""
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": "streamConferenceRecordingMedia",
+                            "description": "",
+                            "request": {
+                                "method": "get",
+                                "description": "",
+                                "url": {
+                                    "raw": "voice.bandwidth.com/api/v2/accounts/{accountId}/conferences/{conferenceId}/recordings/{recordingId}/media",
+                                    "protocol": "",
+                                    "host": [],
+                                    "path": [
+                                        "voice.bandwidth.com",
+                                        "api",
+                                        "v2",
+                                        "accounts",
+                                        "{{accountId}}",
+                                        "conferences",
+                                        ":conferenceId",
+                                        "recordings",
+                                        ":recordingId",
+                                        "media"
+                                    ],
+                                    "variable": [
+                                        {
+                                            "id": "accountId",
+                                            "key": "accountId"
+                                        },
+                                        {
+                                            "id": "conferenceId",
+                                            "key": "conferenceId"
+                                        },
+                                        {
+                                            "id": "recordingId",
+                                            "key": "recordingId"
                                         }
                                     ]
                                 },
