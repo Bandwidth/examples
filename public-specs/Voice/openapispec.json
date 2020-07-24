@@ -2,7 +2,7 @@
   "swagger" : "2.0",
   "info" : {
     "description" : "Bandwidth's HTTP voice platform",
-    "version" : "1.4.0",
+    "version" : "1.5.0",
     "title" : "Voice"
   },
   "host" : "voice.bandwidth.com",
@@ -314,26 +314,6 @@
           "name" : "callId",
           "in" : "path",
           "required" : true,
-          "type" : "string"
-        }, {
-          "name" : "from",
-          "in" : "query",
-          "required" : false,
-          "type" : "string"
-        }, {
-          "name" : "to",
-          "in" : "query",
-          "required" : false,
-          "type" : "string"
-        }, {
-          "name" : "minStartTime",
-          "in" : "query",
-          "required" : false,
-          "type" : "string"
-        }, {
-          "name" : "maxStartTime",
-          "in" : "query",
-          "required" : false,
           "type" : "string"
         } ],
         "responses" : {
@@ -907,6 +887,102 @@
         }
       }
     },
+    "/api/v2/accounts/{accountId}/conferences" : {
+      "get" : {
+        "summary" : "Returns information about the conferences in the account",
+        "description" : "",
+        "operationId" : "getConferencesByAccount",
+        "parameters" : [ {
+          "name" : "accountId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "pageSize",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "default" : 1000,
+          "format" : "int32"
+        }, {
+          "name" : "pageToken",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "name",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "minCreatedTime",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "maxCreatedTime",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/ConferenceDetail"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Something's not quite right... Your request is invalid. Please fix it before trying again.",
+            "schema" : {
+              "$ref" : "#/definitions/ApiErrorResponse"
+            }
+          },
+          "401" : {
+            "description" : "Your credentials are invalid. Please use your Bandwidth dashboard credentials to authenticate to the API."
+          },
+          "403" : {
+            "description" : "User unauthorized to perform this action.",
+            "schema" : {
+              "$ref" : "#/definitions/ApiErrorResponse"
+            }
+          },
+          "404" : {
+            "description" : "The resource specified cannot be found or does not belong to you.",
+            "schema" : {
+              "$ref" : "#/definitions/ApiErrorResponse"
+            }
+          },
+          "415" : {
+            "description" : "We don't support that media type. If a request body is required, please send it to us as `application/json`.",
+            "schema" : {
+              "$ref" : "#/definitions/ApiErrorResponse"
+            }
+          },
+          "429" : {
+            "description" : "You're sending requests to this endpoint too frequently. Please slow your request rate down and try again.",
+            "headers" : {
+              "Retry-After" : {
+                "type" : "string",
+                "description" : "When you should try your request again"
+              }
+            },
+            "schema" : {
+              "$ref" : "#/definitions/ApiErrorResponse"
+            }
+          },
+          "500" : {
+            "description" : "Something unexpected happened. Please try again.",
+            "schema" : {
+              "$ref" : "#/definitions/ApiErrorResponse"
+            }
+          }
+        }
+      }
+    },
     "/api/v2/accounts/{accountId}/conferences/{conferenceId}" : {
       "get" : {
         "summary" : "Returns information about the specified conference",
@@ -1048,6 +1124,83 @@
         }
       }
     },
+    "/api/v2/accounts/{accountId}/conferences/{conferenceId}/members/{callId}" : {
+      "put" : {
+        "summary" : "Updates settings for a particular conference member",
+        "description" : "",
+        "operationId" : "modifyConferenceMember",
+        "parameters" : [ {
+          "name" : "accountId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "conferenceId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "callId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/ConferenceMemberDetail"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Something's not quite right... Your request is invalid. Please fix it before trying again.",
+            "schema" : {
+              "$ref" : "#/definitions/ApiErrorResponse"
+            }
+          },
+          "401" : {
+            "description" : "Your credentials are invalid. Please use your Bandwidth dashboard credentials to authenticate to the API."
+          },
+          "403" : {
+            "description" : "User unauthorized to perform this action.",
+            "schema" : {
+              "$ref" : "#/definitions/ApiErrorResponse"
+            }
+          },
+          "404" : {
+            "description" : "The resource specified cannot be found or does not belong to you.",
+            "schema" : {
+              "$ref" : "#/definitions/ApiErrorResponse"
+            }
+          },
+          "415" : {
+            "description" : "We don't support that media type. If a request body is required, please send it to us as `application/json`.",
+            "schema" : {
+              "$ref" : "#/definitions/ApiErrorResponse"
+            }
+          },
+          "429" : {
+            "description" : "You're sending requests to this endpoint too frequently. Please slow your request rate down and try again.",
+            "headers" : {
+              "Retry-After" : {
+                "type" : "string",
+                "description" : "When you should try your request again"
+              }
+            },
+            "schema" : {
+              "$ref" : "#/definitions/ApiErrorResponse"
+            }
+          },
+          "500" : {
+            "description" : "Something unexpected happened. Please try again.",
+            "schema" : {
+              "$ref" : "#/definitions/ApiErrorResponse"
+            }
+          }
+        }
+      }
+    },
     "/api/v2/accounts/{accountId}/conferences/{conferenceId}/members/{memberId}" : {
       "get" : {
         "summary" : "Returns information about the specified conference member",
@@ -1074,6 +1227,232 @@
             "description" : "successful operation",
             "schema" : {
               "$ref" : "#/definitions/ConferenceMemberDetail"
+            }
+          },
+          "400" : {
+            "description" : "Something's not quite right... Your request is invalid. Please fix it before trying again.",
+            "schema" : {
+              "$ref" : "#/definitions/ApiErrorResponse"
+            }
+          },
+          "401" : {
+            "description" : "Your credentials are invalid. Please use your Bandwidth dashboard credentials to authenticate to the API."
+          },
+          "403" : {
+            "description" : "User unauthorized to perform this action.",
+            "schema" : {
+              "$ref" : "#/definitions/ApiErrorResponse"
+            }
+          },
+          "404" : {
+            "description" : "The resource specified cannot be found or does not belong to you.",
+            "schema" : {
+              "$ref" : "#/definitions/ApiErrorResponse"
+            }
+          },
+          "415" : {
+            "description" : "We don't support that media type. If a request body is required, please send it to us as `application/json`.",
+            "schema" : {
+              "$ref" : "#/definitions/ApiErrorResponse"
+            }
+          },
+          "429" : {
+            "description" : "You're sending requests to this endpoint too frequently. Please slow your request rate down and try again.",
+            "headers" : {
+              "Retry-After" : {
+                "type" : "string",
+                "description" : "When you should try your request again"
+              }
+            },
+            "schema" : {
+              "$ref" : "#/definitions/ApiErrorResponse"
+            }
+          },
+          "500" : {
+            "description" : "Something unexpected happened. Please try again.",
+            "schema" : {
+              "$ref" : "#/definitions/ApiErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/accounts/{accountId}/conferences/{conferenceId}/recordings" : {
+      "get" : {
+        "summary" : "Get metadata for all of the recordings that took place during the specified conference",
+        "description" : "Returns a (potentially empty) list of metadata for the recordings that took place during the specified conference",
+        "operationId" : "queryMetadataForAccountAndConference",
+        "parameters" : [ {
+          "name" : "accountId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "conferenceId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/ConferenceRecordingMetadataResponse"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Something's not quite right... Your request is invalid. Please fix it before trying again.",
+            "schema" : {
+              "$ref" : "#/definitions/ApiErrorResponse"
+            }
+          },
+          "401" : {
+            "description" : "Your credentials are invalid. Please use your Bandwidth dashboard credentials to authenticate to the API."
+          },
+          "403" : {
+            "description" : "User unauthorized to perform this action.",
+            "schema" : {
+              "$ref" : "#/definitions/ApiErrorResponse"
+            }
+          },
+          "404" : {
+            "description" : "The resource specified cannot be found or does not belong to you.",
+            "schema" : {
+              "$ref" : "#/definitions/ApiErrorResponse"
+            }
+          },
+          "415" : {
+            "description" : "We don't support that media type. If a request body is required, please send it to us as `application/json`.",
+            "schema" : {
+              "$ref" : "#/definitions/ApiErrorResponse"
+            }
+          },
+          "429" : {
+            "description" : "You're sending requests to this endpoint too frequently. Please slow your request rate down and try again.",
+            "headers" : {
+              "Retry-After" : {
+                "type" : "string",
+                "description" : "When you should try your request again"
+              }
+            },
+            "schema" : {
+              "$ref" : "#/definitions/ApiErrorResponse"
+            }
+          },
+          "500" : {
+            "description" : "Something unexpected happened. Please try again.",
+            "schema" : {
+              "$ref" : "#/definitions/ApiErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/accounts/{accountId}/conferences/{conferenceId}/recordings/{recordingId}" : {
+      "get" : {
+        "summary" : "Returns metadata for the specified recording",
+        "description" : "",
+        "operationId" : "getMetadataForConferenceRecording",
+        "parameters" : [ {
+          "name" : "accountId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "conferenceId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "recordingId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/RecordingMetadataResponse"
+            }
+          },
+          "400" : {
+            "description" : "Something's not quite right... Your request is invalid. Please fix it before trying again.",
+            "schema" : {
+              "$ref" : "#/definitions/ApiErrorResponse"
+            }
+          },
+          "401" : {
+            "description" : "Your credentials are invalid. Please use your Bandwidth dashboard credentials to authenticate to the API."
+          },
+          "403" : {
+            "description" : "User unauthorized to perform this action.",
+            "schema" : {
+              "$ref" : "#/definitions/ApiErrorResponse"
+            }
+          },
+          "404" : {
+            "description" : "The resource specified cannot be found or does not belong to you.",
+            "schema" : {
+              "$ref" : "#/definitions/ApiErrorResponse"
+            }
+          },
+          "415" : {
+            "description" : "We don't support that media type. If a request body is required, please send it to us as `application/json`.",
+            "schema" : {
+              "$ref" : "#/definitions/ApiErrorResponse"
+            }
+          },
+          "429" : {
+            "description" : "You're sending requests to this endpoint too frequently. Please slow your request rate down and try again.",
+            "headers" : {
+              "Retry-After" : {
+                "type" : "string",
+                "description" : "When you should try your request again"
+              }
+            },
+            "schema" : {
+              "$ref" : "#/definitions/ApiErrorResponse"
+            }
+          },
+          "500" : {
+            "description" : "Something unexpected happened. Please try again.",
+            "schema" : {
+              "$ref" : "#/definitions/ApiErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/accounts/{accountId}/conferences/{conferenceId}/recordings/{recordingId}/media" : {
+      "get" : {
+        "summary" : "Downloads the specified recording",
+        "description" : "",
+        "operationId" : "streamConferenceRecordingMedia",
+        "parameters" : [ {
+          "name" : "accountId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "conferenceId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "recordingId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "file"
             }
           },
           "400" : {
@@ -1429,6 +1808,30 @@
         }
       }
     },
+    "CallEngineModifyConferenceRequest" : {
+      "type" : "object",
+      "required" : [ "redirectUrl" ],
+      "properties" : {
+        "status" : {
+          "type" : "string",
+          "enum" : [ "active", "completed" ]
+        },
+        "redirectUrl" : {
+          "type" : "string",
+          "format" : "uri"
+        },
+        "redirectMethod" : {
+          "type" : "string",
+          "enum" : [ "POST", "GET" ]
+        },
+        "username" : {
+          "type" : "string"
+        },
+        "password" : {
+          "type" : "string"
+        }
+      }
+    },
     "ApiTranscribeRecordingRequest" : {
       "type" : "object",
       "properties" : {
@@ -1448,15 +1851,6 @@
         },
         "tag" : {
           "type" : "string"
-        }
-      }
-    },
-    "CallEngineModifyConferenceRequest" : {
-      "type" : "object",
-      "properties" : {
-        "status" : {
-          "type" : "string",
-          "enum" : [ "active", "completed" ]
         }
       }
     },
@@ -1522,6 +1916,51 @@
         }
       }
     },
+    "ConferenceRecordingMetadataResponse" : {
+      "type" : "object",
+      "properties" : {
+        "accountId" : {
+          "type" : "string"
+        },
+        "conferenceId" : {
+          "type" : "string"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "recordingId" : {
+          "type" : "string"
+        },
+        "duration" : {
+          "type" : "string",
+          "description" : "Format is ISO-8601"
+        },
+        "channels" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "startTime" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "endTime" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "fileFormat" : {
+          "type" : "string",
+          "enum" : [ "mp3", "wav" ]
+        },
+        "status" : {
+          "type" : "string",
+          "enum" : [ "processing", "partial", "complete", "deleted", "error", "already-in-progress" ]
+        },
+        "mediaUrl" : {
+          "type" : "string",
+          "format" : "uri"
+        }
+      }
+    },
     "ModifyCallRecordingState" : {
       "type" : "object",
       "properties" : {
@@ -1543,6 +1982,9 @@
         "callId" : {
           "type" : "string"
         },
+        "parentCallId" : {
+          "type" : "string"
+        },
         "recordingId" : {
           "type" : "string"
         },
@@ -1550,6 +1992,12 @@
           "type" : "string"
         },
         "from" : {
+          "type" : "string"
+        },
+        "transferCallerId" : {
+          "type" : "string"
+        },
+        "transferTo" : {
           "type" : "string"
         },
         "duration" : {
@@ -1578,7 +2026,7 @@
         },
         "status" : {
           "type" : "string",
-          "enum" : [ "processing", "partial", "complete", "deleted", "error" ]
+          "enum" : [ "processing", "partial", "complete", "deleted", "error", "already-in-progress" ]
         },
         "mediaUrl" : {
           "type" : "string",
