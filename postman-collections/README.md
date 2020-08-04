@@ -19,4 +19,6 @@ Your Bandwidth Postman Collection should now be usable within your Postman app
 
 ## Bandwidth Postman Collection
 
-The Bandwidth Postman Collection contains several small tutorial sections, and a large API reference section. The tutorial sections provide step by step API calls to perform common Bandwidth operations such as ordering phone numbers and creating/modifying phone calls, while the API reference section contains all endpoints in our publicly available [OpenAPI/Swagger specs](https://github.com/Bandwidth/examples/tree/master/public-specs)
+The Bandwidth Postman Collection contains several small tutorial sections, and a large API reference section
+
+The tutorial sections provide step by step API calls to perform common Bandwidth operations such as ordering phone numbers and creating/modifying phone calls, while the API reference section contains all endpoints in our publicly available [OpenAPI/Swagger specs](https://github.com/Bandwidth/examples/tree/master/public-specs)
