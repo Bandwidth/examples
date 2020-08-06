@@ -6,16 +6,21 @@
  * @copyright Bandwidth INC
  */
 
-const RINGING_URL = 'https://bw-demo.s3.amazonaws.com/telephone-ring-04.wav';
-const FORWARD_TO = '+19198021884';
 const BandwidthVoice = require('@bandwidth/voice');
 const BandwidthBxml = require('@bandwidth/bxml');
 const url = require('url');
 const config = require('./config');
+const RINGING_URL = 'https://bw-demo.s3.amazonaws.com/telephone-ring-04.wav';
+const FORWARD_TO = config.PERSONAL_NUMBER;
 
 BandwidthVoice.Configuration.basicAuthUserName = config.BANDWIDTH_API_USERNAME;
 BandwidthVoice.Configuration.basicAuthPassword = config.BANDWIDTH_API_PASSWORD;
 const voiceController = BandwidthVoice.APIController;
+
+// TODO:
+// Comments throughout
+// Define a function that takes a tag param for sending to 'voicemail'
+// General Cleanup
 
 /*
  * A method for showing how to handle inbound Bandwidth voice callbacks.
@@ -24,7 +29,6 @@ const voiceController = BandwidthVoice.APIController;
  * @return {string} The generated BXML
  */
 exports.handleInboundCall = async (req, res) => {
-
   const event = req.body;
   const callIdA = event.callId
 
@@ -76,16 +80,12 @@ const createOutboundCall = async (to, from, callIdA) => {
   }
 }
 
-const sendInboundCallerToVoicemail = async callId => {
-  // update the callID to redirect to us
-}
-
-
 
 exports.handleOutboundCall = (req, res) => {
   const event = req.body;
   const tag = event.tag;
   if (event.eventType !== 'answer') {
+    // TODO:
     // you will update the OG call to redirect to capture voicemail
     return;
   }
@@ -107,10 +107,12 @@ exports.handleOutboundCall = (req, res) => {
   res.send(bxml);
 }
 
+
 exports.handleOutboundGather = (req, res) => {
   const event = req.body;
   const tag = event.tag;
   if (event.digits !== '1') {
+    // TODO:
     // send to voicemail
     return;
   }
@@ -127,9 +129,10 @@ exports.handleOutboundGather = (req, res) => {
   res.send(bxml);
 }
 
+
 exports.handleDisconnect = async (req, res) => {
   const event = req.body;
-  const tag = event.tag;
+  const tag = event.tag;    // the Call ID of the original inbound call
   if(event.cause == 'timeout'){
     // update a leg of call to start recording
     var body = new BandwidthVoice.ApiModifyCallRequest({
@@ -145,6 +148,7 @@ exports.handleDisconnect = async (req, res) => {
     }
   }
 }
+
 
 exports.updateCall = (req, res) => {
   const event = req.body;
