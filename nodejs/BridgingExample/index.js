@@ -11,6 +11,8 @@ app.use(express.json());
 app.post('/Inbound/VoiceCallback', voice.handleInboundCall);
 app.post('/Outbound/Answer', voice.handleOutboundCall);
 app.post('/Outbound/Gather', voice.handleOutboundGather);
+app.post('/Disconnect', voice.handleDisconnect)
+app.post('/UpdateCall', voice.updateCall)
 
 
 
