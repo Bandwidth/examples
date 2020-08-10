@@ -12,6 +12,12 @@ A small sample app that covers basic use cases with Bandwidth's Voice Bridging f
 
 You will need to set up Bandwidth Applications and have phone numbers associated with these application, and point the callback URL on these applications to the voice endpoints on the server running this app. `ngrok` is highly recommended for local prototyping.
 
+## Assumptions
+
+* Have Bandwidth Account
+* Have NodeJS Installed (along with NPM)
+* Have [ngrok](https://ngrok.com) installed
+
 ## Installation
 
 Clone the repo and run `npm install` to get started
@@ -23,27 +29,31 @@ The following environmental variables need to be set
 | Variable                         | Description                                         |
 |:---------------------------------|:----------------------------------------------------|
 | `BANDWIDTH_ACCOUNT_ID`           | Your Bandwidth account ID                           |
-| `BANDWIDTH_API_USERNAME`         | Your Bandwidth Voice API username                   |
+| `BANDWIDTH_API_USER`             | Your Bandwidth Voice API username                   |
 | `BANDWIDTH_API_PASSWORD`         | Your Bandwidth Voice API password                   |
 | `BANDWIDTH_VOICE_APPLICATION_ID` | Your Bandwidth Voice application ID                 |
+| 'PERSONAL_NUMBER'                | The Number you want to be bridged with              |
+| 'BASE_URL'                       | Base URL of your server - Ngrok in this example     |
 
 ## Callback URLs For Bandwidth Applications
 
-| Callback Type             |     URL               |
+| Callback Type             | URL                   |
 |:--------------------------|:----------------------|
 | Inbound Voice Callback    | <url>/VoiceCallback   |
 | Outbound Answer Callback  | <url>/Outbound/Answer |
 | Outbound Gather Callback  | <url>/Outbound/Gather |
+| Disconnect                | <url>/Disconnect      |
+| Update Call               | <url>/UpdateCall      |
 
 
 ## Run The Server
 Run the following command to start the server
 
 ```
-npm start
+./ngrok http 5000
 ```
 
-You are now ready to text your Bandwidth phone number that is associated with the application
+You are now ready to call your Bandwidth phone number that is associated with the application
 
 ## What You Can Do
 
@@ -54,29 +64,3 @@ You are now ready to text your Bandwidth phone number that is associated with th
 * If declined, record a voicemail from the incoming caller
 
 ---
-
-# Tutorial
-## Assumptions
-
-* Have Bandwidth Account
-* Have NodeJS Installed (along with NPM)
-* Have [ngrok](https://ngrok.com) installed
-
-## NPM
-
-```bash
-npm init
-npm i @bandwidth/bxml
-npm i @bandwidth/messaging
-npm i @bandwidth/voice
-npm i express
-npm i dotenv
-
-touch index.js
-touch messaging.js
-touch voice.js
-touch config.js
-touch .env
-```
-
-## Code-along

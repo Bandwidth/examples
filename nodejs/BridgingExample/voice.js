@@ -17,12 +17,8 @@ BandwidthVoice.Configuration.basicAuthUserName = config.BANDWIDTH_API_USERNAME;
 BandwidthVoice.Configuration.basicAuthPassword = config.BANDWIDTH_API_PASSWORD;
 const voiceController = BandwidthVoice.APIController;
 
-// TODO:
-// Comments throughout
-// Define a function that takes a tag param for sending to 'voicemail'
-// General Cleanup
 
-/*
+/**
  * A method for showing how to handle inbound Bandwidth voice callbacks.
  * Plays a lot of ringing
  *
@@ -54,87 +50,131 @@ exports.handleInboundCall = async (req, res) => {
   await createOutboundCall(FORWARD_TO, event.from, event.callId);
 };
 
-const createOutboundCall = async (to, from, callIdA) => {
-  const answerUrl = (new URL('/Outbound/Answer', config.BASE_URL)).href;
-  const body = {
-    from: from,
-    to: to,
-    applicationId: config.BANDWIDTH_VOICE_APPLICATION_ID,
-    answerUrl: answerUrl,
-    answerMethod: "POST",
-    callTimeout: 5,    // end the call before it goes to voicemail
-    tag: callIdA,
-    disconnectUrl: (new URL('/Disconnect', config.BASE_URL)).href,
-    disconnectMethod: "POST"
-  }
-  const callRequest = new BandwidthVoice.ApiCreateCallRequest(body);
-  try {
-    const response = await voiceController.createCall(config.BANDWIDTH_ACCOUNT_ID, callRequest);
-    console.log(response);
-    return response;
-  }
-  catch (error) {
-    console.log('Error creating outbound call Request');
-    console.log(body);
-    console.log(error);
-  }
-}
+
+/**
+ * Create the outbound call to our users personal number
+ */
+ const createOutboundCall = async (to, from, callIdA) => {
+   const answerUrl = (new URL('/Outbound/Answer', config.BASE_URL)).href;
+   const body = {
+     from: from,
+     to: to,
+     applicationId: config.BANDWIDTH_VOICE_APPLICATION_ID,
+     answerUrl: answerUrl,
+     answerMethod: "POST",
+     callTimeout: 15,    // end the call before it goes to voicemail
+     tag: callIdA,
+     disconnectUrl: (new URL('/Disconnect', config.BASE_URL)).href,
+     disconnectMethod: "POST"
+   }
+   const callRequest = new BandwidthVoice.ApiCreateCallRequest(body);
+   try {
+     const response = await voiceController.createCall(config.BANDWIDTH_ACCOUNT_ID, callRequest);
+     console.log('Created Call')
+     console.log(response);
+     return response;
+   }
+   catch (error) {
+     console.log('Error creating outbound call Request');
+     console.log(body);
+     console.log(error);
+   }
+ }
 
 
+/**
+ * Handle the users response of the B-leg call
+ *
+ * @return {string} The generated BXML
+ */
 exports.handleOutboundCall = (req, res) => {
   const event = req.body;
   const tag = event.tag;
   if (event.eventType !== 'answer') {
-    // TODO:
-    // you will update the OG call to redirect to capture voicemail
-    return;
+    try {
+        voiceController.modifyCall(config.BANDWIDTH_ACCOUNT_ID, tag, body);
+        // update a leg of call to start recording
+        var body = new BandwidthVoice.ApiModifyCallRequest({
+        "redirectUrl": (new URL('/UpdateCall', config.BASE_URL)).href,
+        "state": "active",
+        "redirectMethod": "POST"
+        });
+    } catch (error) {
+        console.error(error);
+      }
+    } else {
+        const speakSentence = new BandwidthBxml.Verbs.SpeakSentence();
+        speakSentence.setSentence("Please press 1 to accept the call or any other button to send to voicemail");
+        speakSentence.setVoice("kate");
+
+        const gather = new BandwidthBxml.Verbs.Gather();
+        gather.setGatherUrl("/Outbound/Gather");
+        gather.setTerminatingDigits("#");
+        gather.setMaxDigits("1");
+        gather.setFirstDigitTimeout(10);
+        gather.setSpeakSentence(speakSentence);
+        gather.setTag(tag);
+
+        const response = new BandwidthBxml.Response();
+        response.addVerb(gather);
+        const bxml = response.toBxml();
+        res.send(bxml);
   }
-  const speakSentence = new BandwidthBxml.Verbs.SpeakSentence();
-  speakSentence.setSentence("Please press 1 to accept the call or any other button to send to voicemail");
-  speakSentence.setVoice("kate");
-
-  const gather = new BandwidthBxml.Verbs.Gather();
-  gather.setGatherUrl("/Outbound/Gather");
-  gather.setTerminatingDigits("#");
-  gather.setMaxDigits("1");
-  gather.setFirstDigitTimeout(10);
-  gather.setSpeakSentence(speakSentence);
-  gather.setTag(tag);
-
-  const response = new BandwidthBxml.Response();
-  response.addVerb(gather);
-  const bxml = response.toBxml();
-  res.send(bxml);
 }
 
 
+/**
+ * Read the digits from the gather performed on the B-leg
+ *
+ * @return {string} The generated BXML
+ */
 exports.handleOutboundGather = (req, res) => {
   const event = req.body;
   const tag = event.tag;
   if (event.digits !== '1') {
-    // TODO:
-    // send to voicemail
-    return;
-  }
-  const speakSentence = new BandwidthBxml.Verbs.SpeakSentence();
-  speakSentence.setSentence("The bridge will start now");
-  const bridge = new BandwidthBxml.Verbs.Bridge();
-  bridge.setCallId(tag);
+    var body = new BandwidthVoice.ApiModifyCallRequest({
+    "redirectUrl": (new URL('/UpdateCall', config.BASE_URL)).href,
+    "state": "active",
+    "redirectMethod": "POST"
+    });
+    try {
+        var speakSentence = new BandwidthBxml.Verbs.SpeakSentence();
+        speakSentence.setSentence('We will send the caller to voicemail.');
+        speakSentence.setVoice("kate");
+        var hangup = new BandwidthBxml.Verbs.Hangup();
+        var response = new BandwidthBxml.Response();
+        response.addVerb(speakSentence);
+        response.addVerb(hangup);
+        const bxml = response.toBxml();
+        res.send(bxml);
+        voiceController.modifyCall(config.BANDWIDTH_ACCOUNT_ID, tag, body);
+    } catch (error) {
+        console.error(error);
+    }
+  } else {
+      const speakSentence = new BandwidthBxml.Verbs.SpeakSentence();
+      speakSentence.setSentence("The bridge will start now");
+      speakSentence.setVoice("kate");
+      const bridge = new BandwidthBxml.Verbs.Bridge();
+      bridge.setCallId(tag);
 
-  const response = new BandwidthBxml.Response();
-  response.addVerb(speakSentence);
-  response.addVerb(bridge);
+      const response = new BandwidthBxml.Response();
+      response.addVerb(speakSentence);
+      response.addVerb(bridge);
 
-  const bxml = response.toBxml();
-  res.send(bxml);
+      const bxml = response.toBxml();
+      res.send(bxml);
+ }
 }
 
 
+/**
+ * Redirect the A-leg of the call to new BXML if a disconnect event is recieved
+ */
 exports.handleDisconnect = async (req, res) => {
   const event = req.body;
   const tag = event.tag;    // the Call ID of the original inbound call
   if(event.cause == 'timeout'){
-    // update a leg of call to start recording
     var body = new BandwidthVoice.ApiModifyCallRequest({
     "redirectUrl": (new URL('/UpdateCall', config.BASE_URL)).href,
     "state": "active",
@@ -150,6 +190,9 @@ exports.handleDisconnect = async (req, res) => {
 }
 
 
+/**
+ * Update the A-leg to record a voicemail
+ */
 exports.updateCall = (req, res) => {
   const event = req.body;
   var speakSentence = new BandwidthBxml.Verbs.SpeakSentence();
