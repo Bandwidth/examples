@@ -1715,7 +1715,7 @@
         },
         "state" : {
           "type" : "string",
-          "enum" : [ "DISCONNECTED", "ANSWERED", "INITIATED" ]
+          "enum" : [ "disconnected", "answered", "initiated" ]
         },
         "startTime" : {
           "type" : "string",
@@ -1896,12 +1896,12 @@
           "type" : "string"
         },
         "createdTime" : {
-          "type" : "integer",
-          "format" : "int64"
+            "type" : "string",
+            "format" : "date-time"
         },
         "completedTime" : {
-          "type" : "integer",
-          "format" : "int64"
+            "type" : "string",
+            "format" : "date-time"
         },
         "conferenceEventUrl" : {
           "type" : "string",
@@ -1972,12 +1972,12 @@
           "format" : "int32"
         },
         "startTime" : {
-          "type" : "integer",
-          "format" : "int64"
+            "type" : "string",
+            "format" : "date-time"
         },
         "endTime" : {
-          "type" : "integer",
-          "format" : "int64"
+            "type" : "string",
+            "format" : "date-time"
         },
         "fileFormat" : {
           "type" : "string",
@@ -2045,12 +2045,12 @@
           "format" : "int32"
         },
         "startTime" : {
-          "type" : "integer",
-          "format" : "int64"
+            "type" : "string",
+            "format" : "date-time"
         },
         "endTime" : {
-          "type" : "integer",
-          "format" : "int64"
+            "type" : "string",
+            "format" : "date-time"
         },
         "fileFormat" : {
           "type" : "string",
