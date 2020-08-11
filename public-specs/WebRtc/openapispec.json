@@ -8,7 +8,39 @@
          "name": "Bandwidth Edge Services",
          "email": "edge-services@bandwidth.com",
          "url": "https://support.bandwidth.com"
-      }
+      },
+      "x-server-configuration": {
+        "default-environment": "production",
+        "default-server": "default",
+        "environments": [
+            {
+                "name": "production",
+                "servers": [
+                   {
+                      "name": "default",
+                      "url": "https://api.webrtc.bandwidth.com/v1"
+                   }
+                ]
+             },
+             {
+                "name": "custom",
+                "servers": [
+                   {
+                      "name": "default",
+                      "url": "{base_url}"
+                   }
+                ]
+             }
+        ],
+        "parameters": [
+            {
+                "name": "base_url",
+                "description": "",
+                "type": "string",
+                "example": "https://www.example.com"
+            }
+        ]
+    }
    },
    "servers": [
       {

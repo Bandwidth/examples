@@ -4,7 +4,39 @@
     "title": "TwoFactorAuth",
     "description": "Bandwidth's Two-Factor Authentication service",
     "contact": {},
-    "version": "1.1.0"
+    "version": "1.1.0",
+    "x-server-configuration": {
+        "default-environment": "production",
+        "default-server": "default",
+        "environments": [
+            {
+                "name": "production",
+                "servers": [
+                   {
+                      "name": "default",
+                      "url": "https://mfa.bandwidth.com/api/v1/"
+                   }
+                ]
+             },
+             {
+                "name": "custom",
+                "servers": [
+                   {
+                      "name": "default",
+                      "url": "{base_url}"
+                   }
+                ]
+             }
+        ],
+        "parameters": [
+            {
+                "name": "base_url",
+                "description": "",
+                "type": "string",
+                "example": "https://www.example.com"
+            }
+        ]
+    }
   },
   "servers": [
     {
