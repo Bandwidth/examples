@@ -33,5 +33,5 @@ module.exports.BANDWIDTH_API_USERNAME = process.env.BANDWIDTH_API_USER;
 module.exports.BANDWIDTH_API_PASSWORD = process.env.BANDWIDTH_API_PASSWORD;
 module.exports.BANDWIDTH_VOICE_APPLICATION_ID = process.env.BANDWIDTH_VOICE_APPLICATION_ID;
 module.exports.PERSONAL_NUMBER = process.env.PERSONAL_NUMBER;
-module.exports.BASE_URL = process.env.BASE_URL;    //
+module.exports.BASE_URL = process.env.BASE_URL;
 module.exports.PORT = process.env.PORT || 5000;

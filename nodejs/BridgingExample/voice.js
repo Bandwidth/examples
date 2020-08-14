@@ -26,7 +26,6 @@ const voiceController = BandwidthVoice.APIController;
  */
 exports.handleInboundCall = async (req, res) => {
   const event = req.body;
-  const callIdA = event.callId
 
   const ringing = new BandwidthBxml.Verbs.PlayAudio();
   ringing.setUrl(RINGING_URL);
@@ -69,6 +68,7 @@ exports.handleInboundCall = async (req, res) => {
    }
    const callRequest = new BandwidthVoice.ApiCreateCallRequest(body);
    try {
+     // Creates the Answer Callback when answered
      const response = await voiceController.createCall(config.BANDWIDTH_ACCOUNT_ID, callRequest);
      console.log('Created Call')
      console.log(response);
@@ -89,16 +89,16 @@ exports.handleInboundCall = async (req, res) => {
  */
 exports.handleOutboundCall = (req, res) => {
   const event = req.body;
-  const tag = event.tag;
+  const tag = event.tag;    // callIdA
   if (event.eventType !== 'answer') {
     try {
-        voiceController.modifyCall(config.BANDWIDTH_ACCOUNT_ID, tag, body);
         // update a leg of call to start recording
         var body = new BandwidthVoice.ApiModifyCallRequest({
         "redirectUrl": (new URL('/UpdateCall', config.BASE_URL)).href,
         "state": "active",
         "redirectMethod": "POST"
         });
+        voiceController.modifyCall(config.BANDWIDTH_ACCOUNT_ID, tag, body);
     } catch (error) {
         console.error(error);
       }
