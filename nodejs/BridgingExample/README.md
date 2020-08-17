@@ -32,8 +32,8 @@ The following environmental variables need to be set
 | `BANDWIDTH_API_USER`             | Your Bandwidth Voice API username                   |
 | `BANDWIDTH_API_PASSWORD`         | Your Bandwidth Voice API password                   |
 | `BANDWIDTH_VOICE_APPLICATION_ID` | Your Bandwidth Voice application ID                 |
-| 'PERSONAL_NUMBER'                | The Number you want to be bridged with              |
-| 'BASE_URL'                       | Base URL of your server - Ngrok in this example     |
+| `PERSONAL_NUMBER`                | The Number you want to be bridged with              |
+| `BASE_URL`                       | Base URL of your server - Ngrok in this example     |
 
 ## Callback URLs For Bandwidth Applications
 
