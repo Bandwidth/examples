@@ -53,7 +53,13 @@ Run the following command to start the server
 ./ngrok http 5000
 ```
 
-You are now ready to call your Bandwidth phone number that is associated with the application
+And in a separate terminal window
+
+```
+node index.js
+```
+
+You are now ready to call the Bandwidth phone number that is associated with the application
 
 ## What You Can Do
 
