@@ -2194,7 +2194,7 @@
                                             "language": "json"
                                         }
                                     },
-                                    "raw": "{\n    \"from\": \"string\",\n    \"to\": \"string\",\n    \"callTimeout\": \"number\",\n    \"answerUrl\": \"string\",\n    \"username\": \"string\",\n    \"password\": \"string\",\n    \"answerMethod\": \"string\",\n    \"disconnectUrl\": \"string\",\n    \"disconnectMethod\": \"string\",\n    \"tag\": \"string\",\n    \"applicationId\": \"{{VoiceapplicationId}}\",\n    \"obfuscatedTo\": \"string\",\n    \"obfuscatedFrom\": \"string\"\n}",
+                                    "raw": "{\n    \"from\": \"string\",\n    \"to\": \"string\",\n    \"callTimeout\": \"number\",\n    \"callbackTimeout\": \"number\",\n    \"answerUrl\": \"string\",\n    \"answerFallbackUrl\": \"string\",\n    \"username\": \"string\",\n    \"password\": \"string\",\n    \"fallbackUsername\": \"string\",\n    \"fallbackPassword\": \"string\",\n    \"answerMethod\": \"string\",\n    \"answerFallbackMethod\": \"string\",\n    \"disconnectUrl\": \"string\",\n    \"disconnectMethod\": \"string\",\n    \"tag\": \"string\",\n    \"applicationId\": \"{{VoiceapplicationId}}\",\n    \"obfuscatedTo\": \"string\",\n    \"obfuscatedFrom\": \"string\"\n}",
                                     "mode": "raw"
                                 }
                             }
@@ -2276,7 +2276,7 @@
                                             "language": "json"
                                         }
                                     },
-                                    "raw": "{\n    \"state\": \"string\",\n    \"redirectUrl\": \"string\",\n    \"redirectMethod\": \"string\",\n    \"username\": \"string\",\n    \"password\": \"string\",\n    \"tag\": \"string\"\n}",
+                                    "raw": "{\n    \"state\": \"string\",\n    \"redirectUrl\": \"string\",\n    \"redirectFallbackUrl\": \"string\",\n    \"redirectMethod\": \"string\",\n    \"redirectFallbackMethod\": \"string\",\n    \"username\": \"string\",\n    \"password\": \"string\",\n    \"fallbackUsername\": \"string\",\n    \"fallbackPassword\": \"string\",\n    \"tag\": \"string\"\n}",
                                     "mode": "raw"
                                 }
                             }
@@ -2642,7 +2642,7 @@
                                             "language": "json"
                                         }
                                     },
-                                    "raw": "{\n    \"callbackUrl\": \"string\",\n    \"callbackMethod\": \"string\",\n    \"username\": \"string\",\n    \"password\": \"string\",\n    \"tag\": \"string\"\n}",
+                                    "raw": "{\n    \"callbackUrl\": \"string\",\n    \"callbackMethod\": \"string\",\n    \"username\": \"string\",\n    \"password\": \"string\",\n    \"tag\": \"string\",\n    \"callbackTimeout\": \"number\"\n}",
                                     "mode": "raw"
                                 }
                             }
@@ -2806,7 +2806,7 @@
                                             "language": "json"
                                         }
                                     },
-                                    "raw": "{\n    \"status\": \"string\",\n    \"redirectUrl\": \"string\",\n    \"redirectMethod\": \"string\",\n    \"username\": \"string\",\n    \"password\": \"string\"\n}",
+                                    "raw": "{\n    \"status\": \"string\",\n    \"redirectUrl\": \"string\",\n    \"redirectFallbackUrl\": \"string\",\n    \"redirectMethod\": \"string\",\n    \"redirectFallbackMethod\": \"string\",\n    \"username\": \"string\",\n    \"password\": \"string\",\n    \"fallbackUsername\": \"string\",\n    \"fallbackPassword\": \"string\"\n}",
                                     "mode": "raw"
                                 }
                             }
