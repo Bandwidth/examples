@@ -17,6 +17,7 @@ You will need to set up Bandwidth Applications and have phone numbers associated
 * Have Bandwidth Account
 * Have NodeJS Installed (along with NPM)
 * Have [ngrok](https://ngrok.com) installed
+* Access to 3 phone numbers - a number to make the outgoing call from, a Bandwidth number to call into, and a number the call will be forwarded to
 
 ## Installation
 
@@ -32,7 +33,7 @@ The following environmental variables need to be set
 | `BANDWIDTH_API_USER`             | Your Bandwidth Voice API username                   |
 | `BANDWIDTH_API_PASSWORD`         | Your Bandwidth Voice API password                   |
 | `BANDWIDTH_VOICE_APPLICATION_ID` | Your Bandwidth Voice application ID                 |
-| `PERSONAL_NUMBER`                | The Number you want to be bridged with              |
+| `PERSONAL_NUMBER`                | The Number the inbound call is forwarded to              |
 | `BASE_URL`                       | Base URL of your server - Ngrok in this example     |
 
 ## Callback URLs For Bandwidth Applications

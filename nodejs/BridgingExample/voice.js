@@ -10,7 +10,6 @@ const BandwidthVoice = require('@bandwidth/voice');
 const BandwidthBxml = require('@bandwidth/bxml');
 const url = require('url');
 const config = require('./config');
-const RINGING_URL = 'https://bw-demo.s3.amazonaws.com/telephone-ring-04.wav';
 const FORWARD_TO = config.PERSONAL_NUMBER;
 
 BandwidthVoice.Configuration.basicAuthUserName = config.BANDWIDTH_API_USERNAME;
@@ -27,9 +26,6 @@ const voiceController = BandwidthVoice.APIController;
 exports.handleInboundCall = async (req, res) => {
   const event = req.body;
 
-  const ringing = new BandwidthBxml.Verbs.PlayAudio();
-  ringing.setUrl(RINGING_URL);
-
   const speakSentence = new BandwidthBxml.Verbs.SpeakSentence();
   speakSentence.setSentence("Connecting your call, please wait");
   speakSentence.setVoice("julie");
@@ -37,12 +33,10 @@ exports.handleInboundCall = async (req, res) => {
   const response = new BandwidthBxml.Response();
   response.addVerb(speakSentence);
 
-  var i;
-  for (i = 0; i <= 10; i++) {
-    //add ringing verb to play to callee while we create the outbound call
-      response.addVerb(ringing);
-  }
-
+  // TODO: Finalize this with new SDK update
+  const ring = new BandwidthBxml.Verbs.Ring();
+  ring.setDuration(100)
+  response.addVerb(ring);
 
   const bxml = response.toBxml();
   res.send(bxml);
@@ -192,24 +186,45 @@ exports.handleDisconnect = async (req, res) => {
 
 /**
  * Update the A-leg to record a voicemail
+ *
+ * @return {string} The generated BXML
  */
 exports.updateCall = (req, res) => {
   const event = req.body;
   var speakSentence = new BandwidthBxml.Verbs.SpeakSentence();
-  speakSentence.setSentence("User is not available, leave your message at the tone");
+  speakSentence.setSentence("The person you are trying to reach is not available, please leave a message at the tone");
   speakSentence.setVoice("julie");
 
   var playAudio = new BandwidthBxml.Verbs.PlayAudio();
-  playAudio.setUrl("https://audio.url/beep.wav");
+  playAudio.setUrl("https://www.soundjay.com/button/sounds/beep-01a.wav");
 
   var record = new BandwidthBxml.Verbs.Record();
-  // record.setRecordCompleteUrl("https://myapp.com/nextBXML"); // optional
-  record.setMaxDuration(20);
+  record.setRecordCompleteUrl("/Recording");    // (new URL('/Recording', config.BASE_URL)).href);
+  record.setRecordCompleteMethod("POST")
+  record.setMaxDuration(30);
 
   var response = new BandwidthBxml.Response();
   response.addVerb(speakSentence);
-  // response.addVerb(playAudio);
-  // response.addVerb(record);
+  response.addVerb(playAudio);
+  response.addVerb(record);
   const bxml = response.toBxml();
+  console.log('BXML:', bxml)
   res.send(bxml);
+}
+
+/**
+ * Download the generated recording if the call isn't answered
+ */
+exports.downloadRecording = (req, res) => {
+  const recording = req.body;
+  console.log('Recording available at ', recording.mediaUrl)
+  // TODO: kick off a download of that recording file to my desktop
+}
+
+/**
+ * Capture call status
+ */
+exports.status = (req, res) => {
+  const status = req.body;
+  // console.log('Call Status:', status)
 }

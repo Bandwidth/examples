@@ -13,7 +13,8 @@ app.post('/Outbound/Answer', voice.handleOutboundCall);
 app.post('/Outbound/Gather', voice.handleOutboundGather);
 app.post('/Disconnect', voice.handleDisconnect)
 app.post('/UpdateCall', voice.updateCall)
-
+app.post('/Recording', voice.downloadRecording)
+app.post('/Status', voice.status)
 
 
 app.listen(config.PORT);

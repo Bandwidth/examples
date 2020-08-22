@@ -1,4 +1,3 @@
-
 const checkBandwidthCredentials = () => {
   if (!process.env.BANDWIDTH_ACCOUNT_ID) {
     console.error("Please set the environmental variable: BANDWIDTH_ACCOUNT_ID");
