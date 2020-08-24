@@ -35,8 +35,13 @@ exports.handleInboundCall = async (req, res) => {
 
   // TODO: Finalize this with new SDK update
   const ring = new BandwidthBxml.Verbs.Ring();
-  ring.setDuration(100)
+  ring.setDuration(20)
+
+  const redirect = new BandwidthBxml.Verbs.Redirect();
+  redirect.setRedirectUrl(new URL('/UpdateCall', config.BASE_URL).href);
+
   response.addVerb(ring);
+  response.addVerb(redirect);
 
   const bxml = response.toBxml();
   res.send(bxml);
@@ -64,8 +69,7 @@ exports.handleInboundCall = async (req, res) => {
    try {
      // Creates the Answer Callback when answered
      const response = await voiceController.createCall(config.BANDWIDTH_ACCOUNT_ID, callRequest);
-     console.log('Created Call')
-     console.log(response);
+     // console.log('Created Call', response)
      return response;
    }
    catch (error) {
@@ -168,6 +172,8 @@ exports.handleOutboundGather = (req, res) => {
 exports.handleDisconnect = async (req, res) => {
   const event = req.body;
   const tag = event.tag;    // the Call ID of the original inbound call
+  // console.log(event)
+  // TODO - if event is hangup but A Is still ringing, then what?
   if(event.cause == 'timeout'){
     var body = new BandwidthVoice.ApiModifyCallRequest({
     "redirectUrl": (new URL('/UpdateCall', config.BASE_URL)).href,
@@ -199,8 +205,8 @@ exports.updateCall = (req, res) => {
   playAudio.setUrl("https://www.soundjay.com/button/sounds/beep-01a.wav");
 
   var record = new BandwidthBxml.Verbs.Record();
-  record.setRecordCompleteUrl("/Recording");    // (new URL('/Recording', config.BASE_URL)).href);
-  record.setRecordCompleteMethod("POST")
+  record.setRecordingAvailableUrl(new URL('/Recording', config.BASE_URL).href);    // (new URL('/Recording', config.BASE_URL)).href);
+  record.setRecordingAvailableMethod("POST")
   record.setMaxDuration(30);
 
   var response = new BandwidthBxml.Response();
@@ -208,18 +214,23 @@ exports.updateCall = (req, res) => {
   response.addVerb(playAudio);
   response.addVerb(record);
   const bxml = response.toBxml();
-  console.log('BXML:', bxml)
   res.send(bxml);
 }
+
 
 /**
  * Download the generated recording if the call isn't answered
  */
-exports.downloadRecording = (req, res) => {
+exports.downloadRecording = async (req, res) => {
+  var fs = require('fs');
   const recording = req.body;
-  console.log('Recording available at ', recording.mediaUrl)
-  // TODO: kick off a download of that recording file to my desktop
+  const recordingId = recording.recordingId;
+  const callId = recording.callId;
+
+  var response = await voiceController.getStreamRecordingMedia(config.BANDWIDTH_ACCOUNT_ID, callId, recordingId);
+  fs.writeFileSync('./Recordings/'.concat(recording.recordingId.concat('.wav')), response, 'binary');
 }
+
 
 /**
  * Capture call status

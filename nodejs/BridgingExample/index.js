@@ -16,6 +16,5 @@ app.post('/UpdateCall', voice.updateCall)
 app.post('/Recording', voice.downloadRecording)
 app.post('/Status', voice.status)
 
-
 app.listen(config.PORT);
 console.log(`Server listening on port ${config.PORT}`);
