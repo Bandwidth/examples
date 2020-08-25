@@ -33,7 +33,6 @@ exports.handleInboundCall = async (req, res) => {
   const response = new BandwidthBxml.Response();
   response.addVerb(speakSentence);
 
-  // TODO: Finalize this with new SDK update
   const ring = new BandwidthBxml.Verbs.Ring();
   ring.setDuration(20)
 
@@ -41,7 +40,7 @@ exports.handleInboundCall = async (req, res) => {
   redirect.setRedirectUrl(new URL('/UpdateCall', config.BASE_URL).href);
 
   response.addVerb(ring);
-  response.addVerb(redirect);
+  response.addVerb(redirect);    // if something unexpected happens with the B-leg, the redirect will trigger and send the A-leg to voicemail
 
   const bxml = response.toBxml();
   res.send(bxml);
@@ -67,9 +66,7 @@ exports.handleInboundCall = async (req, res) => {
    }
    const callRequest = new BandwidthVoice.ApiCreateCallRequest(body);
    try {
-     // Creates the Answer Callback when answered
      const response = await voiceController.createCall(config.BANDWIDTH_ACCOUNT_ID, callRequest);
-     // console.log('Created Call', response)
      return response;
    }
    catch (error) {
@@ -81,7 +78,7 @@ exports.handleInboundCall = async (req, res) => {
 
 
 /**
- * Handle the users response of the B-leg call
+ * Handle the users response to the B-leg call
  *
  * @return {string} The generated BXML
  */
@@ -90,7 +87,7 @@ exports.handleOutboundCall = (req, res) => {
   const tag = event.tag;    // callIdA
   if (event.eventType !== 'answer') {
     try {
-        // update a leg of call to start recording
+        // update A-leg of call to start recording
         var body = new BandwidthVoice.ApiModifyCallRequest({
         "redirectUrl": (new URL('/UpdateCall', config.BASE_URL)).href,
         "state": "active",
@@ -139,10 +136,13 @@ exports.handleOutboundGather = (req, res) => {
         var speakSentence = new BandwidthBxml.Verbs.SpeakSentence();
         speakSentence.setSentence('We will send the caller to voicemail.');
         speakSentence.setVoice("kate");
+
         var hangup = new BandwidthBxml.Verbs.Hangup();
+
         var response = new BandwidthBxml.Response();
         response.addVerb(speakSentence);
         response.addVerb(hangup);
+
         const bxml = response.toBxml();
         res.send(bxml);
         voiceController.modifyCall(config.BANDWIDTH_ACCOUNT_ID, tag, body);
@@ -173,14 +173,12 @@ exports.handleDisconnect = async (req, res) => {
   const event = req.body;
   const tag = event.tag;    // the Call ID of the original inbound call
   // console.log(event)
-  // TODO - if event is hangup but A Is still ringing, then what?
   if(event.cause == 'timeout'){
     var body = new BandwidthVoice.ApiModifyCallRequest({
     "redirectUrl": (new URL('/UpdateCall', config.BASE_URL)).href,
     "state": "active",
     "redirectMethod": "POST"
     });
-
     try {
         await voiceController.modifyCall(config.BANDWIDTH_ACCOUNT_ID, tag, body);
     } catch (error) {
