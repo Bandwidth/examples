@@ -202,4 +202,5 @@ def returnStatus():
     Capture call status
     """
     data = json.loads(request.data)
+    print('Call State:', data['state'])
     return ('', 204)
