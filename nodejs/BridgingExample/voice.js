@@ -135,7 +135,7 @@ exports.handleOutboundGather = (req, res) => {
     try {
         var speakSentence = new BandwidthBxml.Verbs.SpeakSentence();
         speakSentence.setSentence('We will send the caller to voicemail.');
-        speakSentence.setVoice("kate");
+        speakSentence.setVoice("julie");
 
         var hangup = new BandwidthBxml.Verbs.Hangup();
 
@@ -152,7 +152,7 @@ exports.handleOutboundGather = (req, res) => {
   } else {
       const speakSentence = new BandwidthBxml.Verbs.SpeakSentence();
       speakSentence.setSentence("The bridge will start now");
-      speakSentence.setVoice("kate");
+      speakSentence.setVoice("julie");
       const bridge = new BandwidthBxml.Verbs.Bridge();
       bridge.setCallId(tag);
 
