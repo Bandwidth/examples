@@ -11,3 +11,5 @@ obj/
 
 **/.idea/*
 *.iml
+python/BridgingExample/.ropeproject/config.py
+*.pyc
