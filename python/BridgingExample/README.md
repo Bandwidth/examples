@@ -46,6 +46,7 @@ The following environmental variables need to be set
 | Outbound Gather Callback  | <url>/Outbound/Gather |
 | Disconnect                | <url>/Disconnect      |
 | Update Call               | <url>/UpdateCall      |
+| Recording Available       | <url>/Recording       | 
 
 
 ## Run The Server
@@ -58,7 +59,7 @@ Run the following command to start the server
 And in a separate terminal window
 
 ```
-
+python app.py
 ```
 
 You are now ready to call the Bandwidth phone number that is associated with the application
