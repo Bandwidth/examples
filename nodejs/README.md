@@ -22,6 +22,7 @@ The NodeJS SDK(s) are available via [NPM](https://www.npmjs.com/) & Github.
 
 | Example                                       | Description                                                                              | Products        |
 |:----------------------------------------------|:-----------------------------------------------------------------------------------------|:----------------|
-| [Reference App](BandwidthReferenceApp) | A small sample app that covers basic use cases with Bandwidth's Voice and Messaging APIs | Voice/Messaging |
-| [BoilerPlate](BoilerPlate)             | A template to be used to build Bandwidth apps in NodeJS                                  | Voice/Messaging |
-| [WebRTC Hello World](webrtc-hello-world)| Example of how to use Bandwidth WebRTC to connect browsers and phones                   | Voice/WebRTC |
+| [Reference App](BandwidthReferenceApp) | A small sample app that covers basic use cases with Bandwidth's Voice and Messaging APIs        | Voice/Messaging |
+| [BoilerPlate](BoilerPlate)             | A template to be used to build Bandwidth apps in NodeJS                                         | Voice/Messaging |
+| [WebRTC Hello World](webrtc-hello-world)| Example of how to use Bandwidth WebRTC to connect browsers and phones                          | Voice/WebRTC    |
+| [Bridging Example](BridgingExample)    | An app that demonstrates bridging 2 calls using a BW number as the intermediary                 | Voice

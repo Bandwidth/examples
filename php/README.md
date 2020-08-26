@@ -24,3 +24,4 @@ The PHP SDK(s) are available via [Packagist](https://packagist.org/) & Github
 | [BoilerPlate](BoilerPlate)                   | A template to be used to build Bandwidth apps in PHP                                                   | Voice/Messaging |
 | [Outbound Call Center](OutboundCallCenter)   | A sample app to show how to create an outbound call with a desired caller ID                           | Voice           |
 | [Phone Number Ordering](PhoneNumberOrdering) | A demo app that creates a PHP/Slim server that exposes endpoints to order phone numbers from Bandwidth | Numbers         |
+| [Bridging Example](BridgingExample)          | An app that demonstrates bridging 2 calls using a BW number as the intermediary                        | Voice           | 
