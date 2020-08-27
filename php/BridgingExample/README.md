@@ -15,13 +15,20 @@ You will need to set up Bandwidth Applications and have phone numbers associated
 ## Assumptions
 
 * Have Bandwidth Account
-* Have PHP Installed
+* Have PHP and [Composer](https://getcomposer.org/download/) Installed
 * Have [ngrok](https://ngrok.com) installed
 * Access to 3 phone numbers - a number to make the outgoing call from, a Bandwidth number to call into, and a number the call will be forwarded to
 
 ## Installation
 
-Clone the repo and run `npm install` to get started
+Clone the repo and run
+
+```
+composer require bandwidth/sdk
+composer require slim/slim
+composer require slim/http
+composer require slim/psr7
+```
 
 ## Usage
 
@@ -48,16 +55,14 @@ The following environmental variables need to be set
 
 
 ## Run The Server
-Run the following command to start the server
-
+Run the following command to start the server:
 ```
 ./ngrok http 5000
 ```
 
-And in a separate terminal window
-
+And in a separate terminal window from within the project directory:
 ```
-php public/index.php
+php -S localhost:8000 -t public
 ```
 
 You are now ready to call the Bandwidth phone number that is associated with the application

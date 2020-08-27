@@ -99,7 +99,7 @@ exports.handleOutboundCall = (req, res) => {
       }
     } else {
         const speakSentence = new BandwidthBxml.Verbs.SpeakSentence();
-        speakSentence.setSentence("Please press 1 to accept the call or any other button to send to voicemail");
+        speakSentence.setSentence("Please press 1 to accept the call, or any other button to send to voicemail");
         speakSentence.setVoice("kate");
 
         const gather = new BandwidthBxml.Verbs.Gather();
