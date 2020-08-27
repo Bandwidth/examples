@@ -15,7 +15,7 @@ You will need to set up Bandwidth Applications and have phone numbers associated
 ## Assumptions
 
 * Have Bandwidth Account
-* Have PHP and [Composer](https://getcomposer.org/download/) Installed
+* Have PHP and [Composer](https://getcomposer.org/download/) installed
 * Have [ngrok](https://ngrok.com) installed
 * Access to 3 phone numbers - a number to make the outgoing call from, a Bandwidth number to call into, and a number the call will be forwarded to
 
