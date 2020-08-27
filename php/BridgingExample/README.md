@@ -62,7 +62,7 @@ Run the following command to start the server:
 
 And in a separate terminal window from within the project directory:
 ```
-php -S localhost:8000 -t public
+php -S localhost:5000 -t public
 ```
 
 You are now ready to call the Bandwidth phone number that is associated with the application
