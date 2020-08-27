@@ -114,7 +114,7 @@ def handleOutboundAnswer():
     else:
         response = Response()
         speak_sentence = SpeakSentence(
-            sentence="Please press 1 to accept the call or any other button to send to voicemail",
+            sentence="Please press 1 to accept the call, or any other button to send to voicemail",
             voice="julie"
         )
         gather = Gather(
