@@ -59,6 +59,8 @@ Run the following command to start the server
 And in a separate terminal window
 
 ```
+gem install bundler
+bundle install
 ruby app.rb
 ```
 

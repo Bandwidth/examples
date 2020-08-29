@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-git_source(:github) {|BridgingExample| "https://github.com/#{repo_name}" }
+git_source(:github) {|BridgingExample| "https://github.com/Bandwidth/examples/tree/master/ruby/BridgingExample" }
 
 gem "bandidth-sdk"
 gem "sinatra"
