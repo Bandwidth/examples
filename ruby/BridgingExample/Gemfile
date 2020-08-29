@@ -1,0 +1,8 @@
+# frozen_string_literal: true
+
+source "https://rubygems.org"
+
+git_source(:github) {|BridgingExample| "https://github.com/#{repo_name}" }
+
+gem "bandidth-sdk"
+gem "sinatra"
