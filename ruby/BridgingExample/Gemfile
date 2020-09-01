@@ -6,3 +6,4 @@ git_source(:github) {|BridgingExample| "https://github.com/Bandwidth/examples/tr
 
 gem "bandidth-sdk"
 gem "sinatra"
+gem "uri"

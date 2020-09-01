@@ -33,6 +33,9 @@ bandwidth_client = Bandwidth::Client.new(
 $voice_client = bandwidth_client.voice_client.client
 
 def createOutboundCall(to, from, callId)
+  """
+  Create the outbound call
+  """
   body = ApiCreateCallRequest.new
   body.from = from
   body.to = PERSONAL_NUMBER
@@ -50,6 +53,9 @@ end
 
 
 def updateCall(callId)
+  """
+  Update the original inbound call to redirect to /UpdateCall
+  """
   body = ApiModifyCallRequest.new
   body.redirect_url = URI::HTTP.build(host: BASE_URL, path: '/UpdateCall')
   body.state = "active"
@@ -63,6 +69,11 @@ end
 
 # Define routes
 post '/Inbound/VoiceCallback' do
+  """
+  Handle the inbound call (A-Leg)
+
+  Returns ringing bxml and creates the outbound call (B-leg)
+  """
   data = JSON.parse(request.body.read)
   createOutboundCall(data['to'], data['from'], data['callId'])
 
@@ -86,6 +97,9 @@ end
 
 
 post '/Outbound/Answer' do
+  """
+  Perform a gather on the outbound call (B-leg) to determine if they want to accept or reject the incoming call
+  """
   data = JSON.parse(request.body.read)
   if data['eventType'] != 'answer'
     return updateCall(data['tag'])
@@ -111,6 +125,9 @@ end
 
 
 post '/Outbound/Gather' do
+  """
+  Process the result of the gather event and either bridge the calls, or update the A-leg
+  """
   data = JSON.parse(request.body.read)
   if data['digits'] == '1'
     response = Bandwidth::Voice::Response.new()
@@ -133,6 +150,9 @@ end
 
 
 post '/Disconnect' do
+  """
+  Handle any disconnect events related to the B-leg and update the A-leg accordingly
+  """
   data = JSON.parse(request.body.read)
   if data['eventType'] != 'timeout'
     updateCall(data['tag'])
@@ -142,6 +162,9 @@ end
 
 
 post '/UpdateCall' do
+  """
+  In the event of a timeout or call screen, update the A-leg call with record bxml to capture a voicemail
+  """
   data = JSON.parse(request.body.read)
   response = Bandwidth::Voice::Response.new()
   speak_sentence = Bandwidth::Voice::SpeakSentence.new({
@@ -164,6 +187,9 @@ end
 
 
 post '/Recording' do
+  """
+  Trigger the download of the recorded voicemail upon completion callback from bandwidth
+  """
   data = JSON.parse(request.body.read)
   File.open("./Recordings/" + data['recordingId'].to_s + '.wav', "wb") do |f|
     response = $voice_client.get_stream_recording_media(BANDWIDTH_ACCOUNT_ID, data['callId'], data['recordingId'])
@@ -174,6 +200,10 @@ end
 
 
 post '/Status' do
-
+  """
+  Capture call status
+  """
+  data = JSON.parse(request.body.read)
+  puts "Call State: " + data['state']
   status 204
 end
