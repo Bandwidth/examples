@@ -1,0 +1,9 @@
+# frozen_string_literal: true
+
+source "https://rubygems.org"
+
+git_source(:github) {|BridgingExample| "https://github.com/Bandwidth/examples/tree/master/ruby/BridgingExample" }
+
+gem "bandidth-sdk"
+gem "sinatra"
+gem "uri"
