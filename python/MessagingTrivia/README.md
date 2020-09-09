@@ -42,6 +42,7 @@ And in a separate terminal window
 ```
 ./ngrok http 5000
 ```
+Be sure to set the callback in your Bandwidth Messaging Application to `(ngrokUrl)/callbacks/messaging`
 
 ## What You Can Do
 * Text your Bandwidth number associated with the application to start receiving trivia questions
