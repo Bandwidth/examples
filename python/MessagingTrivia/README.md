@@ -34,8 +34,7 @@ variable on the [Security & Credentials Documentation Page](https://dev.bandwidt
 ### Commands
 Clone the repo and run the following commands to get started
 ```
-pip install bandwidth-sdk
-pip install Python-Trivia-API
+pip install -r requirements.txt
 python MessagingTrivia.py
 ```
 And in a separate terminal window
