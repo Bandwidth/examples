@@ -35,7 +35,9 @@ interface Participant {
 }
 
 let sessionId: string;
-let calls: Map<string, Participant> = new Map(); // Call IDs to Participants
+let browserParticipant: Participant | null;
+let phoneParticipant: Participant | null;
+let activeCallId: string | null;
 
 /////////////////////////////////////////////////////////////////////////////
 //                                                                         //
@@ -50,9 +52,12 @@ let calls: Map<string, Participant> = new Map(); // Call IDs to Participants
  * The browser will hit this endpoint to get a session and participant ID
  */
 app.get("/connectionInfo", async (req, res) => {
-  const { id, token } = await createParticipant("hello-world-browser");
+  if (browserParticipant) {
+    deleteParticipant(browserParticipant.id);
+  }
+  browserParticipant = await createParticipant("hello-world-browser");
   res.send({
-    token: token,
+    token: browserParticipant.token,
     voiceApplicationPhoneNumber: voiceApplicationPhoneNumber,
     outboundPhoneNumber: outboundPhoneNumber,
   });
@@ -63,11 +68,63 @@ app.get("/connectionInfo", async (req, res) => {
  */
 app.get("/callPhone", async (req, res) => {
   if (!outboundPhoneNumber) {
-    console.log("no outbound phone number has been set");
-    res.status(400).send();
+    const error = "no outbound phone number has been set";
+    console.log(error);
+    res.status(400).send(error);
   }
-  const participant = await createParticipant("hello-world-phone");
-  await callPhone(outboundPhoneNumber, participant);
+
+  if (activeCallId) {
+    const error = `call ${activeCallId} is already in progress`;
+    console.log(error);
+    res.status(400).send(error);
+  }
+
+  phoneParticipant = await createParticipant("hello-world-phone");
+  await callPhone(outboundPhoneNumber);
+  res.status(204).send();
+});
+
+/**
+ * The browser will hit this endpoint to play audio to the connected phone
+ * 
+ * This will effectively remove the phone from the WebRTC session so it can receive the audio file
+ */
+app.get("/playAudioToPhone", async (req, res) => {
+  if (!activeCallId) {
+    const error = "no active call";
+    console.log(error);
+    res.status(400).send(error);
+    return;
+  }
+
+  try {
+    let response = await axios.post(
+      `https://voice.bandwidth.com/api/v2/accounts/${accountId}/calls/${activeCallId}`,
+      {
+        redirectUrl: `${voiceCallbackUrl}/playAudio`,
+      },
+      {
+        auth: {
+          username: username,
+          password: password,
+        },
+      }
+    );
+    res.status(204).send();
+  } catch (e) {
+    res.status(400).send(e);
+  }
+});
+
+/**
+ * The browser will hit this endpoint to hangup
+ * 
+ * This will terminate the call and delete the phone participant while leaving the browser participant active and connected to the session
+ */
+app.get("/endCall", async (req, res) => {
+  if (activeCallId) {
+    endCall(activeCallId);
+  }
   res.status(204).send();
 });
 
@@ -77,15 +134,25 @@ app.get("/callPhone", async (req, res) => {
 app.post("/incomingCall", async (req, res) => {
   const callId = req.body.callId;
   console.log(`received incoming call ${callId} from ${req.body.from}`);
-  const participant = await createParticipant("hello-world-phone");
-  calls.set(callId, participant);
+  if (activeCallId) {
+    console.log(`already have active call ${activeCallId}, ignoring incoming call`);
+    const bxml = `<?xml version="1.0" encoding="UTF-8" ?>
+    <Response>
+      <Hangup/>
+    </Response>`;
+    res.contentType("application/xml").send(bxml);
+    return;
+  }
+
+  activeCallId = callId;
+  phoneParticipant = await createParticipant("hello-world-phone");
 
   // This is the response payload that we will send back to the Voice API to transfer the call into the WebRTC session
-  const bxml = await generateTransferBxml(participant.token);
+  const bxml = await generateTransferBxml(phoneParticipant.token);
 
   // Send the payload back to the Voice API
   res.contentType("application/xml").send(bxml);
-  console.log(`transferring call ${callId} to session ${sessionId} as participant ${participant.id}`);
+  console.log(`transferring call ${callId} to session ${sessionId} as participant ${phoneParticipant.id}`);
 });
 
 /**
@@ -95,19 +162,40 @@ app.post("/callAnswered", async (req, res) => {
   const callId = req.body.callId;
   console.log(`received answered callback for call ${callId} tp ${req.body.to}`);
 
-  const participant = calls.get(callId);
-  if (!participant) {
+  if (callId !== activeCallId) {
+    console.log(`callId ${callId} does not match activeCallId ${activeCallId}`);
+    const bxml = `<?xml version="1.0" encoding="UTF-8" ?>
+    <Response>
+      <Hangup/>
+    </Response>`;
+    res.contentType("application/xml").send(bxml);
+    return;
+  }
+
+  if (!phoneParticipant) {
     console.log(`no participant found for ${callId}!`);
     res.status(400).send();
     return;
   }
 
   // This is the response payload that we will send back to the Voice API to transfer the call into the WebRTC session
-  const bxml = await generateTransferBxml(participant.token);
+  const bxml = await generateTransferBxml(phoneParticipant.token);
 
   // Send the payload back to the Voice API
   res.contentType("application/xml").send(bxml);
-  console.log(`transferring call ${callId} to session ${sessionId} as participant ${participant.id}`);
+  console.log(`transferring call ${callId} to session ${sessionId} as participant ${phoneParticipant.id}`);
+});
+
+/**
+ * Bandwidth's Voice API will hit this endpoint to play audio
+ */
+app.post("/playAudio", async (req, res) => {
+  console.log("playing audio file to phone");
+  const bxml = `<?xml version="1.0" encoding="UTF-8" ?>
+  <Response>
+    <PlayAudio>voicemail.wav</PlayAudio>
+  </Response>`;
+  res.contentType("application/xml").send(bxml);
 });
 
 /**
@@ -119,12 +207,16 @@ app.post("/callStatus", async (req, res) => {
     // Do some cleanup
     const callId = req.body.callId;
     console.log(`received disconnect event for call ${callId}`);
-    const participant = calls.get(callId);
-    if (participant) {
-      deleteParticipant(participant.id);
-      calls.delete(callId);
+    if (callId === activeCallId) {
+      activeCallId = null;
+      if (phoneParticipant) {
+        deleteParticipant(phoneParticipant.id);
+        phoneParticipant = null;
+      } else {
+        console.log("no participant associated with event", req.body);
+      }
     } else {
-      console.log("no participant associated with event", req.body);
+      console.log(`callId ${callId} does not match activeCallId ${activeCallId}`);
     }
   } else {
     console.log("received unexpected status update", req.body);
@@ -236,7 +328,7 @@ const createParticipant = async (tag: string): Promise<Participant> => {
  */
 const deleteParticipant = async (participantId: string) => {
   console.log(`deleting participant ${participantId}`);
-  await axios.delete(
+  return axios.delete(
     `${callControlUrl}/participants/${participantId}`,
     {
       auth: {
@@ -248,10 +340,9 @@ const deleteParticipant = async (participantId: string) => {
 }
 
 /**
- * Ask Bandwidth's Voice API to call the outbound phone number, with an answer callback url that
- * includes the participant ID
+ * Ask Bandwidth's Voice API to call the outbound phone number
  */
-const callPhone = async (phoneNumber: string, participant: Participant) => {
+const callPhone = async (phoneNumber: string) => {
   try {
     let response = await axios.post(
       `https://voice.bandwidth.com/api/v2/accounts/${accountId}/calls`,
@@ -261,6 +352,7 @@ const callPhone = async (phoneNumber: string, participant: Participant) => {
         answerUrl: `${voiceCallbackUrl}/callAnswered`,
         disconnectUrl: `${voiceCallbackUrl}/callStatus`,
         applicationId: voiceApplicationId,
+        callTimeout: 60,
       },
       {
         auth: {
@@ -269,13 +361,34 @@ const callPhone = async (phoneNumber: string, participant: Participant) => {
         },
       }
     );
-    const callId = response.data.callId;
-    calls.set(callId, participant);
-    console.log(`initiated call ${callId} to ${outboundPhoneNumber}...`);
+
+    activeCallId = response.data.callId;
+    console.log(`initiated call ${activeCallId} to ${outboundPhoneNumber}...`);
   } catch (e) {
     console.log(`error calling ${outboundPhoneNumber}: ${e}`);
   }
 };
+
+const endCall = async (callId: string) => {
+  try {
+    console.log(`ending call ${callId}`);
+    let response = await axios.post(
+      `https://voice.bandwidth.com/api/v2/accounts/${accountId}/calls/${callId}`,
+      {
+        state: "completed",
+      },
+      {
+        auth: {
+          username: username,
+          password: password,
+        },
+      }
+    );
+    console.log(`ended call ${callId}`);
+  } catch (e) {
+    console.log(`error ending call: ${e}`);
+  }
+}
 
 /**
  * Helper method to generate transfer BXML from a WebRTC device token

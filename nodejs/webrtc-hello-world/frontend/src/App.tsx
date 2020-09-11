@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
+import { Fab, Box } from "@material-ui/core";
+import {
+  Call,
+  CallEnd,
+  PlayArrow,
+} from "@material-ui/icons";
+import { red, green } from "@material-ui/core/colors";
 
 import BandwidthRtc, { RtcStream } from "@bandwidth/webrtc-browser";
 
@@ -69,7 +76,35 @@ const App: React.FC = () => {
       if (response.ok) {
         console.log("Ringing...");
       } else {
-        console.log("Something went wrong");
+        const json = await response.json();
+        console.log("Something went wrong", json);
+      }
+    })
+  }
+
+  // Play audio to the connected phone
+  // This will effectively remove them from this session
+  const playAudioToPhone = () => {
+    console.log("playing audio to phone");
+    fetch("/playAudioToPhone").then(async (response) => {
+      if (response.ok) {
+        console.log("Playing audio to phone...");
+      } else {
+        const json = await response.json();
+        console.log("Something went wrong", json);
+      }
+    })
+  }
+
+  // End the call with the phone, leaving the browser connected
+  const endCall = () => {
+    console.log("ending call");
+    fetch("/endCall").then(async (response) => {
+      if (response.ok) {
+        console.log("ended call");
+      } else {
+        const json = await response.json();
+        console.log("Something went wrong", json);
       }
     })
   }
@@ -92,6 +127,25 @@ const App: React.FC = () => {
               }}
             ></video>
             Hooray! You're connected!
+            <div>
+              <Fab
+                style={{color: "white", backgroundColor: red["A700"], marginLeft: "10px"}}
+                onClick={endCall}
+              >
+                <CallEnd />
+              </Fab>
+            </div>
+            <br/>
+            <div>Examples:</div>
+            <div>
+              Play audio file to phone (voicemail drop)
+              <Fab
+                style={{color: "white", backgroundColor: green["A700"], marginLeft: "10px"}}
+                onClick={playAudioToPhone}
+              >
+                <PlayArrow />
+              </Fab>
+            </div>
           </div>
         ) : (
           <div>
@@ -99,7 +153,12 @@ const App: React.FC = () => {
             {outboundPhoneNumber &&
               <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
                 <span>or click to call {outboundPhoneNumber}</span>
-                <button style={{height: "30px", marginLeft: "10px"}} onClick={callOutboundPhoneNumber}>CALL</button>
+                <Fab
+                  style={{color: "white", backgroundColor: green["A700"], marginLeft: "10px"}}
+                  onClick={callOutboundPhoneNumber}
+                >
+                  <Call />
+                </Fab>
               </div>
             }
           </div>
