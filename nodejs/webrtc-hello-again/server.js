@@ -134,7 +134,8 @@ app.get('/startPSTNCall', async (req, res) => {
         res.send('{"status":"ringing"}')
   
       } catch (e) {
-        console.log(`error calling ${process.env.OUTBOUND_PHONE_NUMBER}: ${e}`);
+        console.error(`error calling ${process.env.OUTBOUND_PHONE_NUMBER}`, e);
+
         res.send('{"status":"call failed"}')
       }
   }).catch(error => {
