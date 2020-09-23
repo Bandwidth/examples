@@ -6,24 +6,30 @@
             const basePath = 'http://localhost:3000'
             const bandwidthRtc = new BandwidthRtc();
             
-            bandwidthRtc.onStreamAvailable((rtcStream) => {
-                console.log("receiving audio!");
-                remoteVideoComponent = document.getElementById("mediaPlayer")
-                remoteVideoComponent.srcObject = rtcStream.mediaStream
-            });
-            bandwidthRtc.onStreamUnavailable((endpointId) => {
-                remoteVideoComponent = document.getElementById("mediaPlayer")
-                console.log("no longer receiving audio");
-                remoteVideoComponent.srcObject = undefined
+            /**
+             * Setup our listeners for the events from the media server
+             */
+             window.addEventListener('load', (event) => {
+                console.log("loading listeners")
+                bandwidthRtc.onStreamAvailable((rtcStream) => {
+                    console.log("receiving audio!");
+                    remoteVideoComponent = document.getElementById("mediaPlayer")
+                    remoteVideoComponent.srcObject = rtcStream.mediaStream
+                });
+                bandwidthRtc.onStreamUnavailable((endpointId) => {
+                    remoteVideoComponent = document.getElementById("mediaPlayer")
+                    console.log("no longer receiving audio");
+                    remoteVideoComponent.srcObject = undefined
 
-                // update the interface
-                if(document.getElementById('endButton').disabled){
-                    alert("Call ended, stream is unavailable")
-                }
+                    // update the interface
+                    if(! document.getElementById('endButton').disabled){
+                        alert("Call ended, stream is unavailable")
+                    }
 
-                setActive();
-                disableButton('endButton')
-                enableButton('callButton')
+                    setActive();
+                    disableButton('endButton')
+                    enableButton('callButton')
+                });
             });
 
             /**
@@ -47,6 +53,7 @@
 
             /**
              * Now that we have the token, we can start streaming media
+             * The token param is fetched from the server above
              */
             function startStreaming(token){
                 console.log('connecting to BAND WebRTC server')
@@ -155,11 +162,6 @@
             </div>
             <div>
                 <audio id="mediaPlayer" autoPlay></audio>
-                <script>
-                    const constraints = {audio: true};
-
-                    navigator.mediaDevices.getUserMedia(constraints)
-                </script>
             </div>
         </div>
     </body>

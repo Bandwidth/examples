@@ -8,7 +8,7 @@ const jwt_decode = require('jwt-decode')
 const app = express();
 const bodyParser = require('body-parser')
 app.use(bodyParser.json());
-
+app.use(express.static('public'))
 
 // config
 const port = 3000
@@ -33,14 +33,6 @@ let callId = false;
 
 
 /**
- * Serve the single page app
- */
-app.get('/', (req, res) => {
-  // return the base page
-  res.sendFile(localDir +'/simple_page.html')
-});
-
-/**
  * Setup the call and pass info to the browser so they can join
  */
 app.get('/startBrowserCall', (req, res) => {
@@ -48,7 +40,6 @@ app.get('/startBrowserCall', (req, res) => {
   var sessionBody = new BandwidthWebRTC.Session({ "tag" : "session-test"});
 
   webRTCController.createSession(accountId, sessionBody, function(error, sessionResponse, context) {
-    // console.log("session info: ", sessionResponse, "\n")
     saveSessionId(sessionResponse.id)
 
     // create a participant for this browser user
@@ -66,19 +57,20 @@ app.get('/startBrowserCall', (req, res) => {
           function(error, response, context) {
             // now that we have added them to the session, we can send back the token they need to join
             console.log("sending token to web participant")
-            res.send('{"token":"'+ createResponse.token +'"}')
+            res.send({token: createResponse.token});
         }).catch(error => {
           console.error('Error in addParticipantToSession:', error);
-          res.send('{"status":"Failed to add participant to session"}')
+          res.status(500).send({"status":"Failed to add participant to session"})
+
       });
 
     }).catch(error => {
       console.error('Error in createParticipant:', error);
-      res.send('{"status":"Failed to create Participant and get token"}')
+      res.status(500).send({"status":"Failed to create Participant and get token"})
     });
   }).catch(error => {
     console.error('Error in createSession:', error);
-    res.send('{"status":"Failed to create session"}')
+    res.status(500).send({"status":"Failed to create session"})
   });
 });
 
@@ -88,10 +80,9 @@ app.get('/startBrowserCall', (req, res) => {
 app.get('/startPSTNCall', async (req, res) => {
   if (getSessionId() == false){
     console.log("No web browser in session; aborting PSTN call")
-    res.send('{"status":"Failed to start PSTN call; no session id found"}')
+    res.status(400).send({"status":"Failed to start PSTN call; no session id found"})
     return;
   }
-  participant_response = null;
   console.log("about to create participant")
   // create a participant for this browser user
   var participantBody = new BandwidthWebRTC.Participant(
@@ -102,18 +93,16 @@ app.get('/startPSTNCall', async (req, res) => {
 
   webRTCController.createParticipant(accountId, participantBody, 
     async function(error, createResponse, context) {      
-      // console.log("PSTN participant response info: ", createResponse)
-      participant_response = createResponse
+      let participant_response = createResponse
       PSTNToken = createResponse.token;
       
       var body = new BandwidthWebRTC.Subscriptions({"sessionId" : getSessionId()});
       console.log("Add PSTN caller to the session")
       webRTCController.addParticipantToSession(accountId, getSessionId(), createResponse.participant.id, body, 
         function(error, response, context) {
-          // console.log("addParticipantToSession response:", response)         
       }).catch(error => {
         console.error('Error in addParticipantToSession:', error);
-        res.send('{"status":"Failed to add PSTN call to session"}')
+        res.status(500).send({"status":"Failed to add PSTN call to session"})
       });
 
       var body = new BandwidthVoice.ApiCreateCallRequest({
@@ -121,8 +110,7 @@ app.get('/startPSTNCall', async (req, res) => {
         "to": process.env.OUTBOUND_PHONE_NUMBER,
         "applicationId": process.env.VOICE_APPLICATION_ID,
         "answerUrl": process.env.BASE_CALLBACK_URL + 'callAnswered',
-        "answerMethod": "POST",
-        "callTimeout": 10
+        "answerMethod": "POST"
       });
 
       console.log("start the call to", process.env.OUTBOUND_PHONE_NUMBER)
@@ -130,28 +118,23 @@ app.get('/startPSTNCall', async (req, res) => {
         var response = await voiceController.createCall(accountId, body)
         callId = response.callId;
         calls.set(response.callId, participant_response)
-        // console.log("voice API reponse: ", response);      
-        res.send('{"status":"ringing"}')
+        res.send({"status":"ringing"})
   
       } catch (e) {
         console.error(`error calling ${process.env.OUTBOUND_PHONE_NUMBER}`, e);
 
-        res.send('{"status":"call failed"}')
+        res.status(500).send({"status":"call failed"})
       }
   }).catch(error => {
     console.error('Error in createParticipant:', error);
-    res.send('{"status":"Failed to get token"}')
-  });  
-
-
-
+    res.status(500).send({"status":"Failed to get token"})
+  });
 });
 
 /**
  * Bandwidth's Voice API will hit this endpoint when an outgoing call is answered
  */
 app.post("/callAnswered", async (req, res) => {
-  // console.log("Callback from Voice system:", req.body)
   const callId = req.body.callId;
   console.log(`received answered callback for call ${callId} tp ${req.body.to}`);
 
@@ -163,7 +146,9 @@ app.post("/callAnswered", async (req, res) => {
   }
 
   // This is the response payload that we will send back to the Voice API to transfer the call into the WebRTC session
+  // Use the SDK to generate this BXML
   // const bxml = webRTCController.generateTransferBxml(participant.token);
+  // Use an internal function to generate the BXML
   const bxml = generateTransferBxml(participant.token);
   console.log(`transferring call ${callId} to session ${sessionId}`)
 
@@ -178,47 +163,21 @@ app.post("/callAnswered", async (req, res) => {
 app.get('/endPSTNCall', async (req, res) => {
   if (getSessionId() == false || callId == false){
     console.log("No session found; can't end PSTN call")
-    res.send('{"status":"Failed to end PSTN call; no session id found"}')
+    res.status(400).send({"status":"Failed to end PSTN call; no session id found"})
     return;
   }
 
   var body = new BandwidthVoice.ApiModifyCallRequest({"state": "completed"});
   try{
     var response = await voiceController.modifyCall(accountId, callId, body)
-    res.send('{"status":"hungup"}')
+    res.send({"status":"hungup"})
 
   } catch (e) {
     console.log(`error hanging up ${process.env.OUTBOUND_PHONE_NUMBER}:`, e);
-    res.send('{"status":"call hangup failed"}')
+    res.status(500).send({"status":"call hangup failed"}')
   }
 });
 
-
-/**
- * Support for other files, this isn't really secure for prod deployments
- * - currently used for the JS SDK
- */
-app.use(function(req, res, next) {
-  if (!req.route){
-    // undefined path
-    // console.log("unknown path: ", req.path)
-    file  = __dirname + req.path;
-    try {
-      if (fs.existsSync(file)) {
-        //file exists
-        // console.log("serving ", file)
-        res.sendFile(file)
-      } else{
-        // console.log("file not found: ", file)
-        return next ("No file found:", file);
-      }
-    } catch(err) {
-      console.log("Failed to check file")
-      console.error(err)
-    }
-  } 
-  // next();
-});
 /** 
  * start our server
  */
