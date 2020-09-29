@@ -102,10 +102,8 @@ app.post("/callAnswered", async (req, res) => {
 
   // This is the response payload that we will send back to the Voice API to transfer the call into the WebRTC session
   // Use the SDK to generate this BXML
-  // const bxml = webRTCController.generateTransferBxml(participant.token);
-  // Use an internal function to generate the BXML
   console.log(`transferring call ${callId} to session ${sessionId}`);
-  const bxml = generateTransferBxml(participant.token);
+  const bxml = webRTCController.generateTransferBxml(participant.token);
 
   // Send the payload back to the Voice API
   res.contentType("application/xml").send(bxml);
@@ -269,28 +267,4 @@ async function endCallToPSTN(account_id, call_id) {
     console.log("Failed to hangup the call", error);
     throw error;
   }
-}
-
-/**
- * Helper method to generate transfer BXML from a WebRTC device token
- * @param deviceToken device token received from the call control API for a participant
- */
-function generateTransferBxml(deviceToken) {
-  console.log("start with ", deviceToken);
-  //Get the tid out of the participant jwt
-  var decoded = jwt_decode(deviceToken);
-  console.log(
-    "decoded tid is ",
-    decoded.tid,
-    "to SIPX:",
-    process.env.BANDWIDTH_WEBRTC_SIPX_PHONE_NUMBER
-  );
-  var numberBXML = `<?xml version="1.0" encoding="UTF-8" ?>
-    <Response>
-      <SpeakSentence voice="julie">Transferring your call</SpeakSentence>
-      <Transfer transferCallerId="${decoded.tid}"><PhoneNumber>${process.env.BANDWIDTH_WEBRTC_SIPX_PHONE_NUMBER}</PhoneNumber></Transfer>
-      <SpeakSentence voice="julie">End of your call</SpeakSentence>
-    </Response>`;
-
-  return numberBXML;
 }
