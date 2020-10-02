@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <title>2FA Challenge</title>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
+  </head>
+
+  <body>
+    <div style="margin: auto; width: 50%">
+      <h1 style="text-align: center">2FA Request for {{ username }}</h1>
+      <div style="margin: auto; width: 100%">
+        <form action="2FASubmit" method="POST">
+          <input type="hidden" name="scope" value="{{ scope }}" />
+          {{ message }}<br />
+          2FA Code: <input type="text" name="code" id="code" autofocus /><br />
+          <button onClick="submitCode()">Submit Code</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

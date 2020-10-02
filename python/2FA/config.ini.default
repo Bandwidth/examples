@@ -1,0 +1,22 @@
+#!/bin/sh
+# Bandwith creds 
+# Account ID can be found in the upper right of your screen when you log in, in parens
+# the username and password for a user with API permissions
+[bandwidth]
+account_id = 9900910
+api_user = acovati-rnd
+api_password = kxHkZv3mh!fWGsE
+# Create your voice application within Bandwidth and then paste the Application Id here
+voice_application_id = 449a2ef0-b74b-4112-bee5-3386c17da739
+sms_application_id = 
+
+[server]
+# Your dev server, perhaps an ngrok server when in development, include ending "/"
+#  remember to update this every time you restart ngrok if you are using that
+base_callback_url = https://e8b0c1c2a03e.ngrok.io/
+
+[outbound_call]
+# The "From" caller Id number for your call
+from_number = +19193216218
+# the number to dial out to when you click "Dial Out" in the Web UI
+dial_number = +15087696559
