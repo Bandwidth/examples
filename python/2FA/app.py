@@ -45,7 +45,8 @@ authLevel = 0
 @app.route("/", methods=["GET"])
 def show_login_page():
     # show the login page
-    return download_file("login.html")
+    # return download_file("login.html")
+    return render_template('home_page.html')
 
 
 @app.route("/appPage", methods=["GET"])

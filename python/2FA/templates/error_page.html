@@ -1,15 +1,5 @@
-<html>
-  <head>
-    <title>The App</title>
-    <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
-  </head>
-
-  <body>
-    <div style="margin: auto; width: 50%">
-      <h1 style="text-align: center">ACCESS DENIED</h1>
-      <div style="margin: auto; width: 100%">
-        Sorry, you don't have access here!
-      </div>
-    </div>
-  </body>
-</html>
+{% extends "layout.html" %} {% block title %}Oops! There was an error{% endblock
+%} {% block head %} {{ super() }} {% endblock %} {% block header %}ACCESS DENIED
+{% endblock %} {% block content %}
+<div style="text-align: center">Sorry, you don't have access here!</div>
+{% endblock %}

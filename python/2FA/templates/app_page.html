@@ -1,18 +1,13 @@
-<html>
-  <head>
-    <title>The App</title>
-    <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
-  </head>
-
-  <body>
-    <div style="margin: auto; width: 50%">
-      <h1 style="text-align: center">Welcome to our app, {{ username }}</h1>
-      <div style="margin: auto; width: 100%">
-        Would you like to do <a href="goSecure">something secure</a>? <br /><a
-          href="/logOut"
-          >Log Out</a
-        >
-      </div>
-    </div>
-  </body>
-</html>
+{% extends "layout.html" %} {% block title %}The Sample App{% endblock %} {%
+block head %} {{ super() }} {% endblock %} {% block header %}In the secure app
+{% endblock %} {% block content %}
+<div style="margin: auto; width: 50%">
+  <div style="text-align: center">Welcome to our app, {{ username }}</div>
+  <div style="margin: auto; width: 100%">
+    Would you like to do <a href="goSecure">something secure</a>? <br /><a
+      href="/logOut"
+      >Log Out</a
+    >
+  </div>
+</div>
+{% endblock %}
