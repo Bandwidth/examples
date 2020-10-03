@@ -7,13 +7,9 @@ A simple 2FA application that shows how to integrate with a login and administra
 @copyright Bandwidth INC
 """
 
-import sys
-import json
-import os
-import jwt
 import configparser
 from user import User
-from flask import Flask, request, send_from_directory, Response, render_template, redirect, url_for
+from flask import Flask, request, Response, render_template, redirect, url_for
 from bandwidth.bandwidth_client import BandwidthClient
 from bandwidth.exceptions.api_exception import APIException
 
@@ -42,7 +38,6 @@ user.security_level = 0
 @app.route("/", methods=["GET"])
 def show_login_page():
     # show the login page
-    # return download_file("login.html")
     return render_template('home_page.html')
 
 
@@ -74,7 +69,8 @@ def show_secure_page():
 
 @ app.route("/submitLogin", methods=["POST"])
 def validateLogin():
-    # validate login info - we would normally do that here, but we aren't in this simple example
+    '''validate login info, and then send a 2FA and prompt for a 2FA'''
+    # we would normally validate here, but we aren't in this simple example
     username = request.form['username']
     user = User(username)
 
@@ -96,7 +92,8 @@ def goSecure():
 
 def show_2fa(scope):
     '''
-    A function that will show a 2FA page for multiple different SCOPEs
+    A function that will send a 2FA code and then 
+    show a 2FA page; supports different SCOPEs
     :param the scope to show this for
     '''
     # obtain user info
@@ -109,7 +106,8 @@ def show_2fa(scope):
 
     # then show 2FA request
     # we'll pass the scope in the html for simplification of the demo, but it should be somewhere non-user accessible
-    return render_template('2fa_form.html', user=user.username, scope=scope, message="We just sent you a 2FA code for '" + scope + "', please enter it here")
+    message = "We just sent you a 2FA code for '" + scope + "', please enter it here"
+    return render_template('2fa_form.html', user=user.username, scope=scope, message=message)
 
 
 @ app.route("/2FASubmit", methods=["POST"])
@@ -134,6 +132,7 @@ def twofa_submit():
 
 @ app.route("/logOut", methods=["GET"])
 def log_out():
+    '''Clear the user info so you can try again'''
     user = get_user()
     print(f"Logging out ", user.username)
     user.security_level = 0  # just to be sure
@@ -167,7 +166,7 @@ def send2FA(account_id, user, scope):
     :param account_id your BAND account id
     :param user who is receiving this code, object has their number and username
     :param scope the scope for this request, e.g. login, secure action, etc
-    :return ??
+    :return None
     '''
     # FYI, printing the to_number in prod could violate PII
     print(
@@ -195,7 +194,7 @@ def send2FA(account_id, user, scope):
         else:
             auth_client.create_voice_two_factor(account_id, body)
 
-        return
+        return None
 
     except APIException as e:
         print("send2FA> Failed to send 2FA: %s" %
@@ -210,7 +209,7 @@ def validate2FA(account_id, to_number, scope, code):
     :param to_number who is receiving this code
     :param scope the scope for this request, e.g. login, secure action, etc
     :param code The code that was given back to you by the End User
-    :return ??
+    :return True or False
     '''
     # FYI, printing the to_number in prod could violate PII
     print(
@@ -235,14 +234,6 @@ def validate2FA(account_id, to_number, scope, code):
         print("validate2FA> Failed to validate 2FA: %s" %
               e.response.text)
         return None
-
-
-@ app.route('/public/<path:filename>')
-def download_file(filename):
-    '''
-    Serve static files
-    '''
-    return send_from_directory('public', filename)
 
 
 if __name__ == '__main__':
