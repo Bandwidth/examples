@@ -5,7 +5,13 @@ endblock %} {% block content %}
   <div style="margin: auto; width: 100%; margin: 10px">
     <form action="submitLogin" method="POST">
       Username:
-      <input type="text" name="username" id="username" autofocus /><br /><br />
+      <input type="text" name="username" autofocus /><br /><br />
+      Set your preference:
+      <select name="delivery_preference">
+        <option value="sms">SMS</option>
+        <option value="voice">Voice</option>
+      </select>
+      <br /><br />
       Password: None - we use 2FA instead of passwords!<br /><br />
       <button>Login</button>
     </form>

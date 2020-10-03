@@ -35,11 +35,8 @@ app = Flask(__name__)
 
 # track our username
 #  - if not a demo, these would be stored in persistant storage
-user = False
-username = False
-# this would also be persisted
-#  0 = no auth, 1 = login, 2 = secure
-authLevel = 0
+user = User("Invalid")
+user.security_level = 0
 
 
 @app.route("/", methods=["GET"])
@@ -80,6 +77,9 @@ def validateLogin():
     # validate login info - we would normally do that here, but we aren't in this simple example
     username = request.form['username']
     user = User(username)
+
+    user.delivery_pref = request.form['delivery_preference']
+
     set_user(user)
     print(f"Username is '{user.username}'")
 
@@ -105,7 +105,7 @@ def show_2fa(scope):
 
     # send out 2FA code
     send2FA(config['bandwidth']['account_id'],
-            user, scope, "voice")
+            user, scope)
 
     # then show 2FA request
     # we'll pass the scope in the html for simplification of the demo, but it should be somewhere non-user accessible
@@ -137,7 +137,7 @@ def log_out():
     user = get_user()
     print(f"Logging out ", user.username)
     user.security_level = 0  # just to be sure
-    set_user(None)
+    set_user(User("Invalid"))
     return redirect(url_for('show_login_page'))
 
 #  ------------------------------------------------------------------------------------------
@@ -161,23 +161,22 @@ def get_user():
     return user
 
 
-def send2FA(account_id, user, scope, method):
+def send2FA(account_id, user, scope):
     '''
     Send out a 2FA Code
     :param account_id your BAND account id
     :param user who is receiving this code, object has their number and username
     :param scope the scope for this request, e.g. login, secure action, etc
-    :param method - How to deliver this: "voice" or "message"
     :return ??
     '''
     # FYI, printing the to_number in prod could violate PII
     print(
         f"For {user.username} sending 2FA to {user.number} from {config['numbers']['from_number']} for Scope '{scope}'")
 
-    if(method == "voice"):
-        application_id = config['bandwidth']['voice_application_id']
-    else:
+    if(user.delivery_pref == "sms"):
         application_id = config['bandwidth']['messaging_application_id']
+    else:
+        application_id = config['bandwidth']['voice_application_id']
 
     message = user.username + ", your {NAME} {SCOPE} code is {CODE}"
     try:
@@ -191,10 +190,10 @@ def send2FA(account_id, user, scope, method):
             "message": message
         }
         auth_client = bandwidth_client.two_factor_auth_client.client
-        if(method == "voice"):
-            auth_client.create_voice_two_factor(account_id, body)
-        else:
+        if(user.delivery_pref == "sms"):
             auth_client.create_messaging_two_factor(account_id, body)
+        else:
+            auth_client.create_voice_two_factor(account_id, body)
 
         return
 
