@@ -31,8 +31,8 @@ app = Flask(__name__)
 
 # track our username
 #  - if not a demo, these would be stored in persistant storage
-user = User("Invalid")
-user.security_level = 0
+globalUser = User("Name Not Set")
+globalUser.security_level = 0
 
 
 @app.route("/", methods=["GET"])
@@ -72,12 +72,9 @@ def validateLogin():
     '''validate login info, and then send a 2FA and prompt for a 2FA'''
     # we would normally validate here, but we aren't in this simple example
     username = request.form['username']
-    user = User(username)
-
-    user.delivery_pref = request.form['delivery_preference']
-
-    set_user(user)
-    print(f"Username is '{user.username}'")
+    myUser = User(username)
+    myUser.delivery_pref = request.form['delivery_preference']
+    set_user(myUser)
 
     # throw up the 2FA login page
     return show_2fa("login")
@@ -107,7 +104,7 @@ def show_2fa(scope):
     # then show 2FA request
     # we'll pass the scope in the html for simplification of the demo, but it should be somewhere non-user accessible
     message = "We just sent you a 2FA code for '" + scope + "', please enter it here"
-    return render_template('2fa_form.html', user=user.username, scope=scope, message=message)
+    return render_template('2fa_form.html', username=user.username, scope=scope, message=message)
 
 
 @ app.route("/2FASubmit", methods=["POST"])
@@ -118,7 +115,7 @@ def twofa_submit():
     scope = request.form['scope']
 
     if(validate2FA(config['bandwidth']['account_id'], user.number, scope, code) != True):
-        return render_template('2fa_form.html', username=user.username, scope="login", message="Sorry, wrong code, please try again")
+        return render_template('2fa_form.html', username=user.username, scope=scope, message="Sorry, wrong code, please try again")
 
     # update their security level
     # proceed on to protected area of the website
@@ -145,8 +142,8 @@ def log_out():
 
 
 def set_user(this_user):
-    global user
-    user = this_user
+    global globalUser
+    globalUser = this_user
 
 
 def get_user():
@@ -156,8 +153,8 @@ def get_user():
     :return: user
     :rtype: object
     '''
-    global user
-    return user
+    global globalUser
+    return globalUser
 
 
 def send2FA(account_id, user, scope):
