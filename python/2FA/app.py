@@ -113,7 +113,7 @@ def twofa_submit():
     code = request.form['code']
     scope = request.form['scope']
 
-    if(validate2FA(config['bandwidth']['account_id'], user.number, scope, code) != True):
+    if(validate2FA(config['bandwidth']['account_id'], user, scope, code) != True):
         return render_template('2fa_form.html', username=user.username, scope=scope, message="Sorry, wrong code, please try again")
 
     # update their security level
@@ -208,23 +208,30 @@ def send2FA(account_id, user, scope):
         return None
 
 
-def validate2FA(account_id, to_number, scope, code):
+def validate2FA(account_id, user, scope, code):
     '''
     Validate the 2FA Code you sent out before
     :param account_id your BAND account id
-    :param to_number who is receiving this code
+    :param user who is receiving this code
     :param scope the scope for this request, e.g. login, secure action, etc
     :param code The code that was given back to you by the End User
     :return True or False
     '''
     # FYI, printing the to_number in prod could violate PII
     print(
-        f"verifying 2FA for {to_number} for Scope '{scope}''")
+        f"verifying 2FA for {user.number} for Scope '{scope}''")
+    # determine if the user has a preference for voice or sms, for use below
+    if(user.delivery_pref == "sms"):
+        application_id = config['bandwidth']['messaging_application_id']
+    else:
+        application_id = config['bandwidth']['voice_application_id']
+
     try:
         body = {
             # Should be the same as your request
             "from": config['numbers']['from_number'],
-            "to": to_number,
+            "to": user.number,
+            "applicationId": application_id,
             "scope": scope,
             "code": code,
             "digits": 6,
