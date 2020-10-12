@@ -95,7 +95,6 @@ def show_2fa(scope):
     '''
     # obtain user info
     user = get_user()
-    user.number = config['numbers']['user_number']
 
     # send out 2FA code
     send2FA(config['bandwidth']['account_id'],
@@ -154,6 +153,10 @@ def get_user():
     :rtype: object
     '''
     global globalUser
+    # simplifying things here, we would normally pull this data from a database
+    if (globalUser.username != "Invalid"):
+        globalUser.number = config['numbers']['user_number']
+
     return globalUser
 
 
@@ -169,15 +172,21 @@ def send2FA(account_id, user, scope):
     print(
         f"For {user.username} sending 2FA to {user.number} from {config['numbers']['from_number']} for Scope '{scope}'")
 
+    # determine if the user has a preference for voice or sms, for use below
     if(user.delivery_pref == "sms"):
         application_id = config['bandwidth']['messaging_application_id']
     else:
         application_id = config['bandwidth']['voice_application_id']
 
+    # These three variables are available for expansion by our 2FA service
+    # {NAME} (optional) is the name of your Application within the Bandwidth dashboard
+    # {SCOPE} (optional) is the scope defined by this call, e.g. login, admin, verify
+    # {CODE} (required) is the code created by the system
     message = user.username + ", your {NAME} {SCOPE} code is {CODE}"
+
     try:
         body = {
-            # mfrom is any number in the location referenced by your Bandwidth Messaging Application
+            # from is any number in the location referenced by your Bandwidth Messaging Application
             "from": config['numbers']['from_number'],
             "to": user.number,  # the recipient of the message
             "applicationId": application_id,
@@ -216,7 +225,6 @@ def validate2FA(account_id, to_number, scope, code):
             # Should be the same as your request
             "from": config['numbers']['from_number'],
             "to": to_number,
-            "applicationId": config['bandwidth']['messaging_application_id'],
             "scope": scope,
             "code": code,
             "digits": 6,
