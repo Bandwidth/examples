@@ -20,7 +20,7 @@ A small example demonstrating basic Bandwidth 2FA operations with the Python SDK
 
 ### Environmental Variables
 
-The following configuration variables need to be set, start by coping the `config.ini.default` file to `config.ini`. For more information about each variable. Read more about each variable on the [Security & Credentials Documentation Page](https://dev.bandwidth.com/guides/accountCredentials.html#top).
+The following configuration variables need to be set, start by copying the `config.ini.default` file to `config.ini`. For more information about each variable. Read more about each variable on the [Security & Credentials Documentation Page](https://dev.bandwidth.com/guides/accountCredentials.html#top).
 
 | Variable                   | Description                                  | Example                                |
 | :------------------------- | :------------------------------------------- | :------------------------------------- |
