@@ -1,0 +1,12 @@
+{% extends "layout.html" %} {% block title %}Admin Super Secure Page{% endblock
+%} {% block head %} {{ super() }} {% endblock %} {% block header %}Admin Super
+Secure Page {% endblock %} {% block content %}
+<div style="margin: auto; width: 50%">
+  <div style="text-align: center">Secure Action Page</div>
+  <div style="margin: auto; width: 100%">
+    Would you like to do
+    <a href="/appPage" onclick="">back home</a>
+    <br /><a href="/logOut">Log Out</a>
+  </div>
+</div>
+{% endblock %}

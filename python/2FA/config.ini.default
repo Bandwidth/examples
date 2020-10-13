@@ -1,0 +1,17 @@
+#!/bin/sh
+# Bandwith creds 
+# Account ID can be found in the upper right of your screen when you log in, in parens
+# the username and password for a user with API permissions
+[bandwidth]
+account_id = 
+api_user = 
+api_password = 
+# Create your voice application within Bandwidth and then paste the Application Id here
+voice_application_id = 
+messaging_application_id = 
+
+[numbers]
+# The "From" caller Id number for your call
+from_number = 
+# the number to dial out to when you click "Dial Out" in the Web UI
+user_number = 
