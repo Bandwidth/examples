@@ -1,4 +1,3 @@
-#!/bin/sh
 # Bandwith creds 
 # Account ID can be found in the upper right of your screen when you log in, in parens
 # the username and password for a user with API permissions
