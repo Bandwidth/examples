@@ -39,7 +39,9 @@ def handle_message_callback():
     """
     This URL handles callbacks from Bandwidth. All messaging callbacks (inbound and outbound)
     will come to this URL. The message type must be checked to know if it's an inbound or
-    outbound message
+    outbound message.
+
+    If the inbound message contains media, that media is downloaded
     """
     data = json.loads(request.data)
     if data[0]["type"] == "message-received":
