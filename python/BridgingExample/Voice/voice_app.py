@@ -57,10 +57,10 @@ def createOutboundCall(to, mfrom, callId):
 
     try:
         response = voice_client.create_call(BANDWIDTH_ACCOUNT_ID, body=body)
+        return response.body.call_id
     except ApiErrorResponseException as e:
         print(e.description) #Invalid from: must be an E164 telephone number
         print(e.response_code) #400
-    return response.body.call_id
 
 
 def updateCall(callId):
@@ -78,7 +78,7 @@ def updateCall(callId):
     return response
 
 
-@voice_routes.route('/')
+@voice_routes.route('/', methods = ["POST"])
 @voice_routes.route('/Inbound/VoiceCallback', methods = ["POST"])
 def handleInboundCallback():
     """
@@ -141,6 +141,7 @@ def handleGather():
             sentence="The bridge will start now",
             voice='julie'
         )
+
         bridge = Bridge(data['tag'])
         response.add_verb(speak_sentence)
         response.add_verb(bridge)
@@ -202,5 +203,5 @@ def returnStatus():
     Capture call status
     """
     data = json.loads(request.data)
-    print('Call State:', data['state'])
+    print('Call State:', data["eventType"])
     return ('', 204)
