@@ -20,14 +20,22 @@ application_id = "id"
 post '/messageCallback' do
     #Log the SMS callbacks
     data = JSON.parse(request.body.read)
+
     if data[0]["type"] == "message-received"
-        puts data
+        puts data[0]["type"]
+        puts data[0]["description"]
     elsif data[0]["type"] == "message-sending"
-        puts data
+        puts data[0]["type"]
+        puts data[0]["description"]
+        puts "Messaging sending is for MMS only"
     elsif data[0]["type"] == "message-delivered"
-        puts data
+        puts data[0]["type"]
+        puts data[0]["description"]
+        puts "Messaging has been delivered"
     elsif data[0]["type"] == "message-failed"
-        puts data
+        puts data[0]["type"]
+        puts data[0]["description"]
+        puts "Messaging delivery failed"
     end
 
     return ''

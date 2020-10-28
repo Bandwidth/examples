@@ -20,20 +20,34 @@ application_id = "id"
 post '/messageCallback' do
     #Log the MMS callbacks
     data = JSON.parse(request.body.read)
+
     if data[0]["type"] == "message-received"
-        puts data
+        puts data[0]["type"]
+        puts data[0]["description"]
         if data[0]["message"].key?("media")
             puts "has media"
-            #download media
+
+            data[0]["message"]["media"].each do |media|
+                media_id = media.split("/").last(3)
+                downloaded_media = messaging_client.get_media(account_id, media_id).data
+                File.write(media_id, downloaded_media, "wb")
+                puts "media saved to %s" % [media_id]
+            end
         else
             puts "no media"
         end
     elsif data[0]["type"] == "message-sending"
-        puts data
+        puts data[0]["type"]
+        puts data[0]["description"]
+        puts "Messaging sending is for MMS only"
     elsif data[0]["type"] == "message-delivered"
-        puts data
+        puts data[0]["type"]
+        puts data[0]["description"]
+        puts "Messaging has been delivered"
     elsif data[0]["type"] == "message-failed"
-        puts data
+        puts data[0]["type"]
+        puts data[0]["description"]
+        puts "Messaging delivery failed"
     end
 
     return ''
