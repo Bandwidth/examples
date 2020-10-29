@@ -4,6 +4,7 @@
 
 require 'sinatra'
 require 'bandwidth'
+require 'httparty'
 
 include Bandwidth
 include Bandwidth::Messaging
@@ -28,11 +29,16 @@ post '/messageCallback' do
             puts "With media"
 
             data[0]["message"]["media"].each do |media|
-                media_id = media.split("/").last(3).join("/")
-                #TODO: remove encoding of this parameter in the SDK
-                #downloaded_media = messaging_client.get_media(account_id, media_id).data
-                #File.write(media_id, downloaded_media, "wb")
-                #puts "media saved to %s" % [media_id]
+                media_id = media.split("/").last()
+                downloaded_media = HTTParty.get(media,
+                    :basic_auth => {
+                        :username => "username",
+                        :password => "password"
+                    }).body
+                open(media_id, "wb") do |file|
+                    file.write(downloaded_media)
+                puts "Media written to %s" % [media_id]
+                end
             end
         else
             puts "With no media"
