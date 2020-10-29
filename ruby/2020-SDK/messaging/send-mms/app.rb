@@ -25,7 +25,7 @@ post '/messageCallback' do
         puts data[0]["type"]
         puts data[0]["description"]
         if data[0]["message"].key?("media")
-            puts "has media"
+            puts "With media"
 
             data[0]["message"]["media"].each do |media|
                 media_id = media.split("/").last(3)
@@ -34,7 +34,7 @@ post '/messageCallback' do
                 puts "media saved to %s" % [media_id]
             end
         else
-            puts "no media"
+            puts "With no media"
         end
     elsif data[0]["type"] == "message-sending"
         puts data[0]["type"]
