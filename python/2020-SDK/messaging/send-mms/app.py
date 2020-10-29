@@ -31,15 +31,15 @@ def handle_message_callback():
         print(data[0]["type"])
         print(data[0]["description"])
         if "media" in data[0]["message"]:
-            print("Has media")
+            print("With media")
             for media in data[0]["message"]["media"]:
                 media_id = media.split("/")[-3:]
                 downloaded_media = messaging_client.get_media(account_id, media_id).body
                 with open(media_id, "wb") as f:
                     f.write(downloaded_media)
-                    print("Media written to {}".format(media_id)
+                    print("Media written to {}".format(media_id))
         else:
-            print("Has no media")
+            print("With no media")
     elif data[0]["type"] == "message-sending":
         print(data[0]["type"])
         print(data[0]["description"])
