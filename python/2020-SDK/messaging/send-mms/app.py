@@ -7,6 +7,7 @@ from flask import Flask, request
 from bandwidth.bandwidth_client import BandwidthClient
 from bandwidth.messaging.models.message_request import MessageRequest
 from bandwidth.messaging.exceptions.messaging_exception import MessagingException
+import requests
 
 import json
 
@@ -33,12 +34,11 @@ def handle_message_callback():
         if "media" in data[0]["message"]:
             print("With media")
             for media in data[0]["message"]["media"]:
-                media_id = "/".join(media.split("/")[-3:])
-                #TODO: fix encoding in the sdk
-                #downloaded_media = messaging_client.get_media(account_id, media_id).body
-                #with open(media_id, "wb") as f:
-                #    f.write(downloaded_media)
-                #    print("Media written to {}".format(media_id))
+                media_id = media.split("/")[-1]
+                downloaded_media = requests.get(media, auth=('username', 'password')).content
+                with open(media_id, "wb") as f:
+                    f.write(downloaded_media)
+                    print("Media written to {}".format(media_id))
         else:
             print("With no media")
     elif data[0]["type"] == "message-sending":
@@ -82,4 +82,4 @@ def handle_outbound_message():
         }), 400
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', port='4567')

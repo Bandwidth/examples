@@ -1,2 +1,3 @@
 flask
 bandwidth-sdk
+requests
