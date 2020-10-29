@@ -44,7 +44,6 @@ end
 post '/outboundMessage' do
     #Make a POST request to this URL to send a text message
     data = JSON.parse(request.body.read)
-    puts data
 
     body = MessageRequest.new
     body.application_id = application_id
