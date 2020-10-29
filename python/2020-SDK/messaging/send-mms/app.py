@@ -33,11 +33,12 @@ def handle_message_callback():
         if "media" in data[0]["message"]:
             print("With media")
             for media in data[0]["message"]["media"]:
-                media_id = media.split("/")[-3:]
-                downloaded_media = messaging_client.get_media(account_id, media_id).body
-                with open(media_id, "wb") as f:
-                    f.write(downloaded_media)
-                    print("Media written to {}".format(media_id))
+                media_id = "/".join(media.split("/")[-3:])
+                #TODO: fix encoding in the sdk
+                #downloaded_media = messaging_client.get_media(account_id, media_id).body
+                #with open(media_id, "wb") as f:
+                #    f.write(downloaded_media)
+                #    print("Media written to {}".format(media_id))
         else:
             print("With no media")
     elif data[0]["type"] == "message-sending":
