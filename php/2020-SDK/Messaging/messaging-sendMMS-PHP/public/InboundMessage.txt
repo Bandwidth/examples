@@ -1,4 +1,0 @@
-Type: message-received
-Description: Incoming message received
-Text: 
-Media Array: https://messaging.bandwidth.com/api/v2/users/9900778/media/5cc19c9f-a53f-41fa-8673-faef0b7b7d48/0/0.smil, https://messaging.bandwidth.com/api/v2/users/9900778/media/5cc19c9f-a53f-41fa-8673-faef0b7b7d48/1/IMG_7858.jpg, https://messaging.bandwidth.com/api/v2/users/9900778/media/5cc19c9f-a53f-41fa-8673-faef0b7b7d48/2/IMG_3719.jpg

@@ -84,7 +84,7 @@ $app->post('/messageCallback', function (Request $request, Response $response) {
 
   // download each file in the media array
   for ($i = 0; $i < count($messageMedia); $i++){
-    $mediaId = substr($messageMedia[$i], strpos($messageMedia[$i], "media/"));
+    $mediaId = substr($messageMedia[$i], strpos($messageMedia[$i], "media/") + 6);
     $ext = substr($mediaId, strpos($mediaId, "."));
     $response = $messagingClient->getMedia($BANDWIDTH_ACCOUNT_ID, $mediaId);
     $file = fopen("media_file".$i.$ext, "wb") or die("Unable to open file");
