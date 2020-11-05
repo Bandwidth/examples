@@ -1,6 +1,8 @@
 **/bin
 **/Debug
 *.class
+*.phar
+**/vendor
 
 .idea/*
 
