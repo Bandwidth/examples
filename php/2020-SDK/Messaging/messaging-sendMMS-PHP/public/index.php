@@ -45,8 +45,9 @@ $app->post('/outboundMessage', function (Request $request, Response $response) {
       return $response->withStatus(201)
         ->withHeader('Content-Type', 'application/json');
   } catch (Exception $e) {
-      $response->getBody()->write('{"Error":"Message Failed"}');
-      return $response->withStatus(400);
+      $response->getBody()->write('{"Error":"Message Failed"}'.$e);
+      return $response->withStatus(400)
+        ->withHeader('Content-Type', 'application/json');
   }
 });
 
@@ -71,26 +72,39 @@ $app->post('/messageCallback', function (Request $request, Response $response) {
   $messageFrom = $messageCallback->message->from;
   $messageText = $messageCallback->message->text;
   $messageApplicationId = $messageCallback->message->applicationId;
-  $messageMedia = $messageCallback->message->media;    // an array
+  if (isset($messageCallback->message->media)) {
+    $messageMedia = $messageCallback->message->media;    // an array
+  } else {
+    $messageMedia = [];
+  }
   $messageOwner = $messageCallback->message->owner;
   $messageDirection = $messageCallback->message->direction;
   $messageSegmentCount = $messageCallback->message->segmentCount;
 
-  // save message content
-  $myfile = fopen("inbound_message.txt", "w") or die("Unable to open file!");
-  $txt = "Type: ".$type."\nDescription: ".$description."\nText: ".$messageText."\nMedia Array: ".implode(", ", $messageMedia);
-  fwrite($myfile, $txt);
-  fclose($myfile);
 
-  // download each file in the media array
-  for ($i = 0; $i < count($messageMedia); $i++){
-    $mediaId = substr($messageMedia[$i], strpos($messageMedia[$i], "media/") + 6);
-    $ext = substr($mediaId, strpos($mediaId, "."));
-    $response = $messagingClient->getMedia($BANDWIDTH_ACCOUNT_ID, $mediaId);
-    $file = fopen("media_file".$i.$ext, "wb") or die("Unable to open file");
-    fwrite($file, $response->getResult());
-    fclose($file);
+  if ($messageDirection == "in"){
+    $myfile = fopen("inbound_message.txt", "w") or die("Unable to open file!");
+    $txt = "Type: ".$type."\nDescription: ".$description."\nText: ".$messageText."\nMedia Array: ".implode(", ", $messageMedia);
+    fwrite($myfile, $txt);
+    fclose($myfile);
+
+    // download each file in the media array
+    for ($i = 0; $i < count($messageMedia); $i++){
+      $mediaId = substr($messageMedia[$i], strpos($messageMedia[$i], "media/") + 6);
+      $ext = substr($mediaId, strpos($mediaId, "."));
+      $response = $messagingClient->getMedia($BANDWIDTH_ACCOUNT_ID, $mediaId);
+      $file = fopen("media_file".$i.$ext, "wb") or die("Unable to open file");
+      fwrite($file, $response->getResult());
+      fclose($file);
+    }
+  } else {
+    $myfile = fopen("outbound_message.txt", "w") or die("Unable to open file!");
+    $txt = "Type: ".$type."\nDescription: ".$description."\nText: ".$messageText;
+    fwrite($myfile, $txt);
+    fclose($myfile);
   }
+  // save message content
+
 
   return $response->withStatus(200);
 });

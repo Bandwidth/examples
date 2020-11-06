@@ -46,7 +46,8 @@ $app->post('/outboundMessage', function (Request $request, Response $response) {
         ->withHeader('Content-Type', 'application/json');
   } catch (Exception $e) {
       $response->getBody()->write('{"Error":"Message Failed"}');
-      return $response->withStatus(400);
+      return $response->withStatus(400)
+        ->withHeader('Content-Type', 'application/json');
   }
 });
 
@@ -71,11 +72,18 @@ $app->post('/messageCallback', function (Request $request, Response $response) {
   $messageDirection = $messageCallback->message->direction;
   $messageSegmentCount = $messageCallback->message->segmentCount;
 
-  // write callback to file
-  $myfile = fopen("inbound_message.txt", "w") or die("Unable to open file!");
-  $txt = "Type: ".$type."\nDescription: ".$description."\nText: ".$messageText;
-  fwrite($myfile, $txt);
-  fclose($myfile);
+  if ($messageDirection == "in"){
+    // write callback to file
+    $myfile = fopen("inbound_message.txt", "w") or die("Unable to open file!");
+    $txt = "Type: ".$type."\nDescription: ".$description."\nText: ".$messageText;
+    fwrite($myfile, $txt);
+    fclose($myfile);
+  } else {
+    $myfile = fopen("outbound_message.txt", "w") or die("Unable to open file!");
+    $txt = "ID:".$messageId."\nType: ".$type."\nDescription: ".$description;
+    fwrite($myfile, $txt);
+    fclose($myfile);
+  }
 
   return $response->withStatus(200);
 });
