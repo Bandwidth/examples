@@ -8,6 +8,8 @@
 obj/
 
 .DS_Store
+*.phar
+**/vendor/*
 
 **/.idea/*
 *.iml
