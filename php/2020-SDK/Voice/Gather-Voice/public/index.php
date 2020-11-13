@@ -48,9 +48,9 @@ $app->post('/outboundCall', function (Request $request, Response $response) {
         return $response->withStatus(201)
           ->withHeader('Content-Type', 'application/json');
     } catch (BandwidthLib\APIException $e) {
-        print_r($e);
+        $response->getBody()->write($e);
+        return $response->withStatus(400);
     }
-    return $response->withStatus(201);
 });
 
 $app->post('/voiceCallback', function (Request $request, Response $response) {
