@@ -17,7 +17,7 @@ begin
     VOICE_APPLICATION_ID = ENV.fetch("VOICE_APPLICATION_ID")
     BASE_URL = ENV.fetch("BASE_URL")
 rescue
-    puts "Please set the VOICE environmental variables defined in the README"
+    puts "Please set the environmental variables defined in the README"
     exit(-1)
 end
 
@@ -43,11 +43,10 @@ post '/outboundCall' do
     }
     status 200
     return response.to_json
-  rescue Exception => e
-    puts e
+  rescue ApiErrorResponseException => e
     response = {
         :success => false,
-        :error => "todo grab e message"
+        :error => e.description
     }
     status 400
     return response.to_json
@@ -85,8 +84,8 @@ end
 
 post '/gatherCallback' do
   data = JSON.parse(request.body.read)
+  response = Bandwidth::Voice::Response.new()
   if data['eventType'] == 'gather'
-    response = Bandwidth::Voice::Response.new()
     speak_sentence = nil
     if data['digits'] == '1'
       speak_sentence = Bandwidth::Voice::SpeakSentence.new({
@@ -101,16 +100,8 @@ post '/gatherCallback' do
         :sentence => 'Invalid option'
       })
     end
-    #gather = Bandwidth::Voice::Gather.new({
-    #  :gather_url => '/gatherCallback',
-    #  :terminating_digits => '#',
-    #  :repeat_count => '3',
-    #  :speak_sentence => speak_sentence
-    #})
-    #response.push(gather)
     response.push(speak_sentence)
   else
-    response = Bandwidth::Voice::Response.new()
     speak_sentence = Bandwidth::Voice::SpeakSentence.new({
       :sentence => data['eventType'] + " received, ending call."
     })
