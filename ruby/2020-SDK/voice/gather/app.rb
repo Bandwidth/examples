@@ -17,7 +17,7 @@ begin
     VOICE_APPLICATION_ID = ENV.fetch("VOICE_APPLICATION_ID")
     BASE_URL = ENV.fetch("BASE_URL")
 rescue
-    puts "Please set the environmental variables defined in the README"
+    puts "Please set the following environmental variables:\nACCOUNT_ID\nAPI_USERNAME\nAPI_PASSWORD\nVOICE_APPLICATION_ID\nBASE_URL"
     exit(-1)
 end
 
