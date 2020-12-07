@@ -12,7 +12,7 @@ The NodeJS SDK(s) are available via [NPM](https://www.npmjs.com/) & Github.
 
 | Module                                                                       | Description                                                                   | Github                                                |
 |:-----------------------------------------------------------------------------|:------------------------------------------------------------------------------|:------------------------------------------------------|
-| [`@banwdidth/numbers`](https://www.npmjs.com/package/@bandwidth/numbers)     | Manage phone numbers and account settings                                     | [<img src="https://github.com/favicon.ico">](https://github.com/Bandwidth/node-numbers)   |
+| [`@bandwidth/numbers`](https://www.npmjs.com/package/@bandwidth/numbers)     | Manage phone numbers and account settings                                     | [<img src="https://github.com/favicon.ico">](https://github.com/Bandwidth/node-numbers)   |
 | [`@bandwidth/voice`](https://www.npmjs.com/package/@bandwidth/numbers)       | Create outbound phone calls and manage call media (recordings/transcriptions) | [<img src="https://github.com/favicon.ico">](https://github.com/Bandwidth/node-voice)     |
 | [`@bandwidth/bxml`](https://www.npmjs.com/package/@bandwidth/bxml)           | Create BXML for managing call flow                                            | N/A                                                   |
 | [`@bandwidth/messaging`](https://www.npmjs.com/package/@bandwidth/messaging) | Create outbound messages and manage message media (MMS)                       | [<img src="https://github.com/favicon.ico">](https://github.com/Bandwidth/node-messaging) |
