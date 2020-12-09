@@ -17,10 +17,6 @@ BandwidthWebRTC.Configuration.basicAuthUserName = process.env.USERNAME;
 BandwidthWebRTC.Configuration.basicAuthPassword = process.env.PASSWORD;
 var webRTCController = BandwidthWebRTC.APIController;
 
-// app.get("/", (req, res) => {
-//   res.send("Hello World!");
-// });
-
 app.post("/startCall", async (req, res) => {
   console.log(`startCall> about to setup browser client, data: '${req.body}'`);
   console.log(req.body);
@@ -39,8 +35,7 @@ app.post("/startCall", async (req, res) => {
     room = await addParticipantToRoom(accountId, participant.id, req.body.room);
   } catch (error) {
     console.log("Failed to start the browser call:", error);
-    res.status(500).send({ message: "failed to set up participant" });
-    return;
+    return res.status(500).send({ message: "failed to set up participant" });
   }
 
   // now that we have added them to the session,
@@ -142,9 +137,9 @@ async function getRoom(account_id, room_name) {
   // otherwise, create the session
   // tags are useful to audit or manage billing records
   let sessionBody = new BandwidthWebRTC.Session({ tag: `demo.${room_name}` });
-
+  let sessionResponse;
   try {
-    var sessionResponse = await webRTCController.createSession(
+    sessionResponse = await webRTCController.createSession(
       account_id,
       sessionBody
     );
