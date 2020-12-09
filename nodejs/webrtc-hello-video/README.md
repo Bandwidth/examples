@@ -45,7 +45,7 @@ node server.js
 
 Browse to [http://localhost:3000](http://localhost:3000) and grant permission to use your microphone.
 
-- clicking _start_ will get a token for your browser, get you connected to our media server, and start media flowing from the browser
+- clicking _Click to Start_ will get a token for your browser, get you connected to our media server, and start media flowing from the browser
 - select a room name
 - Do the same in another browser, with the same room name
 

@@ -5,24 +5,30 @@
 <!-- <script src="https://raw.githubusercontent.com/Bandwidth/webrtc-browser/EDGE-602/bundle/0.5.2/BandwidthRtc.bundle.js"></script> -->
 <script src="BandRTC-0.5.2.js"></script>
 <script src="webrtc_mgr.js"></script>
-<script src="audio_analyzer.js"></script>
 
 <div class="outer">
-    <div id="sign_on_controls">
+  <div id="my_video_area"><video id="my_video" playsInline autoPlay></video></div>
+  <div id="sign_on_controls">
         <a href="#" id="signOn" style="font-size: 50px;">Click to Start</a><br />
-        Camera: <select id="camSelector" name="camera"><option name="default">Default Camera</option></select><br />
-        Mic: <select id="micSelector" name="mic"><option name="default">Default Mic</option></select>
-    </div>
-    <div id="in_call_controls" style="display:none">
+        Camera: <select id="cam_selector" name="camera"><option name="default">Default Camera</option></select><br />
+        Mic: <select id="mic_selector" name="mic"><option name="default">Default Mic</option></select>
+  </div>
+  <div id="in_call_controls" style="display:none">
         <a href="#" id="screen_share" style="font-size: 20px;">Screen Share</a><br />
-        <a href="#" id="sign_out" style="font-size: 20px;">Leave - TBD</a><br />
-    </div>
-    <div id="my_video_area"><video id="my_video" playsInline autoPlay></video></div>
-    <div id="filmstrip">
-    </div>
+        <a href="#" id="sign_out" style="font-size: 20px;">Leave Call</a><br />
+  </div>
+  <div id="filmstrip">
+  </div>
 </div>
+
+
 <script language="JavaScript">
   var room_name = false;
+  
+  // the select elements for devices
+  var cam_selector = "cam_selector";
+  var mic_selector = "mic_selector";
+
   window.onload = async function () {
     signOnButton = document.getElementById("signOn");
     signOnButton.onclick = async function () {
@@ -35,101 +41,102 @@
       console.log("Initialize app")
       document.getElementById("sign_on_controls").style.display = "none";
       document.getElementById("in_call_controls").style.display = "block";
-      document.getElementById("my_video_area").style.display = "block";
-      
-      showMyVideo();
 
-      await getOnline({
+      let call_info = {
         caller:{name: "adam"},
         call_type :"app",
         room :room_name, 
         audio: true,
-        video: true
-      });
+        video: true,
+        video_device: document.getElementById(cam_selector).value,
+        mic_device: document.getElementById(mic_selector).value,
+      };
+      await getOnline(call_info);
     };
+
+    document.getElementById("sign_out").onclick = async function(){
+      await signOff();
+      document.getElementById("sign_on_controls").style.display = "block";
+      document.getElementById("in_call_controls").style.display = "none";
+    }
+
+    document.getElementById(cam_selector).onchange = async function(){
+      await show_vanity_mirror(this.value, "my_video");
+    }
 
     screenShareButton = document.getElementById("screen_share");
     screenShareButton.onclick = async function () {
-        await startScreenShare();
+        await screenShare();
     }
     
     // enumerate cameras
-    await listCameras("camSelector");
-    await listMicrophones("micSelector")
+    cams = await listCameras();
+    updateDeviceSelector(cam_selector, cams)
+    mics = await listMicrophones();
+    updateDeviceSelector(mic_selector, mics)  
 
+    // not everything is ready right at load, so wait a bit, then show default video
+    setTimeout(function(){
+      show_vanity_mirror(document.getElementById(cam_selector).value, 
+      "my_video");
+    },500);
   };
 
-
-
   /**
-   * Check for a room in the query string, deep-ish linking
+   * Update our device lists, which current have a "default" option
    */
-  function checkQueryForRoom() {
-    // grab any query string number that might have been passed
-    const urlParams = new URLSearchParams(window.location.search);
-    const url_room_name = urlParams.get("room");
-    if (url_room_name){
-      room_name = url_room_name;
+  function updateDeviceSelector(selector_id, devices){
+    let selector = document.getElementById(selector_id);
+
+    devices.forEach(function (device) {
+      let opt = document.createElement("option");
+      opt.value = device.deviceId;
+      opt.text = device.label;
+      selector.add(opt);
+    });
+
+    // if we had items in this list
+    if (devices.length > 0) {
+      // then remove the DEFAULT message
+      selector.remove(0);
+
+      // and add in a "no camera" option
+      //  we'll look for a "none" option when going online
+      var opt = document.createElement("option");
+      opt.value = "none";
+      opt.text = "disable";
+      selector.add(opt);
     }
   }
 
-/**
- * This is fired off when a new person joins the room
- * Custom function that you implement based on your UI and behavioral needs
- * 
- * @param mediaEl the prebuilt media element, to add to our dom
- * @param rtcStream the actual stream
- */
-function onNewStream(mediaEl, rtcStream) {
-  // create a block for the stream
-  var newStream = document.createElement("div");
-  newStream.id = "tile_" + rtcStream.endpointId;
-  newStream.style.display = "inline-block";
-  newStream.classList.add("tile");
+  /**
+   * This is fired off when a new person joins the room
+   * Custom function that you implement based on your UI and behavioral needs
+   * 
+   * @param mediaEl the prebuilt media element, to add to our dom
+   * @param rtcStream the actual stream
+   */
+  function onNewStream(mediaEl, rtcStream) {
+    // create a block for the stream
+    var newStream = document.createElement("div");
+    newStream.id = "tile_" + rtcStream.endpointId;
+    newStream.style.display = "inline-block";
+    newStream.classList.add("tile");
 
-  mediaEl.height = 200;
-  newStream.appendChild(mediaEl);
+    mediaEl.height = 200;
+    newStream.appendChild(mediaEl);
 
-  console.log("new stream is")
-  console.log(rtcStream);
-
-  document.getElementById("filmstrip").appendChild(newStream);
-  
-//   setupAnalyzer(rtcStream.mediaStream);
-}
-
-async function showMyVideo(){
-  cam_device = document.getElementById(camSelector).value;
-  video_constraints = {
-      aspectRatio: 1.333,
-      frameRate: 30,
-      width: { min: 320, max: 640 },
-      height: { min: 240, max: 480 },
-      resizeMode: "crop-and-scale",
-    };
-  
-  video_constraints.deviceId = { exact: cam_device };
-
-  try{
-    const my_stream = await navigator.mediaDevices.getUserMedia({audio: false, video: video_constraints})
-    document.getElementById("my_video").srcObject = my_stream;
-  } catch (error){
-      console.log(`failed to get your video ${error.message}`)
-      alert("Sorry, we can't proceed without access to your camera")
-
+    document.getElementById("filmstrip").appendChild(newStream);
   }
-  
-}
 
-/**
- * Clean up all the DOM elements for the participant that left
- * Custom function that you implement based on your UI and behavioral needs
- * 
- * @param endPointId the id of endpoint that left
- */
- function onEndStream(endPointId) {
-  tile = document.getElementById("tile_" + endPointId);
-  if(tile) tile.remove();
-}
-
+  /**
+   * Clean up all the DOM elements for the participant that left
+   * Custom function that you implement based on your UI and behavioral needs
+   * 
+   * @param endPointId the id of endpoint that left
+   */
+  function onEndStream(endPointId) {
+    tile = document.getElementById("tile_" + endPointId);
+    if(tile) tile.remove();
+  }
 </script>

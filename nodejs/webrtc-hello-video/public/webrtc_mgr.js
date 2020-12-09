@@ -16,9 +16,6 @@ const start_muted_audio = false;
 
 //
 //  internal global vars, don't set these
-var camSelector = false;
-var micSelector = false;
-
 // universal id for the call (the server tells us this)
 let internal_call_id = "";
 let other_callers = [];
@@ -26,6 +23,7 @@ let other_callers = [];
 // global vars
 var my_media_stream;
 var my_screen_stream;
+var local_video_stream = false;
 
 /**
  * Get the token required to auth with the media server
@@ -46,13 +44,12 @@ async function getOnline(call_info) {
   try {
     // call your server function that does call control
     var res = await fetch("/startCall", {
-      method: "POST", // *GET, POST, PUT, DELETE, etc.
-      mode: "cors", // no-cors, *cors, same-origin
+      method: "POST",
+      mode: "cors",
       headers: {
         "Content-Type": "application/json",
-        // 'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: JSON.stringify(call_info), // body data type must match "Content-Type" header
+      body: JSON.stringify(call_info),
     });
   } catch (error) {
     console.log(`getOnline> error on fetch ${error}`);
@@ -60,13 +57,16 @@ async function getOnline(call_info) {
   }
   // basic error handling
   if (res.status !== 200) {
-    console.log(res);
     alert("getOnline> got back non-200: " + res.status);
+    console.log(res);
   } else {
     const json = await res.json();
     console.log(json);
+
+    // save this for later use to sign off gracefully
     internal_call_id = json.room.name;
-    // ring
+
+    // ring if desired, ring until someone joins
     if (enableRinging) {
       playAudio("ring", "/ring.mp3");
     }
@@ -80,30 +80,26 @@ async function getOnline(call_info) {
  * The token param is fetched from the server above
  */
 async function startStreaming(token, call_info) {
-  console.log("connecting to BAND WebRTC server");
   // Connect to Bandwidth WebRTC
-
   await bandwidthRtc.connect({ deviceToken: token });
   console.log("connected to bandwidth webrtc!");
+  //
   // Publish the browser's microphone and video if appropriate
-
   // set the video constraints
   var video_constraints = false;
   if (call_info.video) {
     video_constraints = {
-      aspectRatio: 1.333,
       frameRate: 30,
       width: { min: 320, max: 640 },
       height: { min: 240, max: 480 },
       resizeMode: "crop-and-scale",
     };
 
-    if (camSelector) {
-      cam_device = document.getElementById(camSelector).value;
-      if (cam_device != "default") {
-        video_constraints.deviceId = { exact: cam_device };
-      }
-    }
+    if (call_info.video_device == "none") {
+      video_constraints = false;
+    } else if (call_info.video_device != "default") {
+      video_constraints.deviceId = { exact: call_info.video_device };
+    } // if it is default, we'll let getUserMedia decide
   }
 
   // set the audio constraints
@@ -112,12 +108,11 @@ async function startStreaming(token, call_info) {
     audio_constraints = {
       echoCancellation: true,
     };
-    if (micSelector) {
-      mic_device = document.getElementById(micSelector).value;
-      if (mic_device != "default") {
-        audio_constraints.deviceId = { exact: mic_device };
-      }
-    }
+    if (call_info.mic_device == "none") {
+      audio_constraints = false;
+    } else if (call_info.mic_device != "default") {
+      audio_constraints.deviceId = { exact: call_info.mic_device };
+    } // if it is default, we'll let getUserMedia decide
   }
 
   streamResp = await bandwidthRtc.publish({
@@ -135,19 +130,38 @@ async function startStreaming(token, call_info) {
 }
 
 /**
- * Start screensharing in an already online/publishing state
+ * Start or stop screensharing in an already online/publishing state
  */
-async function startScreenShare() {
-  video_constraints = {
-    frameRate: 30,
-  };
-  const screenStream = await navigator.mediaDevices.getDisplayMedia({
-    audio: false,
-    video: video_constraints,
-  });
+async function screenShare() {
+  // if we're already sharing, then stop
+  if (my_screen_stream) {
+    // unpublish
+    await bandwidthRtc.unpublish(my_screen_stream.endpointId);
 
-  streamResp = await bandwidthRtc.publish(screenStream);
-  my_screen_stream = streamResp.mediaStream;
+    // stop the tracks locally
+    var tracks = my_screen_stream.getTracks();
+    tracks.forEach(function (track) {
+      console.log(`stopping stream`);
+      console.log(track);
+      track.stop();
+    });
+
+    my_screen_stream = null;
+  } else {
+    // we're not sharing, so start
+    video_constraints = {
+      frameRate: 30,
+    };
+    // getDisplayMedia is the magic function for screen/window/tab sharing
+    my_screen_stream = await navigator.mediaDevices.getDisplayMedia({
+      audio: false,
+      video: video_constraints,
+    });
+
+    // start the share and save the endPointId so we can unpublish later
+    var resp = await bandwidthRtc.publish(my_screen_stream);
+    my_screen_stream.endpointId = resp.endpointId;
+  }
 }
 
 /**
@@ -155,6 +169,7 @@ async function startScreenShare() {
  */
 async function signOff() {
   bandwidthRtc.disconnect();
+  // remove the others from this screen
   other_callers.forEach(function (caller) {
     disconnectEndpoint(caller);
   });
@@ -173,7 +188,7 @@ async function endSession() {
 
   // clear out any remaining connections
   other_callers.forEach(function (caller) {
-    clearCaller(caller);
+    removeCaller(caller);
   });
 
   try {
@@ -194,7 +209,7 @@ async function endSession() {
 }
 
 /**
- * Place a call to BAND to start on the PSTN
+ * Place a call to BAND to start on the PSTN, leverages serverside function
  * @param {string} number a +1 NANP number
  * @param identifier - something to identify this room/call
  */
@@ -264,13 +279,15 @@ function connectStream(rtcStream) {
 }
 function disconnectEndpoint(endpointId) {
   console.log("no longer receiving media for endpoint: " + endpointId);
+
+  // if this endpoint is still active on the call
   if (other_callers.indexOf(endpointId) > -1) {
-    clearCaller(endpointId);
+    removeCaller(endpointId);
 
     // if there is no one left in the call
     if (other_callers.length == 0) {
       updateStatus("Call Ended");
-      console.log("All callers are off the line, ending call");
+      console.log(`All callers are off the line, ending call`);
       // alert("The call is over");
       // optional function to call when there are no other participants left
       if (typeof allCallsEnded != "undefined") {
@@ -284,17 +301,15 @@ function disconnectEndpoint(endpointId) {
     }
   } else {
     console.log(
-      "We got a disconnect on " +
-        endpointId +
-        " but have no media for, this is common as a second notice of an ended stream"
+      `We got a disconnect on ${endpointId} but have no media for, this is common as a second notice of an ended stream`
     );
   }
 }
 /**
- * Clear out the div for this caller
+ * remove the div for this caller
  * @param {*} id
  */
-function clearCaller(id) {
+function removeCaller(id) {
   let index = other_callers.indexOf(id);
   if (index > -1) {
     other_callers.splice(index, 1);
@@ -303,33 +318,55 @@ function clearCaller(id) {
     audioElement.remove();
   }
 }
+
+/**
+ * Show a "vanity" view of your camera as it will be displayed to
+ *  other participants
+ * @param {string} cam_device the device id for the device to stream from (list available via listCameras)
+ * @param {string} video_id the dom element id that we should make this video a child of
+ * @param {json} video_constraints Any additional video constraints you'd like to add to this video
+ */
+async function show_vanity_mirror(
+  cam_device,
+  video_id,
+  video_constraints = {}
+) {
+  // disable any current device, this is important to turn off the cam (and it's led light)
+  if (local_video_stream) {
+    var tracks = local_video_stream.getTracks();
+    tracks.forEach(function (track) {
+      track.stop();
+    });
+  }
+
+  // allows for an option like "disable" in the cam selector
+  if (cam_device == "none") {
+    video_constraints = false;
+    document.getElementById(video_id).srcObject = null;
+    return;
+  } else {
+    video_constraints.deviceId = { exact: cam_device };
+  }
+
+  try {
+    local_video_stream = await navigator.mediaDevices.getUserMedia({
+      audio: false,
+      video: video_constraints,
+    });
+    document.getElementById(video_id).srcObject = local_video_stream;
+  } catch (error) {
+    console.log(`Failed to acquire local video: ${error.message}`);
+    alert("Sorry, we can't proceed without access to your camera");
+  }
+}
+
 //
 // List and select devices
 async function listCameras(selectId) {
-  camSelector = selectId;
-  listDevices(selectId, "videoinput");
+  return getDeviceList("videoinput");
 }
 async function listMicrophones(selectId) {
-  micSelector = selectId;
-  listDevices(selectId, "audioinput");
-}
-async function listDevices(selectId, type) {
-  let selector = document.getElementById(selectId);
-  const devices = await navigator.mediaDevices.enumerateDevices();
-
-  devices.forEach(function (device) {
-    if (device.kind == type) {
-      var opt = document.createElement("option");
-      opt.value = device.deviceId;
-      opt.text = device.label;
-      selector.add(opt);
-    }
-  });
-
-  // if we added items to this list, then remove the DEFAULT message
-  if (selector.length > 1) {
-    selector.remove(0);
-  }
+  return getDeviceList("audioinput");
 }
 
 async function getDeviceList(type) {
@@ -361,19 +398,17 @@ function muteFlip() {
 }
 function mute() {
   // if already muted
-  if (!is_mic_enabled) {
-    return;
+  if (is_mic_enabled) {
+    is_mic_enabled = false;
+    set_mute_all("audio", true);
   }
-  is_mic_enabled = false;
-  set_mute_all("audio", true);
 }
 function unmute() {
   // if already unmuted
-  if (is_mic_enabled) {
-    return;
+  if (!is_mic_enabled) {
+    is_mic_enabled = true;
+    set_mute_all("audio", false);
   }
-  is_mic_enabled = true;
-  set_mute_all("audio", false);
 }
 /**
  * 'Mutes' the camera
@@ -389,19 +424,16 @@ function video_muteFlip() {
 }
 function video_mute() {
   // if already muted
-  if (!is_cam_enabled) {
-    return;
+  if (is_cam_enabled) {
+    is_cam_enabled = false;
+    set_mute_all("video", true);
   }
-  is_cam_enabled = false;
-  set_mute_all("video", true);
 }
 function video_unmute() {
-  // if already unmuted
-  if (is_cam_enabled) {
-    return;
+  if (!is_cam_enabled) {
+    is_cam_enabled = true;
+    set_mute_all("video", false);
   }
-  is_cam_enabled = true;
-  set_mute_all("video", false);
 }
 
 /**
@@ -424,16 +456,16 @@ function set_mute_all(type, mute_state) {
 //
 const pre_sound = "play_sound_id_";
 function playAudio(name, url) {
-  var sound = document.createElement("audio");
+  var sound_el = document.createElement("audio");
   // sound.id = ;
-  sound.autoplay = true;
-  sound.id = pre_sound + name;
-  sound.loop = true;
-  sound.src = url;
+  sound_el.autoplay = true;
+  sound_el.id = pre_sound + name;
+  sound_el.loop = true;
+  sound_el.src = url;
   if (mediaDiv) {
-    document.getElementById(mediaDiv).appendChild(sound);
+    document.getElementById(mediaDiv).appendChild(sound_el);
   } else {
-    document.body.appendChild(sound);
+    document.body.appendChild(sosound_elund);
   }
 }
 function stopAudio(name) {
