@@ -1,0 +1,23 @@
+<link rel="icon" href="data:;base64,iVBORw0KGgo=" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="main.css" rel="stylesheet" />
+<!-- we recommend hosting this yourself, github is not always the best CDN -->
+<script src="https://github.com/Bandwidth/webrtc-browser/releases/download/0.5.2/BandwidthRtc.bundle.js"></script>
+<script src="main.js"></script>
+<script src="webrtc_mgr.js"></script>
+
+
+<div class="outer">
+  <div id="my_video_area"><video id="my_video" playsInline autoPlay></video></div>
+  <div id="sign_on_controls">
+        <a href="#" id="signOn" style="font-size: 50px;">Click to Start</a><br />
+        Camera: <select id="cam_selector" name="camera"><option name="default">Default Camera</option></select><br />
+        Mic: <select id="mic_selector" name="mic"><option name="default">Default Mic</option></select>
+  </div>
+  <div id="in_call_controls" style="display:none">
+        <a href="#" id="screen_share" style="font-size: 20px;">Screen Share</a><br />
+        <a href="#" id="sign_out" style="font-size: 20px;">Leave Call</a><br />
+  </div>
+  <div id="filmstrip">
+  </div>
+</div>
