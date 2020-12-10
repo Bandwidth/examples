@@ -43,7 +43,7 @@ async function getOnline(call_info) {
   updateStatus("Call Setup");
   try {
     // call your server function that does call control
-    var res = await fetch("/startCall", {
+    var res = await fetch("/joinCall", {
       method: "POST",
       mode: "cors",
       headers: {

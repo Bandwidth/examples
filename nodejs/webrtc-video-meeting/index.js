@@ -17,8 +17,8 @@ BandwidthWebRTC.Configuration.basicAuthUserName = process.env.USERNAME;
 BandwidthWebRTC.Configuration.basicAuthPassword = process.env.PASSWORD;
 var webRTCController = BandwidthWebRTC.APIController;
 
-app.post("/startCall", async (req, res) => {
-  console.log(`startCall> about to setup browser client, data: '${req.body}'`);
+app.post("/joinCall", async (req, res) => {
+  console.log(`joinCall> about to setup browser client, data: '${req.body}'`);
   console.log(req.body);
 
   // setup the session and add this user into it
