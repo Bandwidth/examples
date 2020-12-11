@@ -4,8 +4,6 @@ This sample app shows how to use our Video API to create a basic multi-person, m
 
 ## Architecture Overview
 
-<img src="./WebRTC Hello World.svg">
-
 This app runs an HTTP server that listens for requests from browsers to get connection information. This connection information tells a browser the unique ID it should use to join a Room.
 
 The server connects to Bandwidth's HTTP WebRTC API, which it will use to create a session and participant IDs. This example leverages our Node SDK to make the WebRTC calls.
