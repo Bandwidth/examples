@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 import express from "express";
 import bodyParser from "body-parser";
 import axios from "axios";
-import jwt_decode from "jwt-decode";
 
 dotenv.config();
 
@@ -19,7 +18,7 @@ const voiceCallbackUrl = <string>process.env.VOICE_CALLBACK_URL;
 const outboundPhoneNumber = <string>process.env.OUTBOUND_PHONE_NUMBER;
 
 const callControlUrl = `${process.env.BANDWIDTH_WEBRTC_CALL_CONTROL_URL}/accounts/${accountId}`;
-const sipxNumber = <string>process.env.BANDWIDTH_WEBRTC_SIPX_PHONE_NUMBER;
+const sipxUrl = <string>process.env.BANDWIDTH_WEBRTC_SIPX_URL;
 
 // Check to make sure required environment variables are set
 if (!accountId || !username || !password) {
@@ -282,11 +281,8 @@ const callPhone = async (phoneNumber: string, participant: Participant) => {
  * @param deviceToken device token received from the call control API for a participant
  */
 const generateTransferBxml = async (deviceToken: string) => {
-  //Get the tid out of the participant jwt
-  var decoded: any = jwt_decode(deviceToken);
-
-  return `<?xml version="1.0" encoding="UTF-8" ?>
-    <Response>
-      <Transfer transferCallerId="${decoded.tid}"><PhoneNumber>${sipxNumber}</PhoneNumber></Transfer>
-    </Response>`;
+  return '<?xml version="1.0" encoding="UTF-8" ?>\n'
+      + '<Response><Transfer>\n'
+      + `\t<SipUri uui="${deviceToken};encoding=jwt">${sipxUrl}</SipUri>\n`
+      + '</Transfer></Response>';
 };
