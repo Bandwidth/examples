@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
+    <link
+      media="all"
+      href="https://www.bandwidth.com/wp-content/cache/autoptimize/css/autoptimize_47ee7ab4465862804e8b609001ade1a7.css"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/ae8743baa1.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- we recommend hosting this yourself, github is not always the best CDN -->
+    <script src="https://github.com/Bandwidth/webrtc-browser/releases/download/0.5.2/BandwidthRtc.bundle.js"></script>
+    <script src="volume_meter.js"></script>
+    <script src="whisper_mgr.js"></script>
+    <script language="javascript">    
+
+    </script>
+  </head>
+
+  <body>
+    <div style="margin: auto; width: 50%">
+      <h1 style="text-align: center">Simple Call Handler</h1>
+      <div style="width: 650px">
+        Status:<span id="call_status">Offline</span><br />
+        Session Id: <span id="session_id">unset</span><br />
+        Participant Id: <span id="participant_id">unset</span><br />
+      </div>
+      <div style="margin: auto; width: 100%">
+        <button id="onlineButton" onClick="getToken()">Get Online</button>
+        <select name="role" id="role">
+          <option>employee</option>
+          <option>guest</option>
+          <option>manager</option>
+        </select>
+        <div id="room_actions">
+          <a href="#" onClick="" id="mute_link" style="display: none">
+            <i class="fas fa-microphone" id="mute_icon"></i>
+          </a>
+        </div>
+        <button id="callButton" onClick="callPSTN()" style="display: none">Dial out</button>
+        <button id="endButton" onClick="endCall()"  style="display: none">End Call</button>
+      </div>
+      <div id="media_div"></div>
+      <div id="gui_div" style="display: inline-block; width: 800px"></div>
+      <br />
+    </div>
+  </body>
+</html>
