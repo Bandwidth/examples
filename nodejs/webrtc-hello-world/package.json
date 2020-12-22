@@ -12,7 +12,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@bandwidth/webrtc": "^0.4.1",
+    "@bandwidth/webrtc": "^0.5.0",
     "@types/express": "^4.17.2",
     "@types/node": "^14.14.14",
     "axios": "^0.19.2",
