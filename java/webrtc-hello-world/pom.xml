@@ -16,7 +16,7 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<bandwidth-sdk.version>3.11.0</bandwidth-sdk.version>
+		<bandwidth-sdk.version>3.11.1</bandwidth-sdk.version>
 		<frontend-src-dir>${project.basedir}/src/main/frontend</frontend-src-dir>
 		<frontend-build-dir>${project.basedir}/src/main/resources/static</frontend-build-dir>
 		<node.version>v12.18.2</node.version>
