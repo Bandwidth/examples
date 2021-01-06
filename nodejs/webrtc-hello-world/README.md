@@ -26,7 +26,7 @@ Follow the steps in [How to Create a Voice API Application](https://support.band
 
 In step 7 and 8, make sure they are set to POST.
 
-In step 9, provide the publicly accessible URL of your sample app. You need to add `/incomingCall` to the end of this URL in the Voice Application settings.
+In step 9, for **Call initiated callback URL**, provide the publicly accessible URL of your sample app. You need to add `/incomingCall` to the end of this URL in the Voice Application settings.
 
 You do no need to set a callback user id or password.
 
