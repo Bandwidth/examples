@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import express from "express";
 import bodyParser from "body-parser";
 import axios from "axios";
-const bandwidthWebRTC = require("@bandwidth/webrtc");
+const bandwidthWebRtc = require("@bandwidth/webrtc");
 
 dotenv.config();
 
@@ -19,7 +19,7 @@ const voiceCallbackUrl = <string>process.env.VOICE_CALLBACK_URL;
 const outboundPhoneNumber = <string>process.env.OUTBOUND_PHONE_NUMBER;
 const callControlUrl = `${process.env.BANDWIDTH_WEBRTC_CALL_CONTROL_URL}/accounts/${accountId}`;
 
-var webRTCController = bandwidthWebRTC.APIController;
+const webRTCController = bandwidthWebRtc.APIController;
 
 // Check to make sure required environment variables are set
 if (!accountId || !username || !password) {
