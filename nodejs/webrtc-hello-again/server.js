@@ -77,6 +77,10 @@ app.get("/startPSTNCall", async (req, res) => {
     participant.token = token;
     callId = callResponse.callId;
 
+    console.log(
+        `Call created: ${callId} from: ${process.env.FROM_NUMBER} to: ${process.env.OUTBOUND_PHONE_NUMBER}`
+    );
+
     calls.set(callResponse.callId, participant);
     res.send({ status: "ringing" });
   } catch (error) {

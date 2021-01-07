@@ -26,7 +26,7 @@ Follow the steps in [How to Create a Voice API Application](https://support.band
 
 In step 7 and 8, make sure they are set to POST.
 
-In step 9, provide the publicly accessible URL of your sample app. You need to add `/incomingCall` to the end of this URL in the Voice Application settings.
+In step 9, for **Call initiated callback URL**, provide the publicly accessible URL of your sample app. You need to add `/incomingCall` to the end of this URL in the Voice Application settings.
 
 You do no need to set a callback user id or password.
 
@@ -34,26 +34,20 @@ Create the application and make note of your _Application ID_. You will provide 
 
 ### Configure your sample app
 
-Copy the default configuration files
-
-```bash
-cp .env.default .env
-```
-
-Add your Bandwidth account settings to `.env`:
-- ACCOUNT_ID
-- USERNAME
-- PASSWORD
+Add your Bandwidth account settings to `src\main\resources\application.properties`:
+- account.id
+- account.username
+- account.password
 
 Add your Voice API application information:
-- VOICE_APPLICATION_ID
-- VOICE_CALLBACK_URL
-- VOICE_APPLICATION_PHONE_NUMBER
+- voice.applicationId
+- voice.callbackUrl
+- voice.applicationPhoneNumber
 
 To make an outbound call from the browser, add a phone number to dial:
-- OUTBOUND_PHONE_NUMBER
+- voice.outboundPhoneNumber
 
-You can ignore the other settings in the `.env.default` file.
+You can ignore the other settings in the `src\main\resources\application.properties` file.
 
 ### Install dependencies and build
 
