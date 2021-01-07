@@ -1,0 +1,28 @@
+.outer {
+  width: 90%;
+  margin: auto;
+}
+
+video {
+  width: 33%;
+  max-height: 300px;
+  display: inline-block;
+  margin: auto;
+  text-align: center;
+  padding: 0px;
+  overflow: hidden;
+  border: 2px solid #ccc;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.local_video {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 15%;
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg); /* Safari and Chrome */
+  -moz-transform: rotateY(180deg); /* Firefox */
+}
