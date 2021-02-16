@@ -18,7 +18,7 @@ window.onload = async function () {
     document.getElementById("in_call_controls").style.display = "block";
 
     let call_info = {
-      caller: { name: "adam" },
+      caller: { name: "tbd" },
       call_type: "app",
       room: room_name,
       audio: true,
@@ -118,4 +118,12 @@ function onNewStream(mediaEl, rtcStream) {
 function onEndStream(endPointId) {
   tile = document.getElementById("tile_" + endPointId);
   if (tile) tile.remove();
+}
+
+/**
+ * Optional function called by webrtc_mgr.js when there are no other people left in the room
+ */
+function allCallsEnded() {
+  alert("The call has ended, thank you!");
+  disable_vanity_mirror();
 }
