@@ -29,7 +29,7 @@ var local_video_stream = false;
  * Get the token required to auth with the media server
  * Use that token to start streaming
  * @param call_info json object with the following
- *  caller: {name: "adam"}
+ *  caller: {name: "callers name"}
  *  call_type: phone", or "push"
  *  room: room_name
  *  audio: true OR false (usually true)
@@ -192,7 +192,7 @@ async function endSession() {
   });
 
   try {
-    var res = await fetch("/endSession?identifier=" + internal_call_id);
+    var res = await fetch("/endSession?room_name=" + internal_call_id);
 
     // basic error handling
     if (res.status !== 200) {
@@ -206,21 +206,6 @@ async function endSession() {
     console.log(`failed to end the session ${error}`);
     console.log("we'll keep cleaning up though");
   }
-}
-
-/**
- * Place a call to BAND to start on the PSTN, leverages serverside function
- * @param {string} number a +1 NANP number
- * @param identifier - something to identify this room/call
- */
-async function placePSTNCall(number, identifier) {
-  // then start the call
-  updateStatus("dialing");
-  var res = await fetch(
-    "/startPSTNCall?to_num=" + number + "&identifier=" + identifier
-  );
-  const json = await res.json();
-  return json;
 }
 
 /**
@@ -287,6 +272,7 @@ function disconnectEndpoint(endpointId) {
     if (other_callers.length == 0) {
       updateStatus("Call Ended");
       console.log(`All callers are off the line, ending call`);
+      bandwidthRtc.disconnect();
       // alert("The call is over");
       // optional function to call when there are no other participants left
       if (typeof allCallsEnded != "undefined") {
@@ -331,12 +317,7 @@ async function show_vanity_mirror(
   video_constraints = {}
 ) {
   // disable any current device, this is important to turn off the cam (and it's led light)
-  if (local_video_stream) {
-    var tracks = local_video_stream.getTracks();
-    tracks.forEach(function (track) {
-      track.stop();
-    });
-  }
+  disable_vanity_mirror();
 
   // allows for an option like "disable" in the cam selector
   if (cam_device == "none") {
@@ -356,6 +337,19 @@ async function show_vanity_mirror(
   } catch (error) {
     console.log(`Failed to acquire local video: ${error.message}`);
     alert("Sorry, we can't proceed without access to your camera");
+  }
+}
+
+/**
+ * Stop the camera and showing it in the corner
+ */
+function disable_vanity_mirror() {
+  if (local_video_stream) {
+    var tracks = local_video_stream.getTracks();
+    tracks.forEach(function (track) {
+      console.log("stopping track");
+      track.stop();
+    });
   }
 }
 

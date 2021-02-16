@@ -30,13 +30,12 @@ app.post("/joinCall", async (req, res) => {
   try {
     console.log(`Adding ${req.body.caller.name} to session`);
     var [participant, token] = await createParticipant(
-      accountId,
       req.body.audio,
       req.body.video,
       uuid.v1()
     );
 
-    room = await addParticipantToRoom(accountId, participant.id, req.body.room);
+    room = await addParticipantToRoom(participant.id, req.body.room);
   } catch (error) {
     console.log("Failed to start the browser call:", error);
     return res.status(500).send({ message: "failed to set up participant" });
@@ -52,6 +51,39 @@ app.post("/joinCall", async (req, res) => {
   });
 });
 
+/**
+ * This is what you call as a participant when you are ready to
+ * get a participant token and join a room
+ */
+app.get("/endSession", async (req, res) => {
+  console.log(`endCall> about to end a session, data: '${req.query}'`);
+  var room_name;
+  try {
+    room_name = req.query.room_name;
+    room = await getRoom(room_name);
+    console.log(room);
+    // remove each participant
+    room.participants.forEach(async function (participant_id) {
+      await webRTCController.removeParticipantFromSession(
+        accountId,
+        participant_id,
+        room.session_id
+      );
+    });
+
+    console.log(`room/session ended '${room_name}'`);
+  } catch (error) {
+    console.log("Failed to end the room/session:", error);
+    return res.status(500).send({
+      message: "Failed to end the room/session",
+    });
+  }
+
+  res.send({
+    message: `room ${room_name} deleted`,
+  });
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}!`);
 });
@@ -61,13 +93,12 @@ app.listen(port, () => {
 //
 /**
  *  Create a new participant
- * @param account_id
  * @param audio_perm boolean for audio permission
  * @param video_perm boolean for video permission
  * @param tag to tag the participant with, no PII should be placed here
  * @return list: (a Participant json object, the participant token)
  */
-async function createParticipant(account_id, audio_perm, video_perm, tag) {
+async function createParticipant(audio_perm, video_perm, tag) {
   perms = [];
   if (audio_perm) perms.push("AUDIO");
   if (video_perm) perms.push("VIDEO");
@@ -93,13 +124,12 @@ async function createParticipant(account_id, audio_perm, video_perm, tag) {
 }
 
 /**
- * @param account_id The id for this account
  * @param participant_id a Participant id
  * @param room_name The room to add this participant to
  * @return room in case you want any details about the state of the room
  */
-async function addParticipantToRoom(account_id, participant_id, room_name) {
-  room = await getRoom(accountId, room_name);
+async function addParticipantToRoom(participant_id, room_name) {
+  room = await getRoom(room_name);
 
   var body = new BandwidthWebRTC.Subscriptions({ sessionId: room.session_id });
 
@@ -128,11 +158,10 @@ async function addParticipantToRoom(account_id, participant_id, room_name) {
  * Create a room or return it if it's an existing one
  * When we create a room, what we are doing is creating a new session and
  *  associating that Bandwidth session id with the name used by our app (room_name)
- * @param account_id
  * @param room_name the room you are joining
  * @return the room for this session
  */
-async function getRoom(account_id, room_name) {
+async function getRoom(room_name) {
   // check if we've already created a session for this call
   //  - this is a simplification we're doing for this demo (save this somewhere that persists)
   if (rooms_db.has(room_name)) {
@@ -146,7 +175,7 @@ async function getRoom(account_id, room_name) {
   let sessionResponse;
   try {
     sessionResponse = await webRTCController.createSession(
-      account_id,
+      accountId,
       sessionBody
     );
   } catch (error) {
