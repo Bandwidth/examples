@@ -221,7 +221,6 @@ async function placePSTNCall(number, identifier) {
   );
   const json = await res.json();
   return json;
-  //   console.log(json);
 }
 
 /**
@@ -361,25 +360,12 @@ async function show_vanity_mirror(
 }
 
 //
-// List and select devices
-async function listCameras(selectId) {
-  return getDeviceList("videoinput");
+// manage inputs
+async function getCameras() {
+  return await bandwidthRtc.getVideoInputs();
 }
-async function listMicrophones(selectId) {
-  return getDeviceList("audioinput");
-}
-
-async function getDeviceList(type) {
-  const devices = await navigator.mediaDevices.enumerateDevices();
-  let deviceList = [];
-
-  devices.forEach(function (device) {
-    if (device.kind == type) {
-      deviceList.push({ label: device.label, deviceId: device.deviceId });
-    }
-  });
-
-  return deviceList;
+async function getMics() {
+  return await bandwidthRtc.getAudioInputs();
 }
 
 //
@@ -387,53 +373,20 @@ async function getDeviceList(type) {
 /**
  * Mutes the mic, note that this assumes one mic stream
  */
-var is_mic_enabled = true;
-function muteFlip() {
-  is_mic_enabled = !is_mic_enabled;
-  if (is_mic_enabled) {
-    set_mute_all("audio", false);
-  } else {
-    set_mute_all("audio", true);
-  }
-}
 function mute() {
-  // if already muted
-  if (is_mic_enabled) {
-    is_mic_enabled = false;
-    set_mute_all("audio", true);
-  }
+  set_mute_all("audio", true);
 }
 function unmute() {
-  // if already unmuted
-  if (!is_mic_enabled) {
-    is_mic_enabled = true;
-    set_mute_all("audio", false);
-  }
+  set_mute_all("audio", false);
 }
 /**
  * 'Mutes' the camera
  */
-var is_cam_enabled = true;
-function video_muteFlip() {
-  is_cam_enabled = !is_cam_enabled;
-  if (is_cam_enabled) {
-    set_mute_all("video", false);
-  } else {
-    set_mute_all("video", true);
-  }
-}
 function video_mute() {
-  // if already muted
-  if (is_cam_enabled) {
-    is_cam_enabled = false;
-    set_mute_all("video", true);
-  }
+  set_mute_all("video", true);
 }
 function video_unmute() {
-  if (!is_cam_enabled) {
-    is_cam_enabled = true;
-    set_mute_all("video", false);
-  }
+  set_mute_all("video", false);
 }
 
 /**

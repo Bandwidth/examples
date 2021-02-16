@@ -45,15 +45,21 @@ window.onload = async function () {
   };
 
   // enumerate cameras
-  cams = await listCameras();
+  cams = await getCameras();
   updateDeviceSelector(cam_selector, cams);
-  mics = await listMicrophones();
+  mics = await getMics();
   updateDeviceSelector(mic_selector, mics);
 
   // not everything is ready right at load, so wait a bit, then show default video
   setTimeout(function () {
     show_vanity_mirror(document.getElementById(cam_selector).value, "my_video");
   }, 500);
+
+  // check for a room_name on the query string
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has("room")) {
+    room_name = urlParams.get("room");
+  }
 };
 
 /**
