@@ -26,11 +26,13 @@ cp .env.default .env
 
 Add your Bandwidth account settings to `.env`:
 
-- ACCOUNT_ID
-- USERNAME
-- PASSWORD
+```
+vi .env
+```
 
-You can ignore any other settings in the `.env.default` file.
+- BAND_ACCOUNT_ID
+- BAND_USERNAME
+- BAND_PASSWORD
 
 ### Install dependencies and build
 
@@ -39,12 +41,23 @@ npm install
 node server.js
 ```
 
+Or you can use [Nodemon](https://www.npmjs.com/package/nodemon) for live updating when you change a js file!
+
 ### Communicate!
 
-Browse to [http://localhost:3000](http://localhost:3000) and grant permission to use your microphone.
+Browse to [http://localhost:3000](http://localhost:3000) and grant permission to use your microphone and camera.
 
-- clicking _Click to Start_ will get a token for your browser, get you connected to our media server, and start media flowing from the browser
-- select a room name
-- Do the same in another browser, with the same room name
+- Select your device from the list, which is autodetected on page load
+- Click _Click to Start_ to get a token for your browser, get you connected to our media server, and start media flowing from the browser
+- Enter a room name (if it wasn't set in the query string)
+- Do the same in another browser, with the same room name of course
+- Start two other browsers with a different room name
 
-You should now be able to enjoy your video call!
+You should now be able to enjoy 2 separate video calls!
+
+### Options and Notes
+
+- You can preset a name for the room by putting the query param `room` in the query string of the url - try [http://localhost:3000?room=test%20room](http://localhost:3000?room=test%20room)
+- You can autostart all the attendees muted by changing the `start_muted_audio` variable to `true` at the top of `public/webrtc_mgr.js`
+  - Note that an unmute button isn't provided in this example though
+  - However there are javascript functions in `public/webrtc_mgr.js` for muting and unmuting both audio and video

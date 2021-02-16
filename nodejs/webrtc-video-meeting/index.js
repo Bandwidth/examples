@@ -10,13 +10,17 @@ app.use(express.static("public"));
 
 // global vars
 const port = 3000;
-const accountId = process.env.ACCOUNT_ID;
+const accountId = process.env.BAND_ACCOUNT_ID;
 var rooms_db = new Map();
 
-BandwidthWebRTC.Configuration.basicAuthUserName = process.env.USERNAME;
-BandwidthWebRTC.Configuration.basicAuthPassword = process.env.PASSWORD;
+BandwidthWebRTC.Configuration.basicAuthUserName = process.env.BAND_USERNAME;
+BandwidthWebRTC.Configuration.basicAuthPassword = process.env.BAND_PASSWORD;
 var webRTCController = BandwidthWebRTC.APIController;
 
+/**
+ * This is what you call as a participant when you are ready to
+ * get a participant token and join a room
+ */
 app.post("/joinCall", async (req, res) => {
   console.log(`joinCall> about to setup browser client, data: '${req.body}'`);
   console.log(req.body);
@@ -122,13 +126,15 @@ async function addParticipantToRoom(account_id, participant_id, room_name) {
 
 /**
  * Create a room or return it if it's an existing one
+ * When we create a room, what we are doing is creating a new session and
+ *  associating that Bandwidth session id with the name used by our app (room_name)
  * @param account_id
  * @param room_name the room you are joining
  * @return the room for this session
  */
 async function getRoom(account_id, room_name) {
   // check if we've already created a session for this call
-  //  - this is a simplification we're doing for this demo
+  //  - this is a simplification we're doing for this demo (save this somewhere that persists)
   if (rooms_db.has(room_name)) {
     return rooms_db.get(room_name);
   }
@@ -156,6 +162,7 @@ async function getRoom(account_id, room_name) {
     session_id: sessionResponse.id,
     participants: [],
     calls: [],
+    start_time: Date.now(),
   };
   rooms_db.set(room_name, room);
 
