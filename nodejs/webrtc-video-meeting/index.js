@@ -74,14 +74,18 @@ app.get("/endSession", async (req, res) => {
     console.log(`room/session ended '${room_name}'`);
   } catch (error) {
     console.log("Failed to end the room/session:", error);
-    return res.status(500).send({
+    res.status(500).send({
       message: "Failed to end the room/session",
     });
   }
-
-  res.send({
-    message: `room ${room_name} deleted`,
-  });
+  try {
+    res.send({
+      status: 200,
+      message: `room/session '${room_name}' deleted`,
+    });
+  } catch (err) {
+    console.log("failed to send response");
+  }
 });
 
 app.listen(port, () => {
