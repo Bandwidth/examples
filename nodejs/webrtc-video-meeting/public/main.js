@@ -205,7 +205,6 @@ function updateVideoSizes() {
   if (rows == 0) rows = 1;
   cols = Math.ceil(tile_count / rows);
   if (cols <= 0) cols = 1;
-  console.log(`grid is ${rows} rows and ${cols} cols`);
 
   // get the space do we have to work with
   const container = document.getElementById("videos");
@@ -220,31 +219,22 @@ function updateVideoSizes() {
       smallerScreen = 0.01;
     }
     availableHeight *= smallerScreen;
-    console.log(`Adjusting screen for share to ${availableHeight}`);
 
     shareEl = document.getElementById("share");
     shareEl.style.height = oldHeight - availableHeight;
     shareEl.style.width = availableWidth;
-    // const shareOutContainer = document.getElementById("share");
-    // shareOutContainer.style.height = oldHeight - availableHeight;
-    // shareOutContainer.style.width = availableWidth;
-    // const shareInnerContainer = document.getElementById("stream_" + share_id);
-    // shareInnerContainer.style.height = oldHeight - availableHeight;
-    // shareInnerContainer.style.width = availableWidth;
   }
 
   // tile height & width
   desired_height = availableHeight / rows - 5;
   max_tile_width = availableWidth / cols - 5;
-  console.log(`Size available: H: ${desired_height}, W: ${max_tile_width}`);
 
   desired_width = desired_height * 1.777778;
   if (desired_width > max_tile_width) {
-    console.log(`Greater than max width of ${max_tile_width}`);
     desired_width = max_tile_width;
     desired_height = desired_width / 1.777778;
   }
-  console.log(`Going with: H: ${desired_height}, W: ${max_tile_width}`);
+  // console.log(`Vid size with: H: ${desired_height}, W: ${max_tile_width}`);
 
   // update all the tile videos
   const tiles = document.querySelectorAll(".tile");
@@ -252,10 +242,4 @@ function updateVideoSizes() {
     tile.style.height = desired_height;
     tile.style.width = desired_width;
   });
-  // // force the video children to behave
-  // const vids = document.querySelectorAll(".stream");
-  // vids.forEach(function (stream) {
-  //   stream.style.height = desired_height;
-  //   stream.style.width = desired_width;
-  // });
 }

@@ -294,10 +294,8 @@ function connectStream(rtcStream) {
 
   // either append it to mediaDiv, or give it back to the calling script/file
   if (typeof onNewStream === "function") {
-    console.log("calling customer onNewStream function");
     onNewStream(mediaEl, rtcStream);
   } else {
-    console.log("no onNewStream functin defined");
     if (mediaDiv) {
       document.getElementById(mediaDiv).appendChild(mediaEl);
     } else {

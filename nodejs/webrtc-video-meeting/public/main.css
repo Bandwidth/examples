@@ -52,6 +52,9 @@ body {
   height: 80px;
   width: 110px;
   border: 1px solid #fff;
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg); /* Safari and Chrome */
+  -moz-transform: rotateY(180deg); /* Firefox */
 }
 video {
   object-fit: contain;
