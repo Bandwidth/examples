@@ -200,10 +200,12 @@ async function screenShare() {
  * Just get this user offline, don't end the session for everyone
  */
 async function signOff() {
-  await bandwidthRtc.disconnect();
-
-  // clear out any remaining connections
-  other_callers.forEach(function (caller) {
+  // bandwidthRtc.disconnect();
+  // Remove all my connections
+  //  this function will end up calling bandwidthRtc.disconnect() after the last removal
+  console.log(`about to disconnect these fine folks:`);
+  let temp_callers = [...other_callers]; // need to make a copy, as we'll be splicing this as we go
+  temp_callers.forEach(function (caller) {
     console.log(`disconnecting ${caller}`);
     disconnectEndpoint(caller);
   });
@@ -211,20 +213,12 @@ async function signOff() {
 }
 
 /**
- * End the current session for all callers
+ * End the current session for all callers (asks the server to do it)
  * uses internal_call_id to know what to end, set when you got online
  */
 async function endSession() {
   updateStatus("Ending Call");
   console.log(`Ending session: ${internal_call_id}`);
-
-  // hangup the webrtc connection
-  bandwidthRtc.disconnect();
-
-  // clear out any remaining connections
-  other_callers.forEach(function (caller) {
-    removeCaller(caller);
-  });
 
   try {
     var res = await fetch("/endSession?room_name=" + internal_call_id);
@@ -241,6 +235,11 @@ async function endSession() {
     console.log(`failed to end the session ${error}`);
     console.log("we'll keep cleaning up though");
   }
+
+  // clear out any remaining connections
+  other_callers.forEach(function (caller) {
+    disconnectEndpoint(caller);
+  });
 }
 
 /**
@@ -304,12 +303,11 @@ function connectStream(rtcStream) {
   }
 }
 function disconnectEndpoint(endpointId) {
-  console.log("no longer receiving media for endpoint: " + endpointId);
+  console.log(`disconnecting endpoint: ${endpointId}`);
 
   // if this endpoint is still active on the call
   if (other_callers.indexOf(endpointId) > -1) {
     removeCaller(endpointId);
-
     // if there is no one left in the call
     if (other_callers.length == 0) {
       updateStatus("Call Ended");
@@ -320,6 +318,7 @@ function disconnectEndpoint(endpointId) {
       }
     }
 
+    // call any external functions setup for this
     if (typeof onEndStream === "function") {
       onEndStream(endpointId);
     }
@@ -330,7 +329,9 @@ function disconnectEndpoint(endpointId) {
   }
 }
 /**
- * remove the div for this caller
+ * Removes this caller from your call
+ *  - removes caller from other_callers list
+ *  - removes Audio element for this caller
  * @param {*} id
  */
 function removeCaller(id) {

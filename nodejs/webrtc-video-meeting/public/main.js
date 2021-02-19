@@ -67,8 +67,6 @@ window.onload = async function () {
 
   document.getElementById("sign_out").onclick = async function () {
     await signOff();
-    document.getElementById("sign_on_controls").style.display = "block";
-    document.getElementById("in_call_controls").style.display = "none";
   };
 
   // update vanity mirror when cam selector is updated
