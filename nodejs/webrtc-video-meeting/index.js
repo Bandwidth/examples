@@ -22,19 +22,19 @@ var webRTCController = BandwidthWebRTC.APIController;
  * get a participant token and join a room
  */
 app.post("/joinCall", async (req, res) => {
-  console.log(`joinCall> about to setup browser client, data: '${req.body}'`);
+  console.log(`joinCall> about to setup browser client, data:`);
   console.log(req.body);
 
   // setup the session and add this user into it
   var room;
   try {
-    console.log(`Adding ${req.body.caller.name} to session`);
     var [participant, token] = await createParticipant(
       req.body.audio,
       req.body.video,
       uuid.v1()
     );
 
+    if (!req.body.room) req.body.room = "lobby";
     room = await addParticipantToRoom(participant.id, req.body.room);
   } catch (error) {
     console.log("Failed to start the browser call:", error);
@@ -168,7 +168,7 @@ async function getRoom(room_name) {
     return rooms_db.get(room_name);
   }
 
-  console.log(`No room/session found, creating '${room_name}'`);
+  console.log(`Creating room/session '${room_name}'`);
   // otherwise, create the session
   // tags are useful to audit or manage billing records
   let sessionBody = new BandwidthWebRTC.Session({ tag: `demo.${room_name}` });
