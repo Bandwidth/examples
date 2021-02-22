@@ -27,4 +27,5 @@ The NodeJS SDK(s) are available via [NPM](https://www.npmjs.com/) & Github.
 | [WebRTC Hello World](webrtc-hello-world) | Example of how to use Bandwidth WebRTC to connect browsers and phones                    | Voice/WebRTC    |
 | [WebRTC Hello Again](webrtc-hello-again) | Super simple example of Bandwidth WebRTC to connect browsers and phones                  | Voice/WebRTC    |
 | [Video Meeting](webrtc-video-meeting)    | A basic video meeting app for browsers                                                   | Video API       |
+| [Video Hello World](video-hello-world)   | A VERY basic video app for browsers                                                      | Video API       |
 | [Bridging Example](BridgingExample)      | An app that demonstrates bridging 2 calls using a BW number as the intermediary          | Voice           |

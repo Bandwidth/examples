@@ -1,0 +1,56 @@
+<html>
+  <head>
+    <title>Main Browser</title>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
+    <script src="BandwidthRtc.bundle.js"></script>
+    <script src="misc.js"></script>
+    <script src="media_handling.js"></script>
+    <script language="javascript">
+      const bandwidthRtc = new BandwidthRtc();
+    </script>
+  </head>
+
+  <body>
+    <div style="margin: auto; width: 50%">
+      <h1 style="text-align: center" id="main_title">Simple Call Handler</h1>
+      <div style="width: 500px; height: 50px">
+        Status:<span id="call_status">Offline</span>
+      </div>
+      <div style="margin: auto; width: 100%">
+        <button id="onlineButton" onClick="getToken('main')">Get Online</button>
+        <button id="callButton" onClick="callPSTN()" disabled>Dial out</button>
+        <button id="endButton" onClick="endCall()" disabled>End Call</button>
+        <button id="inviteButton" onClick="inviteFriend()" disabled>
+          Invite Friend
+        </button>
+      </div>
+      <div>
+        <div style="text-align: center; display: inline-block; width: 210px">
+          <audio id="mediaPlayer" autoplay></audio>
+          <div id="friendDisplay">
+            <video
+              id="friendVideo"
+              style="width: 200px; height: 200px"
+              playsinline
+              autoplay
+            ></video>
+          </div>
+          <br />
+          Your Friend
+        </div>
+
+        <div style="text-align: center; display: inline-block; width: 210px">
+          <video
+            id="myVideo"
+            style="width: 175px; height: 175px"
+            playsinline
+            autoplay
+          ></video
+          ><br />
+          Your Video
+        </div>
+      </div>
+      <div id="error"><p>Any Errors will show here:</p></div>
+    </div>
+  </body>
+</html>

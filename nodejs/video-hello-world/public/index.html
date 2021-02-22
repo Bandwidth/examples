@@ -1,0 +1,111 @@
+<link rel="icon" href="data:;base64,iVBORw0KGgo=" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="main.css" rel="stylesheet" />
+<!-- we recommend hosting this yourself, github is not always the best CDN -->
+<script src="https://github.com/Bandwidth/webrtc-browser/releases/download/0.5.2/BandwidthRtc.bundle.js"></script>
+<!-- <script src="main.js"></script> -->
+
+<div class="outer">
+    <!-- autoplay required to show video, playsinline required for mobile -->
+  <div id="my_video_area"><video id="my_video" playsinline autoplay class="local_video"></video></div>
+  <button id="button" onclick="join()">Join Call</button>
+</div>
+
+<script>
+    const bandwidthRtc = new BandwidthRtc();
+    var myStream;
+    var remoteStreams = [];
+
+    async function startLocalVideo(video_id){
+        try {
+            local_video_stream = await navigator.mediaDevices.getUserMedia({
+                audio: false,
+                video: true,
+            });
+            document.getElementById(video_id).srcObject = local_video_stream;
+        } catch (error) {
+            console.log(`Failed to acquire local video: ${error.message}`);
+            alert("Sorry, we can't proceed without access to your camera");
+        }
+    }
+
+    async function join(){
+        console.log(`joining session`)
+        // call your server function to acquire an access token
+        try{
+            var res = await fetch("/joinCall?room_id=demo1");
+
+            var jsonResp = await res.json();
+            console.log(jsonResp);
+        }catch(error){
+            console.log(`failed to join session: ${error.message}`);
+            return;
+        }
+
+        await bandwidthRtc.connect({ deviceToken: jsonResp.token });
+        
+        streamResp = await bandwidthRtc.publish({audio: true, video: true});
+        myStream = streamResp.mediaStream;
+
+        // make the button allow you to leave
+        document.getElementById("button").setAttribute( "onClick","leave()");
+        document.getElementById("button").innerHTML = "leave call";
+    }
+
+    async function leave(){
+        console.log(`Leaving call`)
+        await bandwidthRtc.unpublish(myStream.endpointId);
+        bandwidthRtc.disconnect();
+
+        // // stop the local tracks
+        // var tracks = myStream.getTracks();
+        //     tracks.forEach(function (track) {
+        //     console.log(`stopping stream`);
+        //     console.log(track);
+        //     track.stop();
+        // });
+        // myStream = null;
+
+        // disconnect other streams
+        remoteStreams.forEach(function (stream){
+            console.log(`attempting to remove ${stream.endpointId}`);
+            el = document.getElementById(stream.endpointId);
+            if(el)
+                el.remove();
+        });
+
+        // make the button allow you to rejoin
+        document.getElementById("button").setAttribute( "onClick","join()");
+        document.getElementById("button").innerHTML = "join call";
+    }
+
+    window.addEventListener("load", (event) => {
+        bandwidthRtc.onStreamAvailable((rtcStream) => {
+            console.log(`received new connection: ${rtcStream.endpointId}`)
+            // sometimes you get notified twice
+            if(document.getElementById(rtcStream.endpointId)) return;
+            try{
+                remoteStreams.push(rtcStream)
+                var mediaEl = document.createElement("video");
+                mediaEl.id = rtcStream.endpointId;
+                mediaEl.autoplay = true;
+                mediaEl.playsInline = true;
+                mediaEl.srcObject = rtcStream.mediaStream;
+                document.getElementById("my_video_area").appendChild(mediaEl);
+            }catch(error){
+                console.log(`Error setting up video:`)
+                console.log(error)
+            }
+        });
+        bandwidthRtc.onStreamUnavailable((endpointId) => {
+            console.log(`disconnecting connection: ${endpointId}`)
+            if(!document.getElementById(endpointId)) return;
+            document.getElementById(endpointId).remove();
+        });
+    });
+
+    window.onload = async function () {
+        startLocalVideo("my_video");
+    };
+
+</script>
