@@ -1,42 +1,43 @@
 const bandwidthRtc = new BandwidthRtc();
 //
 // configuration
-const DEBUG = true;
-const statusDiv = null;
-// a div to append log messages to on screen
-const logDiv = false;
 // a div to append new media elements to (video or audio)
 //  not needed if you implement onNewStream
 const mediaDiv = false;
+
+// set to false if you just want audio connections
 const videoEnabled = true;
+
 // ring while waiting for first connection
 const enableRinging = false;
-// when media connects, mute your mic by default
+
+// when media connects, mute mics by default
 const start_muted_audio = false;
 
 //
 //  internal global vars, don't set these
 // universal id for the call (the server tells us this)
 let internal_call_id = "";
+
+// tracks who you're in the call with
 let other_callers = [];
 
 // global vars
-var my_media_stream;
-var my_screen_stream;
-var local_video_stream = false;
+var my_media_stream; // main webrtc stream
+var my_screen_stream; // for screenshare
+var local_video_stream = false; // for vanity mirror
 
 /**
  * Get the token required to auth with the media server
  * Use that token to start streaming
  * @param call_info json object with the following
- *  caller: {name: "adam"}
+ *  caller: {name: "callers name"}
  *  call_type: phone", or "push"
  *  room: room_name
  *  audio: true OR false (usually true)
  *  video: true OR false
  */
 async function getOnline(call_info) {
-  // prevent double clicks
   console.log("Fetching token from server for: ");
   console.log(call_info);
 
@@ -89,15 +90,16 @@ async function startStreaming(token, call_info) {
   var video_constraints = false;
   if (call_info.video) {
     video_constraints = {
-      frameRate: 30,
       width: { min: 320, max: 640 },
       height: { min: 240, max: 480 },
-      resizeMode: "crop-and-scale",
+      aspectRatio: 1.777777778,
+      frameRate: { max: 30 },
     };
 
     if (call_info.video_device == "none") {
       video_constraints = false;
     } else if (call_info.video_device != "default") {
+      updateStatus(`Using ${call_info.video_device} for cam`);
       video_constraints.deviceId = { exact: call_info.video_device };
     } // if it is default, we'll let getUserMedia decide
   }
@@ -111,14 +113,19 @@ async function startStreaming(token, call_info) {
     if (call_info.mic_device == "none") {
       audio_constraints = false;
     } else if (call_info.mic_device != "default") {
+      updateStatus(`Using ${call_info.mic_device} for mic`);
       audio_constraints.deviceId = { exact: call_info.mic_device };
     } // if it is default, we'll let getUserMedia decide
   }
 
-  streamResp = await bandwidthRtc.publish({
-    audio: audio_constraints,
-    video: video_constraints,
-  });
+  streamResp = await bandwidthRtc.publish(
+    {
+      audio: audio_constraints,
+      video: video_constraints,
+    },
+    undefined,
+    call_info.caller.name
+  );
   my_media_stream = streamResp.mediaStream;
   if (start_muted_audio) {
     mute();
@@ -127,6 +134,21 @@ async function startStreaming(token, call_info) {
   console.log(
     `browser mic is streaming with stream id: ${streamResp.mediaStream.id}`
   );
+}
+
+/**
+ * Check that we have WebRTC permissions
+ * - if you .then() this function on your first use of getUserMedia then you can avoid
+ */
+async function checkWebRTC() {
+  // always check real quick that we have access
+  try {
+    await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+  } catch (err) {
+    console.log(`failed to get webrtc access`);
+    console.log(err);
+    throw err;
+  }
 }
 
 /**
@@ -145,10 +167,14 @@ async function screenShare() {
       console.log(track);
       track.stop();
     });
+    document.getElementById("screen_share").innerHTML = "Screen Share";
 
     my_screen_stream = null;
+    document.getElementById("share").style.display = "none";
   } else {
-    // we're not sharing, so start
+    // we're not sharing, so start, and update the text of the link
+    document.getElementById("screen_share").innerHTML = "Stop Sharing";
+
     video_constraints = {
       frameRate: 30,
     };
@@ -159,8 +185,14 @@ async function screenShare() {
     });
 
     // start the share and save the endPointId so we can unpublish later
-    var resp = await bandwidthRtc.publish(my_screen_stream);
+    var resp = await bandwidthRtc.publish(
+      my_screen_stream,
+      undefined,
+      "screenshare"
+    );
     my_screen_stream.endpointId = resp.endpointId;
+    document.getElementById("share").style.display = "inline-block";
+    document.getElementById("share").onClick = fullScreenShare();
   }
 }
 
@@ -168,31 +200,28 @@ async function screenShare() {
  * Just get this user offline, don't end the session for everyone
  */
 async function signOff() {
-  bandwidthRtc.disconnect();
-  // remove the others from this screen
-  other_callers.forEach(function (caller) {
+  // bandwidthRtc.disconnect();
+  // Remove all my connections
+  //  this function will end up calling bandwidthRtc.disconnect() after the last removal
+  console.log(`about to disconnect these fine folks:`);
+  let temp_callers = [...other_callers]; // need to make a copy, as we'll be splicing this as we go
+  temp_callers.forEach(function (caller) {
+    console.log(`disconnecting ${caller}`);
     disconnectEndpoint(caller);
   });
+  console.log("Signed off");
 }
 
 /**
- * End the current session for all callers
+ * End the current session for all callers (asks the server to do it)
  * uses internal_call_id to know what to end, set when you got online
  */
 async function endSession() {
   updateStatus("Ending Call");
   console.log(`Ending session: ${internal_call_id}`);
 
-  // hangup the webrtc connection
-  bandwidthRtc.disconnect();
-
-  // clear out any remaining connections
-  other_callers.forEach(function (caller) {
-    removeCaller(caller);
-  });
-
   try {
-    var res = await fetch("/endSession?identifier=" + internal_call_id);
+    var res = await fetch("/endSession?room_name=" + internal_call_id);
 
     // basic error handling
     if (res.status !== 200) {
@@ -206,22 +235,11 @@ async function endSession() {
     console.log(`failed to end the session ${error}`);
     console.log("we'll keep cleaning up though");
   }
-}
 
-/**
- * Place a call to BAND to start on the PSTN, leverages serverside function
- * @param {string} number a +1 NANP number
- * @param identifier - something to identify this room/call
- */
-async function placePSTNCall(number, identifier) {
-  // then start the call
-  updateStatus("dialing");
-  var res = await fetch(
-    "/startPSTNCall?to_num=" + number + "&identifier=" + identifier
-  );
-  const json = await res.json();
-  return json;
-  //   console.log(json);
+  // clear out any remaining connections
+  other_callers.forEach(function (caller) {
+    disconnectEndpoint(caller);
+  });
 }
 
 /**
@@ -237,6 +255,15 @@ window.addEventListener("load", (event) => {
   });
 });
 
+/**
+ * This is called when a new stream is connected
+ * - this sets up the right tag (audio vs video) and connects the media stream to it
+ * - it will then do one of:
+ *    - pass that element to onNewStream() if you have created that function
+ *    - add the element to an pre-existing DOM element named in mediaDiv (top of this file)
+ *    - append that new element to the end of the DOM
+ * @param {} rtcStream
+ */
 function connectStream(rtcStream) {
   // check if this is already connected
   if (other_callers.indexOf(rtcStream.endpointId) > -1) {
@@ -246,7 +273,7 @@ function connectStream(rtcStream) {
   console.log(`receiving media! ${rtcStream.endpointId}`);
   console.log(rtcStream);
 
-  // get the sound flowing
+  // get the sound/video flowing
   var elType = "audio";
   if (videoEnabled) {
     elType = "video";
@@ -266,10 +293,8 @@ function connectStream(rtcStream) {
 
   // either append it to mediaDiv, or give it back to the calling script/file
   if (typeof onNewStream === "function") {
-    console.log("calling customer onNewStream function");
     onNewStream(mediaEl, rtcStream);
   } else {
-    console.log("no onNewStream functin defined");
     if (mediaDiv) {
       document.getElementById(mediaDiv).appendChild(mediaEl);
     } else {
@@ -278,35 +303,35 @@ function connectStream(rtcStream) {
   }
 }
 function disconnectEndpoint(endpointId) {
-  console.log("no longer receiving media for endpoint: " + endpointId);
+  console.log(`disconnecting endpoint: ${endpointId}`);
 
   // if this endpoint is still active on the call
   if (other_callers.indexOf(endpointId) > -1) {
     removeCaller(endpointId);
-
     // if there is no one left in the call
     if (other_callers.length == 0) {
       updateStatus("Call Ended");
       console.log(`All callers are off the line, ending call`);
-      // alert("The call is over");
-      // optional function to call when there are no other participants left
+      bandwidthRtc.disconnect();
       if (typeof allCallsEnded != "undefined") {
         allCallsEnded();
       }
     }
 
+    // call any external functions setup for this
     if (typeof onEndStream === "function") {
-      console.log("calling customer onNewStream function");
       onEndStream(endpointId);
     }
   } else {
     console.log(
-      `We got a disconnect on ${endpointId} but have no media for, this is common as a second notice of an ended stream`
+      `Disconnect for ${endpointId} but have no media for, common repeat notice`
     );
   }
 }
 /**
- * remove the div for this caller
+ * Removes this caller from your call
+ *  - removes caller from other_callers list
+ *  - removes Audio element for this caller
  * @param {*} id
  */
 function removeCaller(id) {
@@ -332,12 +357,7 @@ async function show_vanity_mirror(
   video_constraints = {}
 ) {
   // disable any current device, this is important to turn off the cam (and it's led light)
-  if (local_video_stream) {
-    var tracks = local_video_stream.getTracks();
-    tracks.forEach(function (track) {
-      track.stop();
-    });
-  }
+  disable_vanity_mirror();
 
   // allows for an option like "disable" in the cam selector
   if (cam_device == "none") {
@@ -345,7 +365,13 @@ async function show_vanity_mirror(
     document.getElementById(video_id).srcObject = null;
     return;
   } else {
-    video_constraints.deviceId = { exact: cam_device };
+    video_constraints.deviceId = {
+      width: { min: 320, max: 640 },
+      height: { min: 240, max: 480 },
+      aspectRatio: 1.777778,
+      frameRate: { max: 30 },
+      exact: cam_device,
+    };
   }
 
   try {
@@ -356,30 +382,31 @@ async function show_vanity_mirror(
     document.getElementById(video_id).srcObject = local_video_stream;
   } catch (error) {
     console.log(`Failed to acquire local video: ${error.message}`);
+    console.log(error);
     alert("Sorry, we can't proceed without access to your camera");
   }
 }
 
+/**
+ * Stop the camera and showing it in the corner
+ */
+function disable_vanity_mirror() {
+  if (local_video_stream) {
+    var tracks = local_video_stream.getTracks();
+    tracks.forEach(function (track) {
+      console.log("stopping track");
+      track.stop();
+    });
+  }
+}
+
 //
-// List and select devices
-async function listCameras(selectId) {
-  return getDeviceList("videoinput");
+// manage inputs
+async function getCameras() {
+  return await bandwidthRtc.getVideoInputs();
 }
-async function listMicrophones(selectId) {
-  return getDeviceList("audioinput");
-}
-
-async function getDeviceList(type) {
-  const devices = await navigator.mediaDevices.enumerateDevices();
-  let deviceList = [];
-
-  devices.forEach(function (device) {
-    if (device.kind == type) {
-      deviceList.push({ label: device.label, deviceId: device.deviceId });
-    }
-  });
-
-  return deviceList;
+async function getMics() {
+  return await bandwidthRtc.getAudioInputs();
 }
 
 //
@@ -387,53 +414,20 @@ async function getDeviceList(type) {
 /**
  * Mutes the mic, note that this assumes one mic stream
  */
-var is_mic_enabled = true;
-function muteFlip() {
-  is_mic_enabled = !is_mic_enabled;
-  if (is_mic_enabled) {
-    set_mute_all("audio", false);
-  } else {
-    set_mute_all("audio", true);
-  }
-}
 function mute() {
-  // if already muted
-  if (is_mic_enabled) {
-    is_mic_enabled = false;
-    set_mute_all("audio", true);
-  }
+  set_mute_all("audio", true);
 }
 function unmute() {
-  // if already unmuted
-  if (!is_mic_enabled) {
-    is_mic_enabled = true;
-    set_mute_all("audio", false);
-  }
+  set_mute_all("audio", false);
 }
 /**
  * 'Mutes' the camera
  */
-var is_cam_enabled = true;
-function video_muteFlip() {
-  is_cam_enabled = !is_cam_enabled;
-  if (is_cam_enabled) {
-    set_mute_all("video", false);
-  } else {
-    set_mute_all("video", true);
-  }
-}
 function video_mute() {
-  // if already muted
-  if (is_cam_enabled) {
-    is_cam_enabled = false;
-    set_mute_all("video", true);
-  }
+  set_mute_all("video", true);
 }
 function video_unmute() {
-  if (!is_cam_enabled) {
-    is_cam_enabled = true;
-    set_mute_all("video", false);
-  }
+  set_mute_all("video", false);
 }
 
 /**
@@ -475,47 +469,4 @@ function stopAudio(name) {
     sound_el.muted = true;
     sound_el.remove();
   }
-}
-
-//
-// LOGGING / STATUS UPDATES
-//
-function setStatusDiv(status_div_id) {
-  if (!statusDiv) {
-    statusDiv = status_div_id;
-  }
-}
-/**
- * set a the innerHTML of a div to the status,
- *  expects statusDiv to be set
- * @param {*} status
- */
-function updateStatus(status) {
-  if (!statusDiv) {
-    console.log(
-      `WARNING: statusDiv was never set (via setStatusDiv()), would have set ${status}`
-    );
-  } else {
-    document.getElementById(statusDiv).innerHTML = status;
-  }
-}
-
-//
-// This gets the debug info into a div on the screen
-// helpful for debugging mobile clients
-if (DEBUG) {
-  if (typeof console != "undefined") {
-    if (typeof console.log != "undefined") {
-      console.orig_log = console.log;
-    } else console.orig_log = function () {};
-  }
-
-  console.log = function (message) {
-    console.orig_log(message);
-    if (logDiv) {
-      document.getElementById(logDiv).append(">" + message);
-      document.getElementById(logDiv).append(document.createElement("br"));
-    }
-  };
-  console.error = console.debug = console.info = console.log;
 }
