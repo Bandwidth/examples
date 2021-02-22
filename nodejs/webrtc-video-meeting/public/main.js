@@ -76,7 +76,7 @@ window.onload = async function () {
 
   screenShareButton = document.getElementById("screen_share");
   screenShareButton.onclick = async function () {
-    await screenShare();
+    await screenShare().catch(err => console.log(`Screenshare error: ${err}`))
   };
   // support for full screen
   shareScreen = document.getElementById("share");
