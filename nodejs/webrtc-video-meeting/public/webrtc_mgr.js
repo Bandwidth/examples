@@ -172,27 +172,35 @@ async function screenShare() {
     my_screen_stream = null;
     document.getElementById("share").style.display = "none";
   } else {
-    // we're not sharing, so start, and update the text of the link
-    document.getElementById("screen_share").innerHTML = "Stop Sharing";
-
     video_constraints = {
       frameRate: 30,
     };
     // getDisplayMedia is the magic function for screen/window/tab sharing
-    my_screen_stream = await navigator.mediaDevices.getDisplayMedia({
-      audio: false,
-      video: video_constraints,
-    });
+    try {
+      my_screen_stream = await navigator.mediaDevices.getDisplayMedia({
+        audio: false,
+        video: video_constraints,
+      });
+    } catch(err) {
+      if (err.name != "NotAllowedError") {
+        console.error(`getDisplayMedia error: ${err}`);
+      }
+    }
 
-    // start the share and save the endPointId so we can unpublish later
-    var resp = await bandwidthRtc.publish(
-      my_screen_stream,
-      undefined,
-      "screenshare"
-    );
-    my_screen_stream.endpointId = resp.endpointId;
-    document.getElementById("share").style.display = "inline-block";
-    document.getElementById("share").onClick = fullScreenShare();
+    if (my_screen_stream != undefined) {
+      // we're now sharing, so start, and update the text of the link
+      document.getElementById("screen_share").innerHTML = "Stop Sharing";
+
+      // start the share and save the endPointId so we can unpublish later
+      var resp = await bandwidthRtc.publish(
+          my_screen_stream,
+          undefined,
+          "screenshare"
+      );
+      my_screen_stream.endpointId = resp.endpointId;
+      document.getElementById("share").style.display = "inline-block";
+      document.getElementById("share").onClick = fullScreenShare();
+    }
   }
 }
 

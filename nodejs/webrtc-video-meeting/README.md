@@ -73,7 +73,7 @@ You'll note that in the `disconnectEndPoint` function we also check if this was 
 
 ```bash
 npm install
-node server.js
+node index.js
 ```
 
 Or you can use [Nodemon](https://www.npmjs.com/package/nodemon) for live updating when you change a js file!
