@@ -332,7 +332,7 @@
                     "required": false
                 },
                 "responses": {
-                    "200": {
+                    "202": {
                         "description": "successful operation",
                         "headers": {},
                         "content": {
