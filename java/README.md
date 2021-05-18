@@ -22,4 +22,3 @@ The Java SDK(s) are available via [Maven](https://mvnrepository.com/) & Github
 | [Reference App](BandwidthReferenceApp)       | A small sample app that covers basic use cases with Bandwidth's Voice and Messaging APIs | Voice/Messaging |
 | [BoilerPlate](BoilerPlate)                   | A template to be used to build Bandwidth apps in Java                                    | Voice/Messaging |
 | [Phone Number Ordering](PhoneNumberOrdering) | A demo app to order numbers using the bandwidth-java-iris-sdk                            | Numbers         |
-| [WebRTC Hello World](webrtc-hello-world)     | Example of how to use Bandwidth WebRTC to connect browsers and phones                         | Voice/WebRTC |
