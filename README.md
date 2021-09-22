@@ -1,6 +1,7 @@
-<div align="center">
-
 # Bandwidth Examples
+
+> # 🚧 Deprecation Notice 🚧
+> This project is deprecated. Please go to https://github.com/Bandwidth-Samples to check out our latest samples!
 
 ![BW_ALL](.readme_images/BW_all.png)
 
