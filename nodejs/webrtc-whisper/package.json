@@ -1,0 +1,23 @@
+{
+  "name": "webrtc-simple",
+  "version": "1.0.0",
+  "description": "a simple node webrtc app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@bandwidth/bxml": "^2.9.0",
+    "@bandwidth/voice": "^1.5.0",
+    "@bandwidth/webrtc": "^0.4.1",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jwt-decode": "^3.1.2",
+    "lorem-ipsum": "^2.0.3",
+    "uuid": "^8.3.2"
+  }
+}
